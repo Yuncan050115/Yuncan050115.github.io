@@ -1,0 +1,1988 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme-default="auto"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Markdown语法与外挂标签写法汇总 | 云灿の随笔小站</title><meta name="description" content="🥧本文汇总Markdown格式以及外挂标签在网页端的渲染效果，可作为文档进行查询"><meta name="keywords" content="云灿, 随笔, 博客, 诗词, 编程"><meta name="author" content="云灿"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4ef"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101112"><meta property="og:title" content="Markdown语法与外挂标签写法汇总 | 云灿の随笔小站"><meta property="og:description" content="🥧本文汇总Markdown格式以及外挂标签在网页端的渲染效果，可作为文档进行查询"><meta property="og:image" content="/assets/logo-yuncan.png"><link rel="icon" type="image/png" href="/assets/logo-yuncan.png"><link rel="apple-touch-icon" href="/assets/logo-yuncan.png"><link rel="preconnect" href="https://apir.yuncan.xyz"><link rel="preconnect" href="https://music.yuncan.xyz"><link rel="preconnect" href="https://comment.yuncan.xyz"><link rel="preconnect" href="https://api.bilibili.com"><link rel="preconnect" href="https://i0.hdslb.com"><link rel="preload" as="image" href="https://apir.yuncan.xyz/index.php?size=1600"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><script>
+      (() => {
+        const root = document.documentElement;
+        const saved = localStorage.getItem('yuncan-theme');
+        if (saved === 'light' || saved === 'dark') {
+          root.dataset.theme = saved;
+        } else {
+          const hour = new Date().getHours();
+          root.dataset.theme = (hour >= 6 && hour < 19) ? 'light' : 'dark';
+        }
+      })();
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/BaseLayout.4GRpM9d1.css"><style>[data-astro-transition-scope="astro-m542s2jb-1"] { view-transition-name: read-progress; }@layer astro { ::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-iv2bzgrw-2"] { view-transition-name: breath-scene; }@layer astro { ::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-tc6woczj-3"] { view-transition-name: global-bg; }@layer astro { ::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-if6j4wsp-4"] { view-transition-name: global-filter; }@layer astro { ::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-s6lkupbb-5"] { view-transition-name: grain; }@layer astro { ::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-jgysxpi6-6"] { view-transition-name: cursor-glow; }@layer astro { ::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-ioirsxey-7"] { view-transition-name: cursor-dot; }@layer astro { ::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-5n244hft-8"] { view-transition-name: cursor-ring; }@layer astro { ::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-fjkacnw5-9"] { view-transition-name: site-header; }@layer astro { ::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-veqaj6uj-10"] { view-transition-name: music-dock; }@layer astro { ::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-pspklqzf-11"] { view-transition-name: runtime-tools; }@layer astro { ::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-2226xma5-12"] { view-transition-name: context-menu; }@layer astro { ::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body style="--global-bg: url('https://apir.yuncan.xyz/index.php?size=1600')"> <div class="read-progress" data-astro-transition-persist="read-progress" data-astro-transition-scope="astro-m542s2jb-1"></div> <canvas id="breath-scene" data-astro-transition-persist="breath-scene" data-astro-transition-scope="astro-iv2bzgrw-2"></canvas> <div class="global-bg" aria-hidden="true" data-astro-transition-persist="global-bg" data-astro-transition-scope="astro-tc6woczj-3"></div> <div class="global-filter" aria-hidden="true" data-astro-transition-persist="global-filter" data-astro-transition-scope="astro-if6j4wsp-4"></div> <div class="grain" aria-hidden="true" data-astro-transition-persist="grain" data-astro-transition-scope="astro-s6lkupbb-5"></div> <div class="cursor-glow" aria-hidden="true" data-astro-transition-persist="cursor-glow" data-astro-transition-scope="astro-jgysxpi6-6"></div> <div class="cursor-dot" aria-hidden="true" data-astro-transition-persist="cursor-dot" data-astro-transition-scope="astro-ioirsxey-7"></div> <div class="cursor-ring" aria-hidden="true" data-astro-transition-persist="cursor-ring" data-astro-transition-scope="astro-5n244hft-8"></div> <header class="site-header" data-astro-transition-persist="site-header" data-astro-transition-scope="astro-fjkacnw5-9"> <a class="brand-mark" href="/" aria-label="返回首页"> <img src="/assets/logo-yuncan.png" alt="云灿" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'"> </a> <nav class="site-nav" aria-label="主导航"> <div class="nav-item has-children"> <a href="/archives/"> <span>文章</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/categories/">分类</a> </div> </div><div class="nav-item has-children"> <a href="/bangumis/"> <span>在看</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/bangumis/">追番</a><a href="/cinemas/">追剧</a> </div> </div><div class="nav-item"> <a href="/steamgames/"> <span>在玩</span>  </a>  </div><div class="nav-item"> <a href="/comments/"> <span>留言板</span>  </a>  </div><div class="nav-item"> <a href="/social/link/"> <span>友链</span>  </a>  </div><div class="nav-item has-children"> <a href="/personal/about/"> <span>个人</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/site/time/">旧时光</a><a href="/personal/love/">恋爱小屋</a><a href="/personal/about/">关于</a> </div> </div><div class="nav-item"> <a href="/poems/"> <span>诗集</span>  </a>  </div><div class="nav-item"> <a href="/projects/"> <span>项目</span>  </a>  </div><div class="nav-item"> <a href="https://yuncan.xyz" target="_blank" rel="noopener"> <span>主站</span>  </a>  </div> </nav> <div class="header-actions"> <button class="icon-button" data-theme-toggle title="昼夜切换" aria-label="昼夜切换"> <span class="sun"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span> <span class="moon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 7 7 0 1 0 20 15.5z"/></svg></span> </button> <button class="icon-button nav-toggle" data-nav-toggle title="菜单" aria-label="菜单"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> </button> </div> </header> <main id="main">  <article class="article-shell hydro-post-page-lite"> <header class="article-header"> <p>  <time datetime="2023-06-08">2023-06-08</time> <span>·</span> <span>60 分钟</span> </p> <h1>Markdown语法与外挂标签写法汇总</h1> <div class="chips">  <a href="/tags/Markdown/">Markdown</a> </div> </header> <div class="article-layout"> <div class="article-main"> <div class="prose"><h1>1.Markdown语法自带格式</h1>
+<div class="note note-info">参考：[Markdown语法图文全面详解(10分钟学会)](https://blog.csdn.net/u014061630/article/details/81359144)</div>
+<div class="note note-warning">注意：此页面偶尔会存在CSS冲突问题!</div><h2 id="1.1-代码块">1.1 代码块</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码">示例源码 </h3>
+```shell
+\```shell
+# VSCode终端
+hexo clean; hexo s
+hexo clean; hexo g; hexo d
+git add .; git commit -m "npm publish"; npm version patch; 
+git push<h1>Cmder终端</h1>
+<p>hexo clean &amp;&amp; hexo s
+hexo clean &amp;&amp; hexo g &amp;&amp; hexo d
+git add . &amp;&amp; git commit -m &quot;npm publish&quot; &amp;&amp; npm version patch
+git push
+```</p>
+<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+```shell
+# VSCode终端
+hexo clean; hexo s
+hexo clean; hexo g; hexo d
+git add .; git commit -m &quot;npm publish&quot;; npm version patch; 
+git push
+
+# Cmder终端
+hexo clean &amp;&amp; hexo s
+hexo clean &amp;&amp; hexo g &amp;&amp; hexo d
+git add . &amp;&amp; git commit -m &quot;npm publish&quot; &amp;&amp; npm version patch
+git push
+</code></pre></figure>
+</section></div><h2 id="1.2-多级标题">1.2 多级标题</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-2">示例源码 </h3>
+```Markdown
+# H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6
+```
+</section><section class="tab-lite"><h3 id="渲染演示">渲染演示 </h3>
+见本文章标题!
+</section></div><h2 id="1.3-文字样式">1.3 文字样式</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-3">示例源码 </h3>
+```Markdown
+<u>下划线演示</u><p>文字<strong>加粗</strong>演示</p>
+<p>文字<em>斜体</em>演示</p>
+<p>文本<code>高亮</code>演示</p>
+<p>文本<del>删除</del>线演示</p>
+<p><font size = 5>5号字</font>
+<font face="黑体">黑体</font>
+<font color=blue>蓝色</font></p>
+<table><tr><td bgcolor=MistyRose>这里的背景色是：MistyRosen，此处输入任意想输入的内容</td></tr></table>
+```
+</section><section class="tab-lite"><h3 id="渲染演示-2">渲染演示 </h3>
+<u>下划线演示</u><p>文字<strong>加粗</strong>演示</p>
+<p>文字<em>斜体</em>演示</p>
+<p>文本<code>高亮</code>演示</p>
+<p>文本<del>删除</del>线演示</p>
+<p><font size = 5>5号字</font>
+<font face="黑体">黑体</font>
+<font color=blue>蓝色</font></p>
+<table><tr><td bgcolor=MistyRose>这里的背景色是：MistyRosen，此处输入任意想输入的内容</td></tr></table>
+</section></div><div class="note note-info">上述要点可参考:[【Markdown语法】字体颜色大小及文字底色设置](https://blog.csdn.net/qq_43732429/article/details/108034518)</div><h2 id="1.4-引用">1.4 引用</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-4">示例源码 </h3>
+```Markdown
+>  Java
+> 二级引用演示
+> MySQL
+> >外键
+> >
+> >事务
+> >
+> >**行级锁**(引用内部一样可以用格式)
+> 
+> ....
+```
+</section><section class="tab-lite"><h3 id="渲染演示-3">渲染演示 </h3>
+>  Java
+> 二级引用演示
+> MySQL
+> >外键
+> >
+> >事务
+> >
+> >**行级锁**(引用内部一样可以用格式)
+> 
+> ....
+</section></div><h2 id="1.5-分割线">1.5 分割线</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-5">示例源码 </h3>
+```Markdown
+---
+***
+```
+</section><section class="tab-lite"><h3 id="渲染演示-4">渲染演示 </h3>
+---
+***
+</section></div><h2 id="1.6-列表(-,+,-跟空格都可以)">1.6 列表(*,+,-跟空格都可以)</h2>
+<h3 id="1.6.1-无序列表">1.6.1 无序列表</h3>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-6">示例源码 </h3>
+```Markdown
+* Java
+* Python
+* ...<ul>
+<li>Java</li>
+<li>Python</li>
+<li>...</li>
+</ul>
+<ul>
+<li>Java</li>
+<li>Python</li>
+<li>...</li>
+</ul>
+<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+* Java
+* Python
+* ...
+
++ Java
++ Python
++ ...
+
+- Java
+- Python
+- ...
+&lt;/section&gt;
+
+&lt;/div&gt;
+
+
+
+### 1.6.2 有序列表
+&lt;div class=&quot;tabs-lite&quot;&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+# 注意后面有空格
+1. 
+2. 
+3. 
+4. 
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-5">渲染演示 </h3>
+1. 
+2. 
+3. 
+4. 
+</section></div><h2 id="1.7-图片">1.7 图片</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-7">示例源码 </h3>
+```Markdown
+# 本地图片
+<img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="/assets/pusheencode.webp" alt="示例图片" style="zoom:50%;" />
+# 在线图片
+![code](https://cdn.jsdelivr.net/gh/fomalhaut1998/markdown_pic/img/code.png)
+```
+</section><section class="tab-lite"><h3 id="渲染演示-6">渲染演示 </h3>
+本地图片:
+<img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="/assets/pusheencode.webp" alt="示例图片" style="zoom:50%;" />
+在线图片:
+![code](https://cdn.jsdelivr.net/gh/fomalhaut1998/markdown_pic/img/code.png)
+</section></div><h2 id="1.8-表格">1.8 表格</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-8">示例源码 </h3>
+```Markdown
+| 项目标号 | 资金     | 备注 |
+| -------- | -------- | ---- |
+| 1        | 100，000 | 无   |
+| 2        | 200，000 | 无   |
+| 3        | 300,600  | 重要 |
+```
+</section><section class="tab-lite"><h3 id="渲染演示-7">渲染演示 </h3>
+| 项目标号 | 资金     | 备注 |
+| -------- | -------- | ---- |
+| 1        | 100，000 | 无   |
+| 2        | 200，000 | 无   |
+| 3        | 300,600  | 重要 |
+</section></div><h2 id="1.9-公式">1.9 公式</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-9">示例源码 </h3>
+```Markdown
+$$
+\Gamma(z)=\int_0^\infty t^{z-1}e^{-t}dt.
+$$
+```
+</section><section class="tab-lite"><h3 id="渲染演示-8">渲染演示 </h3>
+$$
+\Gamma(z)=\int_0^\infty t^{z-1}e^{-t}dt.
+$$
+</section></div><h1>2.Butterfly外挂标签</h1>
+<div class="note note-info">这部分参考安知鱼:[基于Butterfly的外挂标签引入](https://anzhiy.cn/posts/7d58.html)</div><h2 id="2.1-行内文本样式-text">2.1 行内文本样式 text</h2>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="标签语法">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+1. 带  的文本
+2. 带  的文本
+3. 带  的文本
+4. 带  的文本
+5. 键盘样式的文本  + 
+6. 密码样式的文本：
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-9">渲染演示 </h3>
+1. 带  的文本
+2. 带  的文本
+3. 带  的文本
+4. 带  的文本
+5. 键盘样式的文本  + 
+6. 密码样式的文本：
+</section></div><h2 id="2.2-行内文本-span">2.2 行内文本 span</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-2">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;配置参数 &lt;/h3&gt;
+
+1. `字体`: logo, code
+2. `颜色`: red,yellow,green,cyan,blue,gray
+3. `大小`: small, h4, h3, h2, h1, large, huge, ultra
+4. `对齐方向`: left, center, right
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+- 彩色文字
+在一段话中方便插入各种颜色的标签，包括：、、、、、。
+- 超大号文字
+文档「开始」页面中的标题部分就是超大号文字。
+
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-10">渲染演示 </h3>
+- 彩色文字
+在一段话中方便插入各种颜色的标签，包括：、、、、、。
+- 超大号文字
+文档「开始」页面中的标题部分就是超大号文字。</section></div><h2 id="2.3-段落文本-p">2.3 段落文本 p</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-3">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;配置参数 &lt;/h3&gt;
+
+1. `字体`: logo, code
+2. `颜色`: red,yellow,green,cyan,blue,gray
+3. `大小`: small, h4, h3, h2, h1, large, huge, ultra
+4. `对齐方向`: left, center, right
+&lt;/section&gt;
+
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+- 彩色文字
+在一段话中方便插入各种颜色的标签，包括：、、、、、。
+- 超大号文字
+文档「开始」页面中的标题部分就是超大号文字。
+
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-11">渲染演示 </h3>
+- 彩色文字
+在一段话中方便插入各种颜色的标签，包括：、、、、、。
+- 超大号文字
+文档「开始」页面中的标题部分就是超大号文字。</section></div><h2 id="2.4-引用note">2.4 引用note</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="通用配置">通用配置 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">note:
+  # Note tag style values:
+  #  - simple    bs-callout old alert style. Default.
+  #  - modern    bs-callout new (v2-v3) alert style.
+  #  - flat      flat callout style with background, like on Mozilla or StackOverflow.
+  #  - disabled  disable all CSS styles import of note tag.
+  style: simple
+  icons: false
+  border_radius: 3
+  # Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).
+  # Offset also applied to label tag variables. This option can work with disabled note tag.
+  light_bg_offset: 0
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="语法格式">语法格式 </h3>
+```Markdown
+# 自带icon
+<div class="note note-info">Any content (support inline tags too.io).</div>
+# 外部icon
+<div class="note note-info">Any content (support inline tags too.io).</div>
+```
+</section><section class="tab-lite"><h3 id="参数配置">参数配置 </h3><p>1.自带icon</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th align="center">用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class</td>
+<td align="center">【可选】标识，不同的标识有不同的配色 （ default / primary / success / info / warning / danger ）</td>
+</tr>
+<tr>
+<td>no-icon</td>
+<td align="center">【可选】不显示 icon</td>
+</tr>
+<tr>
+<td>style</td>
+<td align="center">【可选】可以覆盖配置中的 style （simple/modern/flat/disabled）</td>
+</tr>
+</tbody></table>
+<p>2.外部icon</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th align="center">用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class</td>
+<td align="center">【可选】标识，不同的标识有不同的配色 （ default / blue / pink / red / purple / orange / green ）</td>
+</tr>
+<tr>
+<td>no-icon</td>
+<td align="center">【可选】可配置自定义 icon (只支持 fontawesome 图标, 也可以配置 no-icon )</td>
+</tr>
+<tr>
+<td>style</td>
+<td align="center">【可选】可以覆盖配置中的 style （simple/modern/flat/disabled）</td>
+</tr>
+</tbody></table>
+</section><section class="tab-lite"><h3 id="示例源码-10">示例源码 </h3><p>1.<code>simple</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">&lt;div class=&quot;note note-simple&quot;&gt;默认 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-default&quot;&gt;default 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-primary&quot;&gt;primary 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-success&quot;&gt;success 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-info&quot;&gt;info 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-warning&quot;&gt;warning 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-danger&quot;&gt;danger 提示块标签&lt;/div&gt;
+</code></pre></figure>
+<p>2.<code>modern</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-modern&quot;&gt;默认 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-default&quot;&gt;default 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-primary&quot;&gt;primary 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-success&quot;&gt;success 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-info&quot;&gt;info 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-warning&quot;&gt;warning 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-danger&quot;&gt;danger 提示块标签&lt;/div&gt;
+</code></pre></figure>
+<p>3.<code>flat</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-flat&quot;&gt;默认 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-default&quot;&gt;default 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-primary&quot;&gt;primary 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-success&quot;&gt;success 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-info&quot;&gt;info 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-warning&quot;&gt;warning 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-danger&quot;&gt;danger 提示块标签&lt;/div&gt;
+</code></pre></figure>
+<p>4.<code>disabled</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-disabled&quot;&gt;默认 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-default&quot;&gt;default 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-primary&quot;&gt;primary 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-success&quot;&gt;success 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-info&quot;&gt;info 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-warning&quot;&gt;warning 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-danger&quot;&gt;danger 提示块标签&lt;/div&gt;
+</code></pre></figure>
+<p>5.<code>no-icon</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-no&quot;&gt;默认 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-default&quot;&gt;default 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-primary&quot;&gt;primary 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-success&quot;&gt;success 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-info&quot;&gt;info 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-warning&quot;&gt;warning 提示块标签&lt;/div&gt;
+
+&lt;div class=&quot;note note-danger&quot;&gt;danger 提示块标签&lt;/div&gt;
+</code></pre></figure>
+<p>1.<code>simple</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-info&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-blue&quot;&gt;2021年快到了....&lt;/div&gt;
+
+&lt;div class=&quot;note note-pink&quot;&gt;小心开车 安全至上&lt;/div&gt;
+
+&lt;div class=&quot;note note-red&quot;&gt;这是三片呢？还是四片？&lt;/div&gt;
+
+&lt;div class=&quot;note note-orange&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-purple&quot;&gt;剪刀石头布&lt;/div&gt;
+
+&lt;div class=&quot;note note-green&quot;&gt;前端最讨厌的浏览器&lt;/div&gt;
+</code></pre></figure>
+<p>2.<code>modern</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-info&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-blue&quot;&gt;2021年快到了....&lt;/div&gt;
+
+&lt;div class=&quot;note note-pink&quot;&gt;小心开车 安全至上&lt;/div&gt;
+
+&lt;div class=&quot;note note-red&quot;&gt;这是三片呢？还是四片？&lt;/div&gt;
+
+&lt;div class=&quot;note note-orange&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-purple&quot;&gt;剪刀石头布&lt;/div&gt;
+
+&lt;div class=&quot;note note-green&quot;&gt;前端最讨厌的浏览器&lt;/div&gt;
+</code></pre></figure>
+<p>3.<code>flat</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-info&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-blue&quot;&gt;2021年快到了....&lt;/div&gt;
+
+&lt;div class=&quot;note note-pink&quot;&gt;小心开车 安全至上&lt;/div&gt;
+
+&lt;div class=&quot;note note-red&quot;&gt;这是三片呢？还是四片？&lt;/div&gt;
+
+&lt;div class=&quot;note note-orange&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-purple&quot;&gt;剪刀石头布&lt;/div&gt;
+
+&lt;div class=&quot;note note-green&quot;&gt;前端最讨厌的浏览器&lt;/div&gt;
+</code></pre></figure>
+<p>4.<code>disabled</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-info&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-blue&quot;&gt;2021年快到了....&lt;/div&gt;
+
+&lt;div class=&quot;note note-pink&quot;&gt;小心开车 安全至上&lt;/div&gt;
+
+&lt;div class=&quot;note note-red&quot;&gt;这是三片呢？还是四片？&lt;/div&gt;
+
+&lt;div class=&quot;note note-orange&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-purple&quot;&gt;剪刀石头布&lt;/div&gt;
+
+&lt;div class=&quot;note note-green&quot;&gt;前端最讨厌的浏览器&lt;/div&gt;
+</code></pre></figure>
+<p>5.<code>no-icon</code>样式</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;note note-no&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-blue&quot;&gt;2021年快到了....&lt;/div&gt;
+
+&lt;div class=&quot;note note-pink&quot;&gt;小心开车 安全至上&lt;/div&gt;
+
+&lt;div class=&quot;note note-red&quot;&gt;这是三片呢？还是四片？&lt;/div&gt;
+
+&lt;div class=&quot;note note-orange&quot;&gt;你是刷 Visa 还是 UnionPay&lt;/div&gt;
+
+&lt;div class=&quot;note note-purple&quot;&gt;剪刀石头布&lt;/div&gt;
+
+&lt;div class=&quot;note note-green&quot;&gt;前端最讨厌的浏览器&lt;/div&gt;
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-12">渲染演示 </h3><p>1.<code>simple</code>样式</p>
+<div class="note note-simple">默认 提示块标签</div><div class="note note-default">default 提示块标签</div><div class="note note-primary">primary 提示块标签</div><div class="note note-success">success 提示块标签</div><div class="note note-info">info 提示块标签</div><div class="note note-warning">warning 提示块标签</div><div class="note note-danger">danger 提示块标签</div>
+2.`modern`样式
+<div class="note note-modern">默认 提示块标签</div><div class="note note-default">default 提示块标签</div><div class="note note-primary">primary 提示块标签</div><div class="note note-success">success 提示块标签</div><div class="note note-info">info 提示块标签</div><div class="note note-warning">warning 提示块标签</div><div class="note note-danger">danger 提示块标签</div><p>3.<code>flat</code>样式</p>
+<div class="note note-flat">默认 提示块标签</div><div class="note note-default">default 提示块标签</div><div class="note note-primary">primary 提示块标签</div><div class="note note-success">success 提示块标签</div><div class="note note-info">info 提示块标签</div><div class="note note-warning">warning 提示块标签</div><div class="note note-danger">danger 提示块标签</div><p>4.<code>disabled</code>样式</p>
+<div class="note note-disabled">默认 提示块标签</div><div class="note note-default">default 提示块标签</div><div class="note note-primary">primary 提示块标签</div><div class="note note-success">success 提示块标签</div><div class="note note-info">info 提示块标签</div><div class="note note-warning">warning 提示块标签</div><div class="note note-danger">danger 提示块标签</div><p>5.<code>no-icon</code>样式</p>
+<div class="note note-no">默认 提示块标签</div><div class="note note-default">default 提示块标签</div><div class="note note-primary">primary 提示块标签</div><div class="note note-success">success 提示块标签</div><div class="note note-info">info 提示块标签</div><div class="note note-warning">warning 提示块标签</div><div class="note note-danger">danger 提示块标签</div><p>1.<code>simple</code>样式</p>
+<div class="note note-info">你是刷 Visa 还是 UnionPay</div><div class="note note-blue">2021年快到了....</div><div class="note note-pink">小心开车 安全至上</div><div class="note note-red">这是三片呢？还是四片？</div><div class="note note-orange">你是刷 Visa 还是 UnionPay</div><div class="note note-purple">剪刀石头布</div><div class="note note-green">前端最讨厌的浏览器</div><p>2.<code>modern</code>样式</p>
+<div class="note note-info">你是刷 Visa 还是 UnionPay</div><div class="note note-blue">2021年快到了....</div><div class="note note-pink">小心开车 安全至上</div><div class="note note-red">这是三片呢？还是四片？</div><div class="note note-orange">你是刷 Visa 还是 UnionPay</div><div class="note note-purple">剪刀石头布</div><div class="note note-green">前端最讨厌的浏览器</div><p>3.<code>flat</code>样式</p>
+<div class="note note-info">你是刷 Visa 还是 UnionPay</div><div class="note note-blue">2021年快到了....</div><div class="note note-pink">小心开车 安全至上</div><div class="note note-red">这是三片呢？还是四片？</div><div class="note note-orange">你是刷 Visa 还是 UnionPay</div><div class="note note-purple">剪刀石头布</div><div class="note note-green">前端最讨厌的浏览器</div><p>4.<code>disabled</code>样式</p>
+<div class="note note-info">你是刷 Visa 还是 UnionPay</div><div class="note note-blue">2021年快到了....</div><div class="note note-pink">小心开车 安全至上</div><div class="note note-red">这是三片呢？还是四片？</div><div class="note note-orange">你是刷 Visa 还是 UnionPay</div><div class="note note-purple">剪刀石头布</div><div class="note note-green">前端最讨厌的浏览器</div><p>5.<code>no-icon</code>样式</p>
+<div class="note note-no">你是刷 Visa 还是 UnionPay</div><div class="note note-blue">2021年快到了....</div><div class="note note-pink">小心开车 安全至上</div><div class="note note-red">这是三片呢？还是四片？</div><div class="note note-orange">你是刷 Visa 还是 UnionPay</div><div class="note note-purple">剪刀石头布</div><div class="note note-green">前端最讨厌的浏览器</div></section></div><h2 id="2.5-上标标签-tip">2.5 上标标签 tip</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-4">标签语法 </h3>
+```Markdown
+文本内容
+```
+</section><section class="tab-lite"><h3 id="配置参数">配置参数 </h3><ol>
+<li><code>样式</code>: success,error,warning,bolt,ban,home,sync,cogs,key,bell</li>
+<li><code>自定义图标</code>: 支持fontawesome。</section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-11">示例源码 </h3>
+```Markdown
+default
+info
+success
+error
+warning
+bolt
+ban
+home
+sync
+cogs
+key
+bell
+自定义font awesome图标
+```
+</section><section class="tab-lite"><h3 id="渲染演示-13">渲染演示 </h3>
+default
+info
+success
+error
+warning
+bolt
+ban
+home
+sync
+cogs
+key
+bell
+自定义font awesome图标
+</section></div><h2 id="2.6-动态标签-anima">2.6 动态标签 anima</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-12">示例源码 </h3>
+```Markdown
+文本内容
+```
+</section>
+<section class="tab-lite"><h3 id="配置参数-2">配置参数 </h3>
+<div class="note note-info">1. 将所需的CSS类添加到图标（或DOM中的任何元素）。
+2. 对于父级悬停样式，需要给目标元素添加指定CSS类，同时还要给目标元素的父级元素添加CSS类`faa-parent animated-hover`。（详情见示例及示例源码）
+   You can regulate the speed of the animation by adding the CSS class or . faa-fastfaa-slow
+3. 可以通过给目标元素添加CSS类`faa-fast`或`faa-slow`来控制动画快慢。</div>
+   </section>
+   <section class="tab-lite"><h3 id="示例源码-13">示例源码 </h3>
+   1.On DOM load（当页面加载时显示动画）<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">warning
+ban
+</code></pre></figure>
+<p>2.调整动画速度</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">warning
+ban
+</code></pre></figure>
+<p>3.On hover（当鼠标悬停时显示动画）</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">warning
+ban
+</code></pre></figure>
+<p>4.On parent hover（当鼠标悬停在父级元素时显示动画）</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">&lt;p class=&quot;faa-horizontal&quot;&gt;warning&lt;/p&gt;
+&lt;p class=&quot;faa-flash&quot;&gt;ban&lt;/p&gt;
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-14">渲染演示 </h3>
+1.On DOM load（当页面加载时显示动画）
+warning
+ban
+2.调整动画速度
+warning
+ban
+3.On hover（当鼠标悬停时显示动画）
+warning
+ban
+4.On parent hover（当鼠标悬停在父级元素时显示动画）
+<p class="faa-horizontal">warning</p>
+<p class="faa-flash">ban</p>
+</section></div><h2 id="2.7-复选列表-checkbox">2.7 复选列表 checkbox</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-5">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="配置参数-3">配置参数 </h3><ol>
+<li><code>样式</code>: plus, minus, times</li>
+<li><code>颜色</code>: red,yellow,green,cyan,blue,gray</li>
+<li><code>选中状态</code>: checked</section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-14">示例源码 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+
+
+
+
+
+
+
+
+
+
+&lt;/section&gt;
+
+&lt;/div&gt;
+
+
+## 2.8 单选列表 radio
+
+&lt;div class=&quot;tabs-lite&quot;&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;标签语法 &lt;/h3&gt;
+```Markdown
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="配置参数-4">配置参数 </h3><ol>
+<li><code>颜色</code>: red,yellow,green,cyan,blue,gray</li>
+<li><code>选中状态</code>: checked</section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-15">示例源码 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+
+
+
+
+
+
+
+&lt;/section&gt;
+
+&lt;/div&gt;
+
+
+
+
+## 2.9 时间轴 timeline
+
+&lt;div class=&quot;tabs-lite&quot;&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;标签语法 &lt;/h3&gt;
+```Markdown
+&lt;div class=&quot;timeline&quot;&gt;&lt;h2&gt;时间线标题（可选）[,color] &lt;/h2&gt;
+&lt;div class=&quot;timeline-item&quot;&gt;&lt;time&gt;时间节点（标题） &lt;/time&gt;&lt;div&gt;
+正文内容
+&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;timeline-item&quot;&gt;&lt;time&gt;时间节点（标题） &lt;/time&gt;&lt;div&gt;
+正文内容
+&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="配置参数-5">配置参数 </h3><ol>
+<li><code>title</code>:标题/时间线</li>
+<li><code>color</code>:<code>timeline</code>颜色:default(留空) / blue / pink / red / purple / orange / green</section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-16">示例源码 </h3>
+```Markdown
+<div class="timeline"><h2 id="时间轴样式,blue">时间轴样式,blue </h2><!-- timeline 2020-07-24 [2.6.6 -> 3.0](https://github.com/volantis-x/hexo-theme-volantis/releases) --><ol>
+<li>如果有 <code>hexo-lazyload-image</code> 插件，需要删除并重新安装最新版本，设置 <code>lazyload.isSPA: true</code>。</li>
+<li>2.x 版本的 css 和 js 不适用于 3.x 版本，如果使用了 <code>use_cdn: true</code> 则需要删除。</li>
+<li>2.x 版本的 fancybox 标签在 3.x 版本中被重命名为 gallery 。</li>
+<li>2.x 版本的置顶 <code>top: true</code> 改为了 <code>pin: true</code>，并且同样适用于 <code>layout: page</code> 的页面。</li>
+<li>如果使用了 <code>hexo-offline</code> 插件，建议卸载，3.0 版本默认开启了 pjax 服务。</li>
+</ol>
+</div></div><!-- timeline 2020-05-15 [2.6.3 -> 2.6.6](https://github.com/volantis-x/hexo-theme-volantis/releases/tag/2.6.6) --><p>不需要额外处理。</p>
+</div></div><!-- timeline 2020-04-20 [2.6.2 -> 2.6.3](https://github.com/volantis-x/hexo-theme-volantis/releases/tag/2.6.3) --><ol>
+<li>全局搜索 <code>seotitle</code> 并替换为 <code>seo_title</code>。</li>
+<li>group 组件的索引规则有变，使用 group 组件的文章内，<code>group: group_name</code> 对应的组件名必须是 <code>group_name</code>。</li>
+<li>group 组件的列表名优先显示文章的 <code>short_title</code> 其次是 <code>title</code>。</li>
+</ol>
+</div></div></div>
+```
+</section><section class="tab-lite"><h3 id="渲染演示-15">渲染演示 </h3>
+<div class="timeline"><h2 id="时间轴样式,blue-2">时间轴样式,blue </h2><!-- timeline 2020-07-24 [2.6.6 -> 3.0](https://github.com/volantis-x/hexo-theme-volantis/releases) --><ol>
+<li>如果有 <code>hexo-lazyload-image</code> 插件，需要删除并重新安装最新版本，设置 <code>lazyload.isSPA: true</code>。</li>
+<li>2.x 版本的 css 和 js 不适用于 3.x 版本，如果使用了 <code>use_cdn: true</code> 则需要删除。</li>
+<li>2.x 版本的 fancybox 标签在 3.x 版本中被重命名为 gallery 。</li>
+<li>2.x 版本的置顶 <code>top: true</code> 改为了 <code>pin: true</code>，并且同样适用于 <code>layout: page</code> 的页面。</li>
+<li>如果使用了 <code>hexo-offline</code> 插件，建议卸载，3.0 版本默认开启了 pjax 服务。</li>
+</ol>
+</div></div><!-- timeline 2020-05-15 [2.6.3 -> 2.6.6](https://github.com/volantis-x/hexo-theme-volantis/releases/tag/2.6.6) --><p>不需要额外处理。</p>
+</div></div><!-- timeline 2020-04-20 [2.6.2 -> 2.6.3](https://github.com/volantis-x/hexo-theme-volantis/releases/tag/2.6.3) --><ol>
+<li>全局搜索 <code>seotitle</code> 并替换为 <code>seo_title</code>。</li>
+<li>group 组件的索引规则有变，使用 group 组件的文章内，<code>group: group_name</code> 对应的组件名必须是 <code>group_name</code>。</li>
+<li>group 组件的列表名优先显示文章的 <code>short_title</code> 其次是 <code>title</code>。</li>
+</ol>
+</div></div></div>
+</section></div><h2 id="2.10-链接卡片-link">2.10 链接卡片 link</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-6">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-16">渲染演示 </h3></section></div><h2 id="2.11-按钮-btns">2.11 按钮 btns</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-7">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+
+
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-2">参数配置 </h3><ol>
+<li>圆角样式：rounded, circle</li>
+<li>增加文字样式：可以在容器内增加 <code>&lt;b&gt;</code>标题<code>&lt;/b&gt;</code>和<code>&lt;p&gt;</code>描述文字<code>&lt;/p&gt;</code></li>
+<li>布局方式：
+默认为自动宽度，适合视野内只有一两个的情况。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wide</td>
+<td>宽一点的按钮</td>
+</tr>
+<tr>
+<td>fill</td>
+<td>填充布局，自动铺满至少一行，多了会换行</td>
+</tr>
+<tr>
+<td>center</td>
+<td>居中，按钮之间是固定间距</td>
+</tr>
+<tr>
+<td>around</td>
+<td>居中分散</td>
+</tr>
+<tr>
+<td>grid2</td>
+<td>等宽最多2列，屏幕变窄会适当减少列数</td>
+</tr>
+<tr>
+<td>grid3</td>
+<td>等宽最多3列，屏幕变窄会适当减少列数</td>
+</tr>
+<tr>
+<td>grid4</td>
+<td>等宽最多4列，屏幕变窄会适当减少列数</td>
+</tr>
+<tr>
+<td>grid5</td>
+<td>等宽最多5列，屏幕变窄会适当减少列数</td>
+</tr>
+</tbody></table>
+</section><section class="tab-lite"><h3 id="示例源码-17">示例源码 </h3>
+1.如果需要显示类似「团队成员」之类的一组含有头像的链接<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+
+
+
+
+
+</code></pre></figure>
+<p>2.或者含有图标的按钮</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+
+
+</code></pre></figure>
+<p>3.圆形图标 + 标题 + 描述 + 图片 + 网格5列 + 居中</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+&lt;a href=&#39;https://apps.apple.com/cn/app/heart-mate-pro-hrm-utility/id1463348922?ls=1&#39;&gt;
+  &lt;i class=&#39;fab fa-apple&#39;&gt;&lt;/i&gt;
+  &lt;b&gt;心率管家&lt;/b&gt;
+  
+  &lt;img src=&#39;https://cdn.jsdelivr.net/gh/fomalhaut1998/cdn-assets/qrcode/heartmate_pro.png&#39;&gt;
+&lt;/a&gt;
+&lt;a href=&#39;https://apps.apple.com/cn/app/heart-mate-lite-hrm-utility/id1475747930?ls=1&#39;&gt;
+  &lt;i class=&#39;fab fa-apple&#39;&gt;&lt;/i&gt;
+  &lt;b&gt;心率管家&lt;/b&gt;
+  
+  &lt;img src=&#39;https://cdn.jsdelivr.net/gh/fomalhaut1998/cdn-assets/qrcode/heartmate_lite.png&#39;&gt;
+&lt;/a&gt;
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-17">渲染演示 </h3><p>1.如果需要显示类似「团队成员」之类的一组含有头像的链接</p>
+<p>2.或者含有图标的按钮</p>
+<p>3.圆形图标 + 标题 + 描述 + 图片 + 网格5列 + 居中</p>
+<a href='https://apps.apple.com/cn/app/heart-mate-pro-hrm-utility/id1463348922?ls=1'>
+  <i class='fab fa-apple'></i>
+  <b>心率管家</b>  <img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src='https://cdn.jsdelivr.net/gh/fomalhaut1998/cdn-assets/qrcode/heartmate_pro.png'>
+</a>
+<a href='https://apps.apple.com/cn/app/heart-mate-lite-hrm-utility/id1475747930?ls=1'>
+  <i class='fab fa-apple'></i>
+  <b>心率管家</b>  <img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src='https://cdn.jsdelivr.net/gh/fomalhaut1998/cdn-assets/qrcode/heartmate_lite.png'>
+</a></section></div><h2 id="2.12-github卡片-ghcard">2.12 github卡片 ghcard</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-8">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-3">参数配置 </h3><p>使用<code>,</code>分割各个参数。写法为：<code>参数名=参数值</code>
+以下只写几个常用参数值。</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数名</strong></th>
+<th>取值</th>
+<th>释义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hide</td>
+<td>stars,commits,prs,issues,contribs</td>
+<td>隐藏指定统计</td>
+</tr>
+<tr>
+<td>count_private</td>
+<td>true</td>
+<td>将私人项目贡献添加到总提交计数中</td>
+</tr>
+<tr>
+<td>show_icons</td>
+<td>true</td>
+<td>显示图标</td>
+</tr>
+<tr>
+<td>theme</td>
+<td>查阅:<a href="https://github.com/anuraghazra/github-readme-stats/blob/master/themes/README.md">Available Themes</a></td>
+<td>主题</td>
+</tr>
+</tbody></table>
+</section><section class="tab-lite"><h3 id="示例源码-18">示例源码 </h3><p>1.用户信息卡片</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">|  |  |
+| -- | -- |
+|  |  |
+|  |  |
+|  |  |
+</code></pre></figure>
+<p>2.仓库信息卡片</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">|  |  |
+| -- | -- |
+|  |  |
+|  |  |
+|  |  |
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-18">渲染演示 </h3>
+1.用户信息卡片<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>2.仓库信息卡片</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</section></div><h2 id="2.13-github徽标-ghbdage">2.13 github徽标 ghbdage</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-9">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="配置参数-6">配置参数 </h3><ol>
+<li><code>left</code>：徽标左边的信息，必选参数。</li>
+<li><code>right</code>: 徽标右边的信息，必选参数，</li>
+<li><code>logo</code>：徽标图标，图标名称详见<a href="https://simpleicons.org/">simpleicons</a>，可选参数。</li>
+<li><code>color</code>：徽标右边的颜色，可选参数。</li>
+<li><code>link</code>：指向的链接，可选参数。</li>
+<li><code>title</code>：徽标的额外信息，可选参数。主要用于优化SEO，但<code>object</code>标签不会像<code>a</code>标签一样在鼠标悬停显示<code>title</code>信息。</li>
+<li><code>option</code>：自定义参数，支持<a href="https://shields.io/">shields.io</a>的全部API参数支持，具体参数可以参看上文中的拓展写法示例。形式为<code>name1=value2&amp;name2=value2</code>。</li>
+</ol>
+</section><section class="tab-lite"><h3 id="示例源码-19">示例源码 </h3><p>1.基本参数,定义徽标左右文字和图标</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+<p>2.信息参数，定义徽标右侧内容背景色，指向链接</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+//如果是跨顺序省略可选参数，仍然需要写个逗号,用作分割
+</code></pre></figure>
+<p>3.拓展参数，支持shields的API的全部参数内容</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+//如果是跨顺序省略可选参数组，仍然需要写双竖线||用作分割
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-19">渲染演示 </h3>
+1.基本参数,定义徽标左右文字和图标<p>2.信息参数，定义徽标右侧内容背景色，指向链接</p>
+<p>//如果是跨顺序省略可选参数，仍然需要写个逗号,用作分割</p>
+<p>3.拓展参数，支持shields的API的全部参数内容</p>
+<p>//如果是跨顺序省略可选参数组，仍然需要写双竖线||用作分割</p>
+</section></div><h2 id="2.14-网站卡片-sites">2.14 网站卡片 sites</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-10">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+
+
+
+
+
+
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-20">渲染演示 </h3></section></div><h2 id="2.15-行内图片-inlineimage">2.15 行内图片 inlineimage</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-11">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-4">参数配置 </h3><ol>
+<li><code>高度</code>：height=20px</li>
+</ol>
+</section><section class="tab-lite"><h3 id="示例源码-20">示例源码 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">这是  一段话。
+
+这又是  一段话。
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-21">渲染演示 </h3>
+这是  一段话。<p>这又是  一段话。</p>
+</section></div><h2 id="2.16-单张图片-image">2.16 单张图片 image</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-12">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-5">参数配置 </h3><ol>
+<li>图片宽度高度：width=300px, height=32px</li>
+<li>图片描述：alt=图片描述（butterfly需要在主题配置文件中开启图片描述）</li>
+<li>占位背景色：bg=#f2f2f2</li>
+</ol>
+</section><section class="tab-lite"><h3 id="示例源码-21">示例源码 </h3>
+1.添加描述：
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">2.指定宽度
+```Markdown
+</code></pre></figure>
+<p>3.指定宽度并添加描述：</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+<p>4.设置占位背景色：</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-22">渲染演示 </h3>
+1.添加描述：<p>2..指定宽度</p>
+<p>3.指定宽度并添加描述：</p>
+<p>4.设置占位背景色：</p>
+</section></div><h2 id="2.17-音频-audio">2.17 音频 audio</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-13">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+
+```Markdown
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-23">渲染演示 </h3></section></div><h2 id="2.18-视频-video">2.18 视频 video</h2>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="标签语法-14">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;标签语法 &lt;/h3&gt;
+
+1. `对齐方向`：left, center, right
+2. `列数`：逗号后面直接写列数，支持 1 ～ 4 列。
+   &lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+1.100%宽度
+
+```Markdown
+</code></pre></figure>
+<p>2.50%宽度</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+
+
+
+
+</code></pre></figure>
+<p>3.25%宽度</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+
+
+
+
+
+
+
+
+</code></pre></figure>
+</section>
+<section class="tab-lite"><h3 id="渲染演示-24">渲染演示 </h3><p>1.100%宽度</p>
+<p>2.50%宽度</p>
+<p>3.25%宽度</p>
+</section></div><h2 id="2.19-相册-gallery">2.19 相册 gallery</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-15">标签语法 </h3>
+1.gallerygroup 相册图库
+```Markdown
+<div class="gallery-group-main"></div>
+```
+2.gallery 相册
+```Markdown<p>markdown 圖片格式</p>
+<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;参数配置 &lt;/h3&gt;
+
+- gallerygroup 相册图库
+
+| 参数名      | 释义                 |
+| ----------- | -------------------- |
+| name        | 图库名字             |
+| description | 图库描述             |
+| link        | 链接到对应相册的地址 |
+| img-url     | 图库封面             |
+
+- gallery 相册
+
+  区别于旧版的Gallery相册,新的Gallery相册会自动根据图片长度进行排版，书写也更加方便，与markdown格式一样。可根据需要插入到相应的md。无需再自己配置长宽。**建议在粘贴时故意使用长短、大小、横竖不一的图片**，会有更好的效果。（尺寸完全相同的图片只会平铺输出，效果很糟糕）
+
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+
+1.gallerygroup 相册图库
+
+```Markdown
+&lt;div class=&quot;gallery-group-main&quot;&gt;
+
+
+
+&lt;/div&gt;
+</code></pre></figure>
+<p>2.gallery 相册</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+![](https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg)
+![](https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg)
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-25">渲染演示 </h3>
+1.gallerygroup 相册图库
+<div class="gallery-group-main"></div>
+2.gallery 相册<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://i.loli.net/2019/12/25/Fze9jchtnyJXMHN.jpg" alt="">
+<img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://i.loli.net/2019/12/25/ryLVePaqkYm4TEK.jpg" alt=""></p>
+</section></div><h2 id="2.20-折叠框-folding">2.20 折叠框 folding</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-16">标签语法 </h3>
+1.gallerygroup 相册图库
+```Markdown<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg" alt=""></p>
+<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;参数配置 &lt;/h3&gt;
+
+1. `颜色`：blue, cyan, green, yellow, red
+
+2. `状态`：状态填写 open 代表默认打开。
+
+   &lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```markdown
+
+
+![](https://cdn.jsdelivr.net/gh/volantis-x/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg)
+
+
+
+
+
+这是一个默认打开的折叠框。
+
+
+
+
+假装这里有代码块（代码块没法嵌套代码块）
+
+
+
+
+- haha
+- hehe
+
+
+
+
+
+
+
+
+
+hahaha &lt;span&gt;&lt;img src=&#39;https://cdn.jsdelivr.net/gh/volantis-x/cdn-emoji/tieba/%E6%BB%91%E7%A8%BD.png&#39; style=&#39;height:24px&#39;&gt;&lt;/span&gt;
+
+
+
+
+
+</code></pre></figure>
+</section>
+<section class="tab-lite"><h3 id="渲染演示-26">渲染演示 </h3><p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg" alt=""></p>
+<p>这是一个默认打开的折叠框。</p>
+<p>假装这里有代码块（代码块没法嵌套代码块）</p>
+<ul>
+<li>haha</li>
+<li>hehe</li>
+</ul>
+<p>hahaha <span><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src='https://cdn.jsdelivr.net/gh/volantis-x/cdn-emoji/tieba/%E6%BB%91%E7%A8%BD.png' style='height:24px'></span></p>
+</section></div><h2 id="2.21-分栏-tab">2.21 分栏 tab</h2>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="标签语法-17">标签语法 </h3>
+```markdown
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="tab-caption-@icon">[Tab caption] [@icon] </h3>
+Any content (support inline tags too).
+</section>
+</div>
+```
+</section><section class="tab-lite"><h3 id="配置参数-7">配置参数 </h3><ol>
+<li><p>Unique name :</p>
+<ul>
+<li><p>选项卡块标签的唯一名称，不带逗号。</p>
+</li>
+<li><p>将在#id中用作每个标签及其索引号的前缀。</p>
+</li>
+<li><p>如果名称中包含空格，则对于生成#id，所有空格将由破折号代替。</p>
+</li>
+<li><p>仅当前帖子/页面的URL必须是唯一的！</p>
+</li>
+</ul>
+</li>
+<li><p>[index]:</p>
+<ul>
+<li><p>活动选项卡的索引号。</p>
+</li>
+<li><p>如果未指定，将选择第一个标签（1）。</p>
+</li>
+<li><p>如果index为-1，则不会选择任何选项卡。</p>
+</li>
+<li><p>可选参数。</p>
+</li>
+</ul>
+</li>
+<li><p>[Tab caption]:</p>
+<ul>
+<li><p>当前选项卡的标题。</p>
+</li>
+<li><p>如果未指定标题，则带有制表符索引后缀的唯一名称将用作制表符的标题。</p>
+</li>
+<li><p>如果未指定标题，但指定了图标，则标题将为空。</p>
+</li>
+<li><p>可选参数。</p>
+</li>
+</ul>
+</li>
+<li><p>[@icon]:</p>
+<ul>
+<li><p>FontAwesome图标名称（全名，看起来像“ fas fa-font”）</p>
+</li>
+<li><p>可以指定带空格或不带空格；</p>
+</li>
+<li><p>例如’Tab caption @icon’ 和 ‘Tab caption@icon’.</p>
+</li>
+<li><p>可选参数。</p>
+</li>
+</ul>
+</li>
+</ol>
+</section><section class="tab-lite"><h3 id="示例源码-22">示例源码 </h3><p>1.Demo 1 - 预设选择第一个【默认】</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;tabs-lite&quot;&gt;
+&lt;!-- tab --&gt;
+**This is Tab 1.**
+&lt;/section&gt;
+
+&lt;!-- tab --&gt;
+**This is Tab 2.**
+&lt;/section&gt;
+
+&lt;!-- tab --&gt;
+**This is Tab 3.**
+&lt;/section&gt;
+&lt;/div&gt;
+</code></pre></figure>
+<p>2.Demo 2 - 预设选择tabs</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;tabs-lite&quot;&gt;
+&lt;!-- tab --&gt;
+**This is Tab 1.**
+&lt;/section&gt;
+
+&lt;!-- tab --&gt;
+**This is Tab 2.**
+&lt;/section&gt;
+
+&lt;!-- tab --&gt;
+**This is Tab 3.**
+&lt;/section&gt;
+&lt;/div&gt;
+</code></pre></figure>
+<p>3.Demo 3 - 没有预设值</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;tabs-lite&quot;&gt;
+&lt;!-- tab --&gt;
+**This is Tab 1.**
+&lt;/section&gt;
+
+&lt;!-- tab --&gt;
+**This is Tab 2.**
+&lt;/section&gt;
+
+&lt;!-- tab --&gt;
+**This is Tab 3.**
+&lt;/section&gt;
+&lt;/div&gt;
+</code></pre></figure>
+<p>4.Demo 4 - 自定义Tab名 + 只有icon + icon和Tab名</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">&lt;div class=&quot;tabs-lite&quot;&gt;
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;第一个Tab &lt;/h3&gt;
+**tab名字为第一个Tab**
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;@fab fa-apple-pay &lt;/h3&gt;
+**只有图标 没有Tab名字**
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;炸弹@fas fa-bomb &lt;/h3&gt;
+**名字+icon**
+&lt;/section&gt;
+&lt;/div&gt;
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-27">渲染演示 </h3>
+1.Demo 1 - 预设选择第一个【默认】<div class="tabs-lite">
+<!-- tab -->
+**This is Tab 1.**
+</section><!-- tab -->
+<p><strong>This is Tab 2.</strong></p>
+</section><!-- tab -->
+<p><strong>This is Tab 3.</strong></p>
+</section>
+</div><p>2.Demo 2 - 预设选择tabs</p>
+<div class="tabs-lite">
+<!-- tab -->
+**This is Tab 1.**
+</section><!-- tab -->
+<p><strong>This is Tab 2.</strong></p>
+</section><!-- tab -->
+<p><strong>This is Tab 3.</strong></p>
+</section>
+</div><p>3.Demo 3 - 没有预设值</p>
+<div class="tabs-lite">
+<!-- tab -->
+**This is Tab 1.**
+</section><!-- tab -->
+<p><strong>This is Tab 2.</strong></p>
+</section><!-- tab -->
+<p><strong>This is Tab 3.</strong></p>
+</section>
+</div><p>4.Demo 4 - 自定义Tab名 + 只有icon + icon和Tab名</p>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="第一个tab">第一个Tab </h3>
+**tab名字为第一个Tab**
+</section><section class="tab-lite"><h3 id="@fab-fa-apple-pay">@fab fa-apple-pay </h3>
+**只有图标 没有Tab名字**
+</section><section class="tab-lite"><h3 id="炸弹@fas-fa-bomb">炸弹@fas fa-bomb </h3>
+**名字+icon**
+</section>
+</div>
+</section></div><h2 id="2.22-诗词标签-poem">2.22 诗词标签 poem</h2>
+<div class="tabs-lite"><!-- tab标签语法 --><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+诗词内容
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-6">参数配置 </h3><ol>
+<li><code>title</code>：诗词标题</li>
+<li><code>author</code>：作者，可以不写</section>
+<section class="tab-lite"><h3 id="示例源码-23">示例源码 </h3></li>
+</ol>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+丙辰中秋，欢饮达旦，大醉，作此篇，兼怀子由。
+明月几时有？把酒问青天。
+不知天上宫阙，今夕是何年？
+我欲乘风归去，又恐琼楼玉宇，高处不胜寒。
+起舞弄清影，何似在人间？
+
+转朱阁，低绮户，照无眠。
+不应有恨，何事长向别时圆？
+人有悲欢离合，月有阴晴圆缺，此事古难全。
+但愿人长久，千里共婵娟。
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-28">渲染演示 </h3><p>丙辰中秋，欢饮达旦，大醉，作此篇，兼怀子由。
+明月几时有？把酒问青天。
+不知天上宫阙，今夕是何年？
+我欲乘风归去，又恐琼楼玉宇，高处不胜寒。
+起舞弄清影，何似在人间？</p>
+<p>转朱阁，低绮户，照无眠。
+不应有恨，何事长向别时圆？
+人有悲欢离合，月有阴晴圆缺，此事古难全。
+但愿人长久，千里共婵娟。</p>
+</section></div><h2 id="2.23-阿里图标-icon">2.23 阿里图标 icon</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-18">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;参数配置 &lt;/h3&gt;
+
+1. `icon-xxxx`：表示图标`font-class`,可以在自己的阿里矢量图标库项目的`font-class`引用方案内查询并复制。
+2. `font-size`：表示图标大小，直接填写数字即可，单位为`em`。图标大小默认值为`1em`。
+   &lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-29">渲染演示 </h3></section></div><h2 id="2.24-特效标签wow">2.24 特效标签wow</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="示例源码-24">示例源码 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+内容
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-30">渲染演示 </h3><ol>
+<li><code>animate</code>: 动画样式，效果详见<a href="https://animate.style/">animate.css参考文档</a></li>
+<li><code>duration</code>: 选填项，动画持续时间，单位可以是<code>ms</code>也可以是<code>s</code>。例如<code>3s</code>，<code>700ms</code>。</li>
+<li><code>delay</code>: 选填项，动画开始的延迟时间，单位可以是<code>ms</code>也可以是<code>s</code>。例如<code>3s</code>，<code>700ms</code>。</li>
+<li><code>offset</code>: 选填项，开始动画的距离（相对浏览器底部）</li>
+<li><code>iteration</code>: 选填项，动画重复的次数</li>
+</ol>
+</section>
+<section class="tab-lite"><h3 id="示例源码-25">示例源码 </h3>
+1.flip动画效果。
+```Markdown<div class="note note-blue">`zoomIn`动画效果，持续`5s`，延时`5s`，离底部`100`距离时启动，重复`10`次</div><figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">2.zoomIn动画效果，持续5s，延时5s，离底部100距离时启动，重复10次
+```Markdown
+
+&lt;div class=&quot;note note-blue&quot;&gt;`zoomIn`动画效果，持续`5s`，延时`5s`，离底部`100`距离时启动，重复`10`次&lt;/div&gt;
+</code></pre></figure>
+<p>3.slideInRight动画效果，持续5s，延时5s</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+&lt;div class=&quot;note note-orange&quot;&gt;`slideInRight`动画效果，持续`5s`，延时`5s`。&lt;/div&gt;
+</code></pre></figure>
+<p>4.heartBeat动画效果，延时5s，重复10次。此处注意不用的参数位置要留空，用逗号间隔。</p>
+<figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+&lt;div class=&quot;note note-red&quot;&gt;`heartBeat`动画效果，延时`5s`，重复`10`次。&lt;/div&gt;
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-31">渲染演示 </h3><p>1.flip动画效果。</p>
+<div class="note note-blue">`zoomIn`动画效果，持续`5s`，延时`5s`，离底部`100`距离时启动，重复`10`次</div><p>2.zoomIn动画效果，持续5s，延时5s，离底部100距离时启动，重复10次</p>
+<div class="note note-blue">`zoomIn`动画效果，持续`5s`，延时`5s`，离底部`100`距离时启动，重复`10`次</div><p>3.slideInRight动画效果，持续5s，延时5s</p>
+<div class="note note-orange">`slideInRight`动画效果，持续`5s`，延时`5s`。</div><p>4.heartBeat动画效果，延时5s，重复10次。此处注意不用的参数位置要留空，用逗号间隔。</p>
+<div class="note note-red">`heartBeat`动画效果，延时`5s`，重复`10`次。</div></section></div><h2 id="2.25-进度条-progress">2.25  进度条 progress</h2>
+<div class="note note-info">进度条标签参考[沂佰孜猫-给HEXO文章添加彩色进度条](https://rongbuqiu.com/jdt.html)。
+源样式提取自[Cuteen](https://zwying0814.gitbook.io/cuteen/)主题。</div><div class="tabs-lite"><section class="tab-lite"><h3 id="参数配置-7">参数配置 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-Markdown">
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="标签语法-19">标签语法 </h3><ol>
+<li><code>width</code>: 0到100的阿拉伯数字</li>
+<li><code>color</code>: 颜色，取值有red,yellow,green,cyan,blue,gray</li>
+<li><code>text</code>:进度条上的文字内容</section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-26">示例源码 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+
+
+
+
+
+
+&lt;/section&gt;
+
+&lt;/div&gt;
+
+
+## 2.26 注释 notation
+&lt;div class=&quot;tabs-lite&quot;&gt;
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;标签语法 &lt;/h3&gt;
+```Markdown
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-8">参数配置 </h3><ol>
+<li><p><code>label</code>: 注释词汇</p>
+</li>
+<li><p><code>text</code>: 悬停显示的注解内容</p>
+</section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-27">示例源码 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+
+&lt;/section&gt;
+
+&lt;/div&gt;
+
+
+
+## 2.27 气泡注释 bubble
+
+&lt;div class=&quot;tabs-lite&quot;&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;标签语法 &lt;/h3&gt;
+
+```Markdown
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-9">参数配置 </h3><ol>
+<li><code>content</code>: 注释词汇</li>
+<li><code>notation</code>: 悬停显示的注解内容</li>
+<li><code>background-color</code>: 可选，气泡背景色。默认为“#71a4e3” </section></li>
+</ol>
+<section class="tab-lite"><h3 id="示例源码-28">示例源码 </h3>
+```Markdown
+最近我学到了不少新玩意儿（虽然对很多大佬来说这些已经是旧技术了），比如CSS的，，，animation的写法，还有今天刚看到的属性。这些对我来说很新颖的概念狠狠的冲击着我以前积累起来的设计思路。
+```
+</section><section class="tab-lite"><h3 id="渲染演示-32">渲染演示 </h3>
+最近我学到了不少新玩意儿（虽然对很多大佬来说这些已经是旧技术了），比如CSS的，，，animation的写法，还有今天刚看到的属性。这些对我来说很新颖的概念狠狠的冲击着我以前积累起来的设计思路。
+</section></div><h2 id="2.28-引用文献-reference">2.28 引用文献 reference</h2>
+<div class="tabs-lite"><section class="tab-lite"><h3 id="标签语法-20">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;参数配置 &lt;/h3&gt;
+
+1. referto 引用上标
+
+   - `id`: 上标序号内容，需与referfrom标签的id对应才能实现跳转
+
+   - `literature`: 引用的参考文献名称
+
+2. referfrom 引用出处
+
+   - `id`: 序号内容，需与referto标签的id对应才能实现 跳转
+
+   - `literature`: 引用的参考文献名称
+
+   - `url`: 引用的参考文献链接，可省略
+
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+
+```Markdown
+Akilarの糖果屋(akilar.top)是一个私人性质的博客，从各类教程至生活点滴，无话不谈。建群的目的是提供一个闲聊的场所。博客采用Hexo框架，Butterfly主题
+
+本项目参考了Volantis的标签样式。引入`[tag].js`，并针对`butterfly`主题修改了相应的`[tag].styl`。在此鸣谢`Volantis`主题众开发者。
+主要参考内容包括各个volantis的内置标签插件文档
+Butterfly主题的各个衍生魔改
+
+
+
+
+
+
+{% referfrom &#39;[6]&#39;,&#39;Butterfly 安装文档:标签外挂（Tag Plugins&#39;,&#39;https://butterfly.js.org/posts/4aa8abbe/#%E6%A8%99%E7%B1%A4%E5%A4%96%E6%8E%9B%EF%BC%88Tag-Plugins%EF%BC%89&#39; %}
+
+
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-33">渲染演示 </h3>
+Akilarの糖果屋(akilar.top)是一个私人性质的博客，从各类教程至生活点滴，无话不谈。建群的目的是提供一个闲聊的场所。博客采用Hexo框架，Butterfly主题<p>本项目参考了Volantis的标签样式。引入<code>[tag].js</code>，并针对<code>butterfly</code>主题修改了相应的<code>[tag].styl</code>。在此鸣谢<code>Volantis</code>主题众开发者。
+主要参考内容包括各个volantis的内置标签插件文档
+Butterfly主题的各个衍生魔改</p>
+<p>{% referfrom &#39;[6]&#39;,&#39;Butterfly 安装文档:标签外挂（Tag Plugins&#39;,&#39;<a href="https://butterfly.js.org/posts/4aa8abbe/#%E6%A8%99%E7%B1%A4%E5%A4%96%E6%8E%9B%EF%BC%88Tag-Plugins%EF%BC%89">https://butterfly.js.org/posts/4aa8abbe/#%E6%A8%99%E7%B1%A4%E5%A4%96%E6%8E%9B%EF%BC%88Tag-Plugins%EF%BC%89</a>&#39; %}</p>
+</section></div><h2 id="2.29-pdf展示">2.29 PDF展示</h2>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="标签语法-21">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;参数配置 &lt;/h3&gt;
+
+1. `文件路径`: 可以是相对路径或者是在线链接
+
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+# 1.本地文件:在md文件路径下创建一个同名文件夹，其内放pdf文件名为xxx.pdf的文件
+
+# 2.在线链接
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-34">渲染演示 </h3>
+2.在线链接(要放到最外层才能起作用)</section></div><h2 id="2.30-hexo-tag-map-插件">2.30 Hexo-tag-map 插件</h2>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="标签语法-22">标签语法 </h3>
+```Markdown<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;参数配置 &lt;/h3&gt;
+
+|     地图名      | 标签值 &lt;必填&gt; | 宽 (默认 100%) / 高 (默认 360px) | 缩放等级 (默认 14) | 宽 (默认 100%) / 高 (默认 360px) | 默认图层 (默认 1) |
+| :-------------: | :-----------: | :------------------------------: | :----------------: | :------------------------------: | :---------------: |
+|    混合地图     |      map      |  百分数或具体值 (100% 或 360px)  |     取值 3~18      |  百分数或具体值 (100% 或 360px)  |     取值 1~7      |
+|    谷歌地图     |   googleMap   |  百分数或具体值 (100% 或 360px)  |     取值 1~20      |  百分数或具体值 (100% 或 360px)  |     取值 1~3      |
+|    高德地图     |   gaodeMap    |  百分数或具体值 (100% 或 360px)  |     取值 3~18      |  百分数或具体值 (100% 或 360px)  |     取值 1~3      |
+|    百度地图     |   baiduMap    |  百分数或具体值 (100% 或 360px)  |     取值 4~18      |  百分数或具体值 (100% 或 360px)  |     取值 1~2      |
+|    Geoq 地图    |    geoqMap    |  百分数或具体值 (100% 或 360px)  |     取值 1~18      |  百分数或具体值 (100% 或 360px)  |     取值 1~5      |
+| openstreet 地图 | openstreetMap |  百分数或具体值 (100% 或 360px)  |     取值 1~18      |  百分数或具体值 (100% 或 360px)  |   不支持此参数    |
+
+1. 参数之间，用英文逗号相隔
+2. 参数必须按上述事例顺序输入，不得为空
+3. 同一个页面，同一组经纬度值，只能插入一个相同标签值的地图 (若有需要，可以将第二个地图上，经度或纬度末尾删除一两个数)
+4. 参数取值必须在上述范围内
+5. 默认图层：即地图叠加层的值，默认常规地图还是卫星地图，可按地图显示顺序取值
+6. 缩放等级，数字越大，地图比例尺越小，显示的越精细
+7. 除标签值外，其他参数选填，但 每个参数的左边的参数必填
+8. 谷歌地图需要外网才能加载查看
+
+坐标获取：[高德地图坐标拾取系统](https://lbs.amap.com/tools/picker) 、[百度地图坐标拾取系统](https://api.map.baidu.com/lbsapi/getpoint/index.html)
+
+
+
+
+
+&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;示例源码 &lt;/h3&gt;
+```Markdown
+
+
+{% geoqMap 120.101101,30.239119, 这里是西湖灵隐寺，据说求姻缘很灵验哦！, 13, 90%, 320px, 3 %}
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="渲染演示-35">渲染演示 </h3><br><br>
+{% geoqMap 120.101101,30.239119, 这里是西湖灵隐寺，据说求姻缘很灵验哦！, 13, 90%, 320px, 3 %}
+<br>
+</section></div><h2 id="2.31-隐藏块">2.31 隐藏块</h2>
+<div class="tabs-lite">
+<section class="tab-lite"><h3 id="标签语法-23">标签语法 </h3><figure class="code-frame" data-lang="MARKDOWN"><figcaption><span></span><strong>MARKDOWN</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-markdown">
+content
+</code></pre></figure>
+</section><section class="tab-lite"><h3 id="参数配置-10">参数配置 </h3><ol>
+<li>content：要隐藏的内容</li>
+<li>display：展示前按钮显示的文字（可选）</li>
+<li>bg：按钮的背景颜色（可选）</li>
+<li>color：按钮显示的文字的颜色（可选）</li>
+</ol>
+</section><section class="tab-lite"><h3 id="示例源码-29">示例源码 </h3>
+```markdown<p>这里有张图片：
+<img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://s1.vika.cn/space/2022/10/30/b35fce448bc9404a8d65c3ce1e6e46eb" alt="image (1)" style="zoom:67%;" /></p>
+<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">&lt;/section&gt;
+
+&lt;section class=&quot;tab-lite&quot;&gt;&lt;h3&gt;渲染演示 &lt;/h3&gt;
+
+这里有张图片：
+&lt;img src=&quot;https://s1.vika.cn/space/2022/10/30/b35fce448bc9404a8d65c3ce1e6e46eb&quot; alt=&quot;image (1)&quot; style=&quot;zoom:67%;&quot; /&gt;
+
+&lt;/section&gt;
+
+&lt;/div&gt;
+</code></pre></figure>
+</div> <section class="post-copyright" aria-label="文章版权信息"> <div> <span>作者</span> <strong>云灿</strong> </div> <div> <span>发布于</span> <strong>2023-06-08</strong> </div> <div> <span>更新于</span> <strong>2023-06-08</strong> </div> <div> <span>许可协议</span> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> </div> </section> <!-- 赞赏弹窗已提升至 BaseLayout 的 body 子级，避免 .article-shell 包含块与层叠上下文影响定位 --> </div> <aside class="article-toc hydro-post-aside-lite" aria-label="文章侧栏"> <section class="reader-panel"> <div> <p>READING</p> <strong>60 min</strong> </div> <span><i data-reader-progress></i></span> <dl> <div><dt>发布</dt><dd>2023-06-08</dd></div> <div><dt>更新</dt><dd>2023-06-08</dd></div> <div><dt>分类</dt><dd>随笔</dd></div> </dl> </section> <section class="toc-panel"> <strong>目录</strong> <a href="#1.1-代码块" data-depth="2">1.1 代码块</a><a href="#示例源码" data-depth="3">示例源码</a><a href="#1.2-多级标题" data-depth="2">1.2 多级标题</a><a href="#示例源码-2" data-depth="3">示例源码</a><a href="#渲染演示" data-depth="3">渲染演示</a><a href="#1.3-文字样式" data-depth="2">1.3 文字样式</a><a href="#示例源码-3" data-depth="3">示例源码</a><a href="#渲染演示-2" data-depth="3">渲染演示</a><a href="#1.4-引用" data-depth="2">1.4 引用</a><a href="#示例源码-4" data-depth="3">示例源码</a><a href="#渲染演示-3" data-depth="3">渲染演示</a><a href="#1.5-分割线" data-depth="2">1.5 分割线</a><a href="#示例源码-5" data-depth="3">示例源码</a><a href="#渲染演示-4" data-depth="3">渲染演示</a><a href="#1.6-列表(-,+,-跟空格都可以)" data-depth="2">1.6 列表(*,+,-跟空格都可以)</a><a href="#1.6.1-无序列表" data-depth="3">1.6.1 无序列表</a><a href="#示例源码-6" data-depth="3">示例源码</a><a href="#渲染演示-5" data-depth="3">渲染演示</a><a href="#1.7-图片" data-depth="2">1.7 图片</a><a href="#示例源码-7" data-depth="3">示例源码</a><a href="#渲染演示-6" data-depth="3">渲染演示</a><a href="#1.8-表格" data-depth="2">1.8 表格</a><a href="#示例源码-8" data-depth="3">示例源码</a><a href="#渲染演示-7" data-depth="3">渲染演示</a><a href="#1.9-公式" data-depth="2">1.9 公式</a><a href="#示例源码-9" data-depth="3">示例源码</a><a href="#渲染演示-8" data-depth="3">渲染演示</a><a href="#2.1-行内文本样式-text" data-depth="2">2.1 行内文本样式 text</a><a href="#标签语法" data-depth="3">标签语法</a><a href="#渲染演示-9" data-depth="3">渲染演示</a><a href="#2.2-行内文本-span" data-depth="2">2.2 行内文本 span</a><a href="#标签语法-2" data-depth="3">标签语法</a><a href="#渲染演示-10" data-depth="3">渲染演示</a><a href="#2.3-段落文本-p" data-depth="2">2.3 段落文本 p</a><a href="#标签语法-3" data-depth="3">标签语法</a><a href="#渲染演示-11" data-depth="3">渲染演示</a><a href="#2.4-引用note" data-depth="2">2.4 引用note</a><a href="#通用配置" data-depth="3">通用配置</a><a href="#语法格式" data-depth="3">语法格式</a><a href="#参数配置" data-depth="3">参数配置</a><a href="#示例源码-10" data-depth="3">示例源码</a><a href="#渲染演示-12" data-depth="3">渲染演示</a><a href="#2.5-上标标签-tip" data-depth="2">2.5 上标标签 tip</a><a href="#标签语法-4" data-depth="3">标签语法</a><a href="#配置参数" data-depth="3">配置参数</a><a href="#示例源码-11" data-depth="3">示例源码</a><a href="#渲染演示-13" data-depth="3">渲染演示</a><a href="#2.6-动态标签-anima" data-depth="2">2.6 动态标签 anima</a><a href="#示例源码-12" data-depth="3">示例源码</a><a href="#配置参数-2" data-depth="3">配置参数</a><a href="#示例源码-13" data-depth="3">示例源码</a><a href="#渲染演示-14" data-depth="3">渲染演示</a><a href="#2.7-复选列表-checkbox" data-depth="2">2.7 复选列表 checkbox</a><a href="#标签语法-5" data-depth="3">标签语法</a><a href="#配置参数-3" data-depth="3">配置参数</a><a href="#示例源码-14" data-depth="3">示例源码</a><a href="#配置参数-4" data-depth="3">配置参数</a><a href="#示例源码-15" data-depth="3">示例源码</a><a href="#配置参数-5" data-depth="3">配置参数</a><a href="#示例源码-16" data-depth="3">示例源码</a><a href="#时间轴样式,blue" data-depth="2">时间轴样式,blue</a><a href="#渲染演示-15" data-depth="3">渲染演示</a><a href="#时间轴样式,blue-2" data-depth="2">时间轴样式,blue</a><a href="#2.10-链接卡片-link" data-depth="2">2.10 链接卡片 link</a><a href="#标签语法-6" data-depth="3">标签语法</a><a href="#渲染演示-16" data-depth="3">渲染演示</a><a href="#2.11-按钮-btns" data-depth="2">2.11 按钮 btns</a><a href="#标签语法-7" data-depth="3">标签语法</a><a href="#参数配置-2" data-depth="3">参数配置</a><a href="#示例源码-17" data-depth="3">示例源码</a><a href="#渲染演示-17" data-depth="3">渲染演示</a><a href="#2.12-github卡片-ghcard" data-depth="2">2.12 github卡片 ghcard</a><a href="#标签语法-8" data-depth="3">标签语法</a><a href="#参数配置-3" data-depth="3">参数配置</a><a href="#示例源码-18" data-depth="3">示例源码</a><a href="#渲染演示-18" data-depth="3">渲染演示</a><a href="#2.13-github徽标-ghbdage" data-depth="2">2.13 github徽标 ghbdage</a><a href="#标签语法-9" data-depth="3">标签语法</a><a href="#配置参数-6" data-depth="3">配置参数</a><a href="#示例源码-19" data-depth="3">示例源码</a><a href="#渲染演示-19" data-depth="3">渲染演示</a><a href="#2.14-网站卡片-sites" data-depth="2">2.14 网站卡片 sites</a><a href="#标签语法-10" data-depth="3">标签语法</a><a href="#渲染演示-20" data-depth="3">渲染演示</a><a href="#2.15-行内图片-inlineimage" data-depth="2">2.15 行内图片 inlineimage</a><a href="#标签语法-11" data-depth="3">标签语法</a><a href="#参数配置-4" data-depth="3">参数配置</a><a href="#示例源码-20" data-depth="3">示例源码</a><a href="#渲染演示-21" data-depth="3">渲染演示</a><a href="#2.16-单张图片-image" data-depth="2">2.16 单张图片 image</a><a href="#标签语法-12" data-depth="3">标签语法</a><a href="#参数配置-5" data-depth="3">参数配置</a><a href="#示例源码-21" data-depth="3">示例源码</a><a href="#渲染演示-22" data-depth="3">渲染演示</a><a href="#2.17-音频-audio" data-depth="2">2.17 音频 audio</a><a href="#标签语法-13" data-depth="3">标签语法</a><a href="#渲染演示-23" data-depth="3">渲染演示</a><a href="#2.18-视频-video" data-depth="2">2.18 视频 video</a><a href="#标签语法-14" data-depth="3">标签语法</a><a href="#渲染演示-24" data-depth="3">渲染演示</a><a href="#2.19-相册-gallery" data-depth="2">2.19 相册 gallery</a><a href="#标签语法-15" data-depth="3">标签语法</a><a href="#渲染演示-25" data-depth="3">渲染演示</a><a href="#2.20-折叠框-folding" data-depth="2">2.20 折叠框 folding</a><a href="#标签语法-16" data-depth="3">标签语法</a><a href="#渲染演示-26" data-depth="3">渲染演示</a><a href="#2.21-分栏-tab" data-depth="2">2.21 分栏 tab</a><a href="#标签语法-17" data-depth="3">标签语法</a><a href="#tab-caption-@icon" data-depth="3">[Tab caption] [@icon]</a><a href="#配置参数-7" data-depth="3">配置参数</a><a href="#示例源码-22" data-depth="3">示例源码</a><a href="#渲染演示-27" data-depth="3">渲染演示</a><a href="#第一个tab" data-depth="3">第一个Tab</a><a href="#@fab-fa-apple-pay" data-depth="3">@fab fa-apple-pay</a><a href="#炸弹@fas-fa-bomb" data-depth="3">炸弹@fas fa-bomb</a><a href="#2.22-诗词标签-poem" data-depth="2">2.22 诗词标签 poem</a><a href="#参数配置-6" data-depth="3">参数配置</a><a href="#示例源码-23" data-depth="3">示例源码</a><a href="#渲染演示-28" data-depth="3">渲染演示</a><a href="#2.23-阿里图标-icon" data-depth="2">2.23 阿里图标 icon</a><a href="#标签语法-18" data-depth="3">标签语法</a><a href="#渲染演示-29" data-depth="3">渲染演示</a><a href="#2.24-特效标签wow" data-depth="2">2.24 特效标签wow</a><a href="#示例源码-24" data-depth="3">示例源码</a><a href="#渲染演示-30" data-depth="3">渲染演示</a><a href="#示例源码-25" data-depth="3">示例源码</a><a href="#渲染演示-31" data-depth="3">渲染演示</a><a href="#2.25-进度条-progress" data-depth="2">2.25 进度条 progress</a><a href="#参数配置-7" data-depth="3">参数配置</a><a href="#标签语法-19" data-depth="3">标签语法</a><a href="#示例源码-26" data-depth="3">示例源码</a><a href="#参数配置-8" data-depth="3">参数配置</a><a href="#示例源码-27" data-depth="3">示例源码</a><a href="#参数配置-9" data-depth="3">参数配置</a><a href="#示例源码-28" data-depth="3">示例源码</a><a href="#渲染演示-32" data-depth="3">渲染演示</a><a href="#2.28-引用文献-reference" data-depth="2">2.28 引用文献 reference</a><a href="#标签语法-20" data-depth="3">标签语法</a><a href="#渲染演示-33" data-depth="3">渲染演示</a><a href="#2.29-pdf展示" data-depth="2">2.29 PDF展示</a><a href="#标签语法-21" data-depth="3">标签语法</a><a href="#渲染演示-34" data-depth="3">渲染演示</a><a href="#2.30-hexo-tag-map-插件" data-depth="2">2.30 Hexo-tag-map 插件</a><a href="#标签语法-22" data-depth="3">标签语法</a><a href="#渲染演示-35" data-depth="3">渲染演示</a><a href="#2.31-隐藏块" data-depth="2">2.31 隐藏块</a><a href="#标签语法-23" data-depth="3">标签语法</a><a href="#参数配置-10" data-depth="3">参数配置</a><a href="#示例源码-29" data-depth="3">示例源码</a> </section> <section class="toc-actions"> <button type="button" data-share-current><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2A5 5 0 0 0 12 20.07l1.15-1.15"/></svg>分享本文</button> <button type="button" data-reward-toggle><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 22l8.8-8.8a5.4 5.4 0 0 0 0-7.6z"/></svg>赞赏作者</button> <a href="#post-comment"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>去评论</a> </section> </aside> </div> </article> <div class="content-shell"> <section id="post-comment" class="comment-panel surface" data-twikoo-env="https://comment.yuncan.xyz" data-twikoo-script="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js"> <div class="section-heading"> <p>COMMENTS</p> <h2>留言</h2> </div> <div id="twikoo-wrap"></div> </section> <script type="module">(()=>{const r=document.querySelector("#post-comment"),s=r?.dataset.twikooEnv||"",c=r?.dataset.twikooScript||"";let i=!1;const l=()=>location.pathname||"/",p=()=>new Promise((t,o)=>{const e=document.querySelector("script[data-twikoo-script]");if(e){window.twikoo?t(window.twikoo):(e.addEventListener("load",()=>t(window.twikoo)),e.addEventListener("error",()=>o(new Error("script load failed"))));return}const n=document.createElement("script");n.src=c,n.async=!0,n.defer=!0,n.charset="UTF-8",n.setAttribute("data-twikoo-script","true"),n.onload=()=>{t(window.twikoo)},n.onerror=()=>{o(new Error("twikoo script load failed"))},document.head.appendChild(n)}),w=(t,o)=>{t.innerHTML=`
+        <div style="padding: 40px 20px; text-align: center;">
+          <p style="color: var(--muted); font-size: 14px; line-height: 2;">
+            评论加载失败：${o}
+          </p>
+          <p style="color: var(--muted); font-size: 12px; margin-top: 12px;">
+            请稍后重试，或直接联系作者
+          </p>
+        </div>
+      `},a=async()=>{const t=document.querySelector("#twikoo-wrap");if(!t)return;const o=l();if(!(i&&t.dataset.lastPath===o)){i=!0,t.dataset.lastPath=o;try{t.innerHTML='<div style="padding: 30px; text-align: center;"><span style="color: var(--muted);">加载评论中...</span></div>';const e=await p();if(!e||typeof e.init!="function")throw new Error("twikoo API not available");t.innerHTML="",await e.init({envId:s,el:"#twikoo-wrap",path:o,lang:"zh-CN"})}catch(e){console.error("[Twikoo] init failed:",e),w(t,e.message||"初始化异常")}}},d=()=>{document.readyState==="loading"?document.addEventListener("DOMContentLoaded",a,{once:!0}):a()};document.addEventListener("astro:page-load",d),d()})();</script> </div>  </main> <footer class="site-footer"> <div> <strong>云灿の随笔小站</strong> <span>浮云一别后，流水十年间</span> </div> <p> <a href="https://yuncan.xyz" target="_blank" rel="noopener">前往主站</a>  · 晋ICP备2024030642号-1 · Powered by Astro · Yuncan050115 · v1.0.8 </p> </footer> <aside class="music-dock" data-music="{&quot;api&quot;:&quot;https://music.yuncan.xyz/api?server=:server&amp;type=:type&amp;id=:id&amp;r=:r&quot;,&quot;server&quot;:&quot;netease&quot;,&quot;type&quot;:&quot;playlist&quot;,&quot;id&quot;:&quot;817519033&quot;,&quot;autoplay&quot;:true,&quot;lyricMode&quot;:&quot;manual&quot;,&quot;fallbackCover&quot;:&quot;/assets/logo-yuncan.png&quot;}" data-astro-transition-persist="music-dock" data-astro-transition-scope="astro-veqaj6uj-10"> <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <img src="/assets/logo-yuncan.png" alt=""> </button> <div class="music-info"> <strong data-music-title>Yuncan Music</strong> <span data-music-artist>云灿</span> <p data-music-lyric>正在连接歌单</p> </div> <div class="music-controls"> <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16"/><path d="M20 4 8 12l12 8z"/></svg> </button> <button type="button" class="music-btn music-btn-play" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg> </button> <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4v16"/><path d="M4 4 16 12 4 20z"/></svg> </button> </div> <audio data-music-audio preload="metadata"></audio> </aside> <div class="runtime-tools" data-astro-transition-persist="runtime-tools" data-astro-transition-scope="astro-pspklqzf-11"> <span id="runtime-days" data-site-start="2023-01-01">运行 -- 天</span> <span id="fps">FPS --</span> <button class="icon-button" data-back-top title="返回顶部" aria-label="返回顶部"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg> </button> </div> <div id="context-menu" class="context-menu" aria-hidden="true" data-astro-transition-persist="context-menu" data-astro-transition-scope="astro-2226xma5-12"> <div class="context-row context-icons"> <button data-context-action="back" title="后退"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="forward" title="前进"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="reload" title="刷新"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4M6 22v-4h4"/></svg></button> <button data-context-action="top" title="回到顶部"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> </div> <div class="context-row"> <button data-context-action="copy-url">复制地址</button> <button data-context-action="comment">去评论</button> <button data-context-action="theme">昼夜切换</button> <button data-context-action="print">打印页面</button> </div> </div> <!-- 全局赞赏弹窗（从文章页提升至 body 子级，避免层叠上下文和包含块问题） --> <div class="reward-dialog" data-reward-dialog aria-hidden="true"> <button class="reward-scrim" type="button" data-reward-close aria-label="关闭赞赏"></button> <div class="reward-panel" role="dialog" aria-label="赞赏作者"> <button class="reward-close" type="button" data-reward-close aria-label="关闭"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button> <p>THANKS</p> <h2>赞赏作者</h2> <span>如果这篇文章对你有帮助，可以请我喝杯茶。微信和支付宝收款码都在下面。</span> <div class="reward-codes"> <figure> <img src="/assets/zfb.jpg" alt="支付宝收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>支付宝</figcaption> </figure><figure> <img src="/assets/wx.jpg" alt="微信收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>微信</figcaption> </figure> </div> </div> </div>  <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.Bl8ln883.js"></script> </body> </html>

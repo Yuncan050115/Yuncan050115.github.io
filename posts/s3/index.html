@@ -1,0 +1,815 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme-default="auto"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>散列表-数据结构与算法（三） | 云灿の随笔小站</title><meta name="description" content="🎨计算机基础部分"><meta name="keywords" content="云灿, 随笔, 博客, 诗词, 编程"><meta name="author" content="云灿"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4ef"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101112"><meta property="og:title" content="散列表-数据结构与算法（三） | 云灿の随笔小站"><meta property="og:description" content="🎨计算机基础部分"><meta property="og:image" content="/assets/logo-yuncan.png"><link rel="icon" type="image/png" href="/assets/logo-yuncan.png"><link rel="apple-touch-icon" href="/assets/logo-yuncan.png"><link rel="preconnect" href="https://apir.yuncan.xyz"><link rel="preconnect" href="https://music.yuncan.xyz"><link rel="preconnect" href="https://comment.yuncan.xyz"><link rel="preconnect" href="https://api.bilibili.com"><link rel="preconnect" href="https://i0.hdslb.com"><link rel="preload" as="image" href="https://apir.yuncan.xyz/index.php?size=1600"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><script>
+      (() => {
+        const root = document.documentElement;
+        const saved = localStorage.getItem('yuncan-theme');
+        if (saved === 'light' || saved === 'dark') {
+          root.dataset.theme = saved;
+        } else {
+          const hour = new Date().getHours();
+          root.dataset.theme = (hour >= 6 && hour < 19) ? 'light' : 'dark';
+        }
+      })();
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/BaseLayout.4GRpM9d1.css"><style>[data-astro-transition-scope="astro-m542s2jb-1"] { view-transition-name: read-progress; }@layer astro { ::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-iv2bzgrw-2"] { view-transition-name: breath-scene; }@layer astro { ::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-tc6woczj-3"] { view-transition-name: global-bg; }@layer astro { ::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-if6j4wsp-4"] { view-transition-name: global-filter; }@layer astro { ::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-s6lkupbb-5"] { view-transition-name: grain; }@layer astro { ::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-jgysxpi6-6"] { view-transition-name: cursor-glow; }@layer astro { ::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-ioirsxey-7"] { view-transition-name: cursor-dot; }@layer astro { ::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-5n244hft-8"] { view-transition-name: cursor-ring; }@layer astro { ::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-fjkacnw5-9"] { view-transition-name: site-header; }@layer astro { ::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-veqaj6uj-10"] { view-transition-name: music-dock; }@layer astro { ::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-pspklqzf-11"] { view-transition-name: runtime-tools; }@layer astro { ::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-2226xma5-12"] { view-transition-name: context-menu; }@layer astro { ::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body style="--global-bg: url('https://apir.yuncan.xyz/index.php?size=1600')"> <div class="read-progress" data-astro-transition-persist="read-progress" data-astro-transition-scope="astro-m542s2jb-1"></div> <canvas id="breath-scene" data-astro-transition-persist="breath-scene" data-astro-transition-scope="astro-iv2bzgrw-2"></canvas> <div class="global-bg" aria-hidden="true" data-astro-transition-persist="global-bg" data-astro-transition-scope="astro-tc6woczj-3"></div> <div class="global-filter" aria-hidden="true" data-astro-transition-persist="global-filter" data-astro-transition-scope="astro-if6j4wsp-4"></div> <div class="grain" aria-hidden="true" data-astro-transition-persist="grain" data-astro-transition-scope="astro-s6lkupbb-5"></div> <div class="cursor-glow" aria-hidden="true" data-astro-transition-persist="cursor-glow" data-astro-transition-scope="astro-jgysxpi6-6"></div> <div class="cursor-dot" aria-hidden="true" data-astro-transition-persist="cursor-dot" data-astro-transition-scope="astro-ioirsxey-7"></div> <div class="cursor-ring" aria-hidden="true" data-astro-transition-persist="cursor-ring" data-astro-transition-scope="astro-5n244hft-8"></div> <header class="site-header" data-astro-transition-persist="site-header" data-astro-transition-scope="astro-fjkacnw5-9"> <a class="brand-mark" href="/" aria-label="返回首页"> <img src="/assets/logo-yuncan.png" alt="云灿" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'"> </a> <nav class="site-nav" aria-label="主导航"> <div class="nav-item has-children"> <a href="/archives/"> <span>文章</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/categories/">分类</a> </div> </div><div class="nav-item has-children"> <a href="/bangumis/"> <span>在看</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/bangumis/">追番</a><a href="/cinemas/">追剧</a> </div> </div><div class="nav-item"> <a href="/steamgames/"> <span>在玩</span>  </a>  </div><div class="nav-item"> <a href="/comments/"> <span>留言板</span>  </a>  </div><div class="nav-item"> <a href="/social/link/"> <span>友链</span>  </a>  </div><div class="nav-item has-children"> <a href="/personal/about/"> <span>个人</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/site/time/">旧时光</a><a href="/personal/love/">恋爱小屋</a><a href="/personal/about/">关于</a> </div> </div><div class="nav-item"> <a href="/poems/"> <span>诗集</span>  </a>  </div><div class="nav-item"> <a href="/projects/"> <span>项目</span>  </a>  </div><div class="nav-item"> <a href="https://yuncan.xyz" target="_blank" rel="noopener"> <span>主站</span>  </a>  </div> </nav> <div class="header-actions"> <button class="icon-button" data-theme-toggle title="昼夜切换" aria-label="昼夜切换"> <span class="sun"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span> <span class="moon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 7 7 0 1 0 20 15.5z"/></svg></span> </button> <button class="icon-button nav-toggle" data-nav-toggle title="菜单" aria-label="菜单"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> </button> </div> </header> <main id="main">  <article class="article-shell hydro-post-page-lite"> <header class="article-header"> <p>  <time datetime="2023-07-02">2023-07-02</time> <span>·</span> <span>14 分钟</span> </p> <h1>散列表-数据结构与算法（三）</h1> <div class="chips"> <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a> <a href="/tags/Clion/">Clion</a><a href="/tags/C/">C</a> </div> </header> <div class="article-layout"> <div class="article-main"> <div class="prose"><p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/cover/s_cover.jpg" alt="cover"></p>
+<h1>散列表篇</h1>
+<p>在之前，我们已经学习了多种查找数据的方式，比如最简单的，如果数据量不大的情况下，我们可以直接通过顺序查找的方式在集合中搜索我们想要的元素；当数据量较大时，我们可以使用二分搜索来快速找到我们想要的数据，不过需要要求数据按照顺序排列，并且不允许中途对集合进行修改。</p>
+<p>在学习完树形结构篇之后，我们可以利用二叉查找树来建立一个便于我们查找的树形结构，甚至可以将其优化为平衡二叉树或是红黑树来进一步提升稳定性。在最后我们还了解了B树和B+树，得益于它们的巧妙设计，我们可以以尽可能少的时间快速找到我们需要的元素，大大提升程序的运行效率。</p>
+<p>这些都能够极大地帮助我们查找数据，而散列表，则是我们查找系列内容的最后一块重要知识。</p>
+<h2 id="散列查找">散列查找</h2>
+<p>我们之前认识的查找算法，最快可以达到对数阶 $O(logN)$，那么我们能否追求极致，让查找性能突破到常数阶呢？这里就要介绍到我们的<strong>散列</strong>（也可以叫哈希 Hash）它采用直接寻址的方式，在理想情况下，查找的时间复杂度可以达到常数阶 $O(1)$。</p>
+<p>散列（Hashing）通过散列函数（哈希函数）将要参与检索的数据与散列值（哈希值）关联起来，生成一种便于搜索的数据结构，我们称其为散列表（哈希表），也就是说，现在我们需要将一堆数据保存起来，这些数据会通过哈希函数进行计算，得到与其对应的哈希值，当我们下次需要查找这些数据时，只需要再次计算哈希值就能快速找到对应的元素了：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/18/Tcj6Spy2Pt5ZIuW.png" alt="image-20220818214145347"></p>
+<p>当然，如果一脸懵逼没关系，我们从哈希函数开始慢慢介绍。</p>
+<h3 id="散列函数">散列函数</h3>
+<p>散列函数也叫哈希函数，哈希函数可以对一个目标计算出其对应的哈希值，并且，只要是同一个目标，无论计算多少次，得到的哈希值都是一样的结果，不同的目标计算出的结果介乎都不同。哈希函数在现实生活中应用十分广泛，比如很多下载网站都提供下载文件的MD5码校验，可以用来判别文件是否完整，哈希函数多种多样，目前应用最为广泛的是SHA-1和MD5，比如我们在下载IDEA之后，会看到有一个验证文件SHA-256校验和的选项，我们可以点进去看看：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/18/tD8AjiGwvJkdahE.png" alt="image-20220818214908458"></p>
+<p>点进去之后，得到：</p>
+<figure class="code-frame" data-lang="TEXT"><figcaption><span></span><strong>TEXT</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-text">e54a026da11d05d9bb0172f4ef936ba2366f985b5424e7eecf9e9341804d65bf *ideaIU-2022.2.1.dmg
+</code></pre></figure>
+<p>这一串由数字和小写字母随意组合的一个字符串，就是安装包文件通过哈希算法计算得到的结果，那么这个东西有什么用呢？我们的网络可能有时候会出现卡顿的情况，导致我们下载的文件可能会出现不完整的情况，因为哈希函数对同一个文件计算得到的结果是一样的，我们可以在本地使用同样的哈希函数去计算下载文件的哈希值，如果与官方一致，那么就说明是同一个文件，如果不一致，那么说明文件在传输过程中出现了损坏。</p>
+<p>可见，哈希函数在这些地方就显得非常实用，在我们的生活中起了很大的作用，它也可以用于布隆过滤器和负载均衡等场景，这里不多做介绍了。</p>
+<h3 id="散列表">散列表</h3>
+<p>前面我们介绍了散列函数，我们知道可以通过散列函数计算一个目标的哈希值，那么这个哈希值计算出来有什么用呢，对我们的程序设计有什么意义呢？我们可以利用哈希值的特性，设计一张全新的表结构，这种表结构是专为哈希设立的，我们称其为哈希表（散列表）</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/18/M2o1vE7hHasN8DP.png" alt="image-20220818220944783"></p>
+<p>我们可以将这些元素保存到哈希表中，而保存的位置则与其对应的哈希值有关，哈希值是通过哈希函数计算得到的，我们只需要将对应元素的关键字（一般是整数）提供给哈希函数就可以进行计算了，一般比较简单的哈希函数就是取模操作，哈希表长度是多少（长度最好是一个素数），模就是多少：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/19/CAPhlJnQeLjMHfd.png" alt="image-20220819170355221"></p>
+<p>比如现在我们需要插入一个新的元素（关键字为17）到哈希表中：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/19/ovieRjrzlXhKMC2.png" alt="image-20220819171430332"></p>
+<p>插入的位置为计算出来的哈希值，比如上面是8，那么就在下标位置8插入元素，同样的，我们继续插入27：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/19/pisuSAIZyf5JE7B.png" alt="image-20220819210336314"></p>
+<p>这样，我们就可以将多种多样的数据保存到哈希表中了，注意保存的数据是无序的，因为我们也不清楚计算完哈希值最后会放到哪个位置。那么如果现在我们想要从哈希表中查找数据呢？比如我们现在需要查找哈希表中是否有14这个元素：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/19/H1hAvQPjNui2RYt.png" alt="image-20220819211656628"></p>
+<p>同样的，直接去看哈希值对应位置上看看有没有这个元素，如果没有，那么就说明哈希表中没有这个元素。可以看到，哈希表在查找时只需要进行一次哈希函数计算就能直接找到对应元素的存储位置，效率极高。</p>
+<p>我们可以通过代码来实现一下：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">#define SIZE 9
+
+typedef struct Element {   //这里用一个Element将值包装一下
+    int key;    //这里元素设定为int
+} * E;
+
+typedef struct HashTable{   //这里把数组封装为一个哈希表
+    E * table;
+} * HashTable;
+
+int hash(int key){   //哈希函数
+    return key % SIZE;
+}
+
+void init(HashTable hashTable){   //初始化函数
+    hashTable-&gt;table = malloc(sizeof(struct Element) * SIZE);
+    for (int i = 0; i &lt; SIZE; ++i)
+        hashTable-&gt;table[i] = NULL;
+}
+
+void insert(HashTable hashTable, E element){   //插入操作，为了方便就不考虑装满的情况了
+    int hashCode = hash(element-&gt;key);   //首先计算元素的哈希值
+    hashTable-&gt;table[hashCode] = element;   //对号入座
+}
+
+_Bool find(HashTable hashTable, int key){
+    int hashCode = hash(key);   //首先计算元素的哈希值
+    if(!hashTable-&gt;table[hashCode]) return 0;   //如果为NULL那就说明没有
+    return hashTable-&gt;table[hashCode]-&gt;key == key;  //如果有，直接看是不是就完事
+}
+
+E create(int key){    //创建一个新的元素
+    E e = malloc(sizeof(struct Element));
+    e-&gt;key = key;
+    return e;
+}
+
+int main() {
+    struct HashTable hashTable;
+    init(&amp;hashTable);
+    insert(&amp;hashTable, create(10));
+    insert(&amp;hashTable, create(7));
+    insert(&amp;hashTable, create(13));
+    insert(&amp;hashTable, create(29));
+
+    printf(&quot;%d\n&quot;, find(&amp;hashTable, 1));
+    printf(&quot;%d\n&quot;, find(&amp;hashTable, 13));
+}
+</code></pre></figure>
+<p>这样，我们就实现了一个简单的哈希表和哈希函数，通过哈希表，我们可以将数据的查找时间复杂度提升到常数阶。</p>
+<h2 id="哈希冲突">哈希冲突</h2>
+<p>前面我介绍了哈希函数，通过哈希函数计算得到一个目标的哈希值，但是在某些情况下，哈希值可能会出现相同的情况：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/19/XqpZd1YP5ulEJRy.png" alt="image-20220819215004653"></p>
+<p>比如现在同时插入14和23这两个元素，他们两个计算出来的哈希值是一样的，都需要在5号下标位置插入，这时就出现了打架的情况，那么到底是把哪一个放进去呢？这种情况，我们称为<strong>哈希碰撞</strong>（哈希冲突）</p>
+<p>这种问题是很严重的，因为哈希函数的设计不同，难免会出现这种情况，这种情况是不可避免的，我们只能通过使用更加高级的哈希函数来尽可能避免这种情况，但是无法完全避免。当然，如果要完全解决这种问题，我们还需要去寻找更好的方法。</p>
+<h3 id="线性探测法">线性探测法</h3>
+<p>既然有可能出现哈希值重复的情况，那么我们可以选择退让，不去进行争抢（忍一时风平浪静，退一步海阔天空）我们可以去找找哈希表中相邻的位置上有没有为空的，只要哈希表没装满，那么我们肯定是可以找到位置装下这个元素的，这种类型的解决方案我们统称为<strong>线性探测法</strong>，开放定址法包含，线性探测法、平方探测法、双散列法等，这里我们以线性探测法为例。</p>
+<p>既然第一次发生了哈希冲突，那么我们就继续去找下一个空位：
+$$
+h_i(key) = (h(key) + d_i)\space % \space TableSize
+$$
+其中 $d_i$ 是随着哈希冲突次数增加随之增加的量，比如上面出现了一次哈希冲突，那么我就将其变成<code>1</code>表示发生了一次哈希冲突，然后我们可以继续去寻找下一个位置：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/20/p5Qdni31eqFgzZ7.png" alt="image-20220820112822005"></p>
+<p>出现哈希冲突时，$d_i$自增，继续寻找下一个空位：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/20/Ay6zkgivEFLthM8.png" alt="image-20220820113020326"></p>
+<p>再次计算哈希值，成功得到对应的位置，注意 $d_i$ 默认为0，这样我们就可以解决冲突的情况了。</p>
+<p>我们来通过代码实际使用一下，这里需要调整一下插入和查找操作的逻辑：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">void insert(HashTable hashTable, E element){   //插入操作，注意没考虑满的情况，各位小伙伴可以自己实现一下
+    int hashCode = hash(element-&gt;key), count = 0;
+    while (hashTable-&gt;table[hashCode]) {   //如果发现哈希冲突，那么需要继续寻找
+        hashCode = hash(element-&gt;key + ++count);
+    }
+    hashTable-&gt;table[hashCode] = element;   //对号入座
+}
+
+_Bool find(HashTable hashTable, int key){
+    int hashCode = hash(key), count = 0;   //首先计算元素的哈希值
+    const int startIndex = hashCode;   //记录一下起始位置，要是转一圈回来了得停
+    do {
+        if(hashTable-&gt;table[hashCode]-&gt;key == key) return 1;  //如果找到就返回1
+        hashCode = hash(key + ++count);
+    } while (startIndex != hashCode &amp;&amp; hashTable-&gt;table[hashCode]);  //没找到继续找
+    return 0;
+}
+</code></pre></figure>
+<p>这样当出现哈希冲突时，会自动寻找补位插入：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">int main() {
+    struct HashTable hashTable;
+    init(&amp;hashTable);
+    for (int i = 0; i &lt; 9; ++i) {
+        insert(&amp;hashTable, create(i * 9));
+    }
+
+    for (int i = 0; i &lt; 9; ++i) {
+        printf(&quot;%d &quot;, hashTable.table[i]-&gt;key);
+    }
+}
+</code></pre></figure>
+<p>当然，如果采用这种方案删除会比较麻烦，因为有些元素可能是通过线性探测补到其他位置上的，如果删除元素，那么很有可能会影响到前面的查找操作：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/20/PJIVAUnhT6OwB9d.png" alt="image-20220820211324957"></p>
+<p>此时删除关键字为45的元素，会出现截断的情况，当下次查找时，会出现严重问题：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/20/am6WHpejxtyU842.png" alt="image-20220820214945139"></p>
+<p>可以看到，删除一个元素可能会导致原有的结构意外截断，无法正确找到对应的元素，所以，我们在删除元素时，为了防止出现这种截断的情况，我们需要对这个位置进行标记，表示之前有过元素，但是被删除了，当我们在查找时，如果发现曾经有过元素，依然需要继续向后寻找：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/20/hIBUbKvDjAfYruL.png" alt="image-20220820215613368"></p>
+<p>代码实现有点麻烦，这里就不编写代码了。</p>
+<p>当然除了直接向后进行探测之外，我们也可以采用<strong>二次探测再散列法</strong>处理哈希冲突，因为有些时候可能刚好后面没有空位了，但是前面有，如果按照之前的方法，我们得转一圈回来才能找到对应的位置，实在是有点浪费时间，所以说我们可以左右开弓，同时向两个方向去寻找。</p>
+<p>它的查找增量序列为：$1^2$、$-1^2$、$2^2$、$-2^2$、...、$q^2$、$-q^2$，其中$q &lt;= \lfloor {TableSize\div2} \rfloor$，比如现在我们要向下面的哈希表中插入数据，现在插入关键字为24的元素，发现冲突了：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/21/CTEFJVNmf47B3yq.png" alt="image-20220821214600725"></p>
+<p>那么此时就需要进行处理了，这里我们采用上面的方式，先去寻找 $1^2$ 位置：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/21/QmiDsrnZjX8YUb6.png" alt="image-20220821214751809"></p>
+<p>我们接着来插入：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/21/Wj9wYLPovF6pAOs.png" alt="image-20220821215445041"></p>
+<p>实际上我们发现和之前是一样的，只要冲突就一直往下找就完事，只不过现在是左右横跳着找，这样可以进一步提升利用率。</p>
+<h3 id="链地址法">链地址法</h3>
+<p>实际上常见的哈希冲突解决方案是<strong>链地址法</strong>，当出现哈希冲突时，我们依然将其保存在对应的位置上，我们可以将其连接为一个链表的形式：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/08/14/BGSfF5vVIlDtaJz.png" alt="image-20230814161152299"></p>
+<p>当表中元素变多时，差不多就变成了这样，我们一般将其横过来看：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/08/14/E4dHUtzae3jl179.png" alt="image-20230814161208801"></p>
+<p>通过结合链表的形式，哈希冲突问题就可以得到解决了，但是同时也会出现一定的查找开销，因为现在有了链表，我们得挨个往后看才能找到，当链表变得很长时，查找效率也会变低，此时我们可以考虑结合其他的数据结构来提升效率。比如当链表长度达到8时，自动转换为一棵平衡二叉树或是红黑树，这样就可以在一定程度上缓解查找的压力了。</p>
+<p>我们来编写代码尝试一下：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">#define SIZE 9
+
+typedef struct ListNode {   //结点定义
+    int key;
+    struct ListNode * next;
+} * Node;
+
+typedef struct HashTable{   //哈希表
+    struct ListNode * table;   //这个数组专门保存头结点
+} * HashTable;
+
+void init(HashTable hashTable){
+    hashTable-&gt;table = malloc(sizeof(struct ListNode) * SIZE);
+    for (int i = 0; i &lt; SIZE; ++i) {
+        hashTable-&gt;table[i].key = -1;   //将头结点key置为-1，next指向NULL
+        hashTable-&gt;table[i].next = NULL;
+    }
+}
+
+int main(){
+    struct HashTable table;    //创建哈希表
+    init(&amp;table);
+}
+</code></pre></figure>
+<p>接着是编写对应的插入操作，插入后直接往链表后面丢就完事了：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">int hash(int key){   //哈希函数
+    return key % SIZE;
+}
+
+Node createNode(int key){   //创建结点专用函数
+    Node node = malloc(sizeof(struct ListNode));
+    node-&gt;key = key;
+    node-&gt;next = NULL;
+    return node;
+}
+
+void insert(HashTable hashTable, int key){
+    int hashCode = hash(key);
+    Node head = hashTable-&gt;table + hashCode;   //先计算哈希值，找到位置后直接往链表后面插入结点就完事了
+    while (head-&gt;next) head = head-&gt;next;
+    head-&gt;next = createNode(key);   //插入新的结点
+}
+</code></pre></figure>
+<p>同样的，查找的话也是直接找到对应位置，看看链表里面有没有就行：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">_Bool find(HashTable hashTable, int key){
+    int hashCode = hash(key);
+    Node head = hashTable-&gt;table + hashCode;
+    while (head-&gt;next &amp;&amp; head-&gt;key != key)   //直到最后或是找到为止
+        head = head-&gt;next;
+    return head-&gt;key == key;   //直接返回是否找到
+}
+</code></pre></figure>
+<p>我们来测试一下吧：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">int main(){
+    struct HashTable table;
+    init(&amp;table);
+
+    insert(&amp;table, 10);
+    insert(&amp;table, 19);
+    insert(&amp;table, 20);
+
+    printf(&quot;%d\n&quot;, find(&amp;table, 20));
+    printf(&quot;%d\n&quot;, find(&amp;table, 17));
+    printf(&quot;%d\n&quot;, find(&amp;table, 19));
+}
+</code></pre></figure>
+<p>实际上这种方案代码写起来也会更简单，使用也更方便一些。</p>
+<p><strong>散列表习题：</strong></p>
+<ol>
+<li><p>下面关于哈希查找的说法，正确的是（ ）</p>
+<p>A 哈希函数构造的越复杂越好，因为这样随机性好，冲突小</p>
+<p>B 除留余数法是所有哈希函数中最好的</p>
+<p>C 不存在特别好与坏的哈希函数，要视情况而定</p>
+<p>D 越简单的哈希函数越容易出现冲突，是最坏的</p>
+<p><em>首先，衡量哈希函数好坏并没有一个确切的标准，而是需要根据具体情况而定，并不一定复杂的哈希函数就好，因为会带来时间上的损失。其实我们的生活中很多东西都像这样，没有好坏之分，只有适不适合的说法，所以说选择C选项</em></p>
+</li>
+<li><p>设有一组记录的关键字为{19，14，23，1，68，20，84，27，55，11，10，79}，用链地址法构造散列表，散列函数为H（key）=key MOD 13,散列地址为1的链中有（ ）个记录。</p>
+<p>A 1             B 2               C 3                 D 4</p>
+<p><em>这种咱们得画图才知道了，答案是D</em></p>
+</li>
+<li><p>设哈希表长为14，哈希函数是H(key)=key%11，表中已有数据的关键字为15，38，61，84共四个，现要将关键字为49的元素加到表中，用二次探测再散列解决冲突，则放入的位置是（ ）</p>
+<p>A 8             B 3               C 5                 D 9</p>
+<p><em>咱们先把这个表给画出来吧，答案是D</em></p>
+</li>
+<li><p>选取哈希函数 H(key)=(key x 3)%11 用线性探测散列法和二次探测再散列法分别处理冲突。试在0~10的散列地址空间中，对关键字序列（22,41,53,46,30,13,1,67）构建哈希表，并求等概率情况下查找成功的平均查找长度。</p>
+<p><em>其中平均查找长度（ASL）就是表中每一个元素需要查找次数之和的平均值，我们注意在插入元素时顺便记录计算次数即可，如果是链地址法，那么直接看层数就行，ASL =（第一层结点数量+第二层结点数量+第三层结点数量）/ 非头结点总数</em></p>
+</li>
+</ol>
+<h2 id="算法实战">算法实战</h2>
+<h3 id="（简单）两数之和">（简单）两数之和</h3>
+<p>本题来自LeetCode：<a href="https://leetcode.cn/problems/two-sum/">1.两数之和</a>（整个力扣的第一题）</p>
+<p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<p> 示例 1：</p>
+<blockquote>
+<p>输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。</p>
+</blockquote>
+<p>示例 2：</p>
+<blockquote>
+<p>输入：nums = [3,2,4], target = 6
+输出：[1,2]</p>
+</blockquote>
+<p>示例 3：</p>
+<blockquote>
+<p>输入：nums = [3,3], target = 6
+输出：[0,1]</p>
+</blockquote>
+<p>这道题很简单，实际上使用暴力枚举是可以完成的，我们只需要让每个数去寻找一个与其匹配的数即可，所以说直接循环就完事：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">int * result(int i, int j, int * returnSize){
+    *returnSize = 2;
+    int * result = malloc(sizeof(int) * 2);
+    result[0] = i;
+    result[1] = j;
+    return result;
+}
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize){
+    for (int i = 0; i &lt; numsSize; ++i) {
+        for (int j = 0; j &lt; numsSize; ++j) {
+            if(j == i) continue;
+            if(nums[i] + nums[j] == target) 
+                return result(i, j, returnSize);   //找到匹配就直接返回完事
+        }
+    }
+    return NULL;   //无视即可，因为不可能
+}
+</code></pre></figure>
+<p>但是这样效率实在是太低了，可以看到我们的程序运行时间都好几百毫秒了，能不能优化一下呢？我们正好学习了散列表，是否可以利用一下散列表来帮助我们完成？</p>
+<p>因为每当我们遍历一个数时，实际上就是去寻找与其匹配的数是否存在，我们可以每遍历一个数都将其存放到散列表中，当下次遇到与其相匹配的数时，只要能够从散列表中找到这个数，那么就可以直接完成匹配了，这样就只需要遍历一次即可完成。比如：</p>
+<blockquote>
+<p>[2,7,11,15] ，targert = 9</p>
+<p>第一次先将2放入散列表，接着往后看7，现在目标值时9，那么只需要去寻找 9 - 7 这个数，看看散列表中有没有即可，此时散列表中正好有2，所以说直接返回即可。</p>
+</blockquote>
+<p>我们来尝试编写一下：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">#define SIZE 128
+
+typedef int K;
+typedef int V;
+
+typedef struct LNode {   //结点定义需要稍微修改一下，因为除了存关键字还需要存一下下标
+    K key;
+    V value;
+    struct LNode * next;
+} * Node;
+
+typedef struct HashTable{   //哈希表
+    struct LNode * table;   //这个数组专门保存头结点
+} * HashTable;
+
+void init(HashTable hashTable){
+    hashTable-&gt;table = malloc(sizeof(struct LNode) * SIZE);
+    for (int i = 0; i &lt; SIZE; ++i) {
+        hashTable-&gt;table[i].key = -1;   //将头结点key置为-1，value也变成-1，next指向NULL
+        hashTable-&gt;table[i].value = -1;
+        hashTable-&gt;table[i].next = NULL;
+    }
+}
+
+int hash(unsigned int key){  //因为哈希表用的数组，要是遇到负数的key，肯定不行，咱先给它把符号扬了再算
+    return key % SIZE;
+}
+
+Node create(K key, V value){   //创建结点，跟之前差不多
+    Node node = malloc(sizeof(struct LNode));
+    node-&gt;key = key;
+    node-&gt;value = value;
+    node-&gt;next = NULL;
+    return node;
+}
+
+void insert(HashTable hashTable, K key, V value){
+    int hashCode = hash(key);
+    Node head = hashTable-&gt;table + hashCode;
+    while (head-&gt;next) head = head-&gt;next;
+    head-&gt;next = create(key, value);   //这里同时保存关键字和对应的下标
+}
+
+Node find(HashTable hashTable, K key){
+    int hashCode = hash(key);
+    Node head = hashTable-&gt;table + hashCode;     //直接定位到对应位置
+    while (head-&gt;next &amp;&amp; head-&gt;next-&gt;key != key)   //直接看有没有下一个结点，并且下一个结点不是key
+        head = head-&gt;next;  //继续往后找
+    return head-&gt;next;   //出来之后要么到头了下一个是NULL，要么就是找到了，直接返回
+}
+</code></pre></figure>
+<p>哈希表编写完成后，我们就可以使用了：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">int * result(int i, int j, int * returnSize){   //跟上面一样
+    *returnSize = 2;
+    int * result = malloc(sizeof(int) * 2);
+    result[0] = i;
+    result[1] = j;
+    return result;
+}
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize){
+    struct HashTable table;    //初始化哈希表
+    init(&amp;table);
+    for (int i = 0; i &lt; numsSize; ++i) {   //挨个遍历
+        Node node = find(&amp;table, target - nums[i]);  //直接去哈希表里面寻找匹配的，如果有直接结束，没有就丢把当前的key丢进哈希表，之后如果遇到与其匹配的另一半，那么就直接成功了
+        if(node != NULL) return result(i, node-&gt;value, returnSize);
+        insert(&amp;table, nums[i], i);
+    }
+    return NULL;   //无视就好
+}
+</code></pre></figure>
+<p>我们再次提交代码，时间直接来到了个位数：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2022/08/21/pGF2hZo5ArbLyfB.png" alt="image-20220821122010425"></p>
+<p>采用哈希表，就是一种空间换时间的策略，在大多数情况下，我们也更推荐使用这种方案。</p>
+</div> <section class="post-copyright" aria-label="文章版权信息"> <div> <span>作者</span> <strong>云灿</strong> </div> <div> <span>发布于</span> <strong>2023-07-02</strong> </div> <div> <span>更新于</span> <strong>2023-07-02</strong> </div> <div> <span>许可协议</span> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> </div> </section> <!-- 赞赏弹窗已提升至 BaseLayout 的 body 子级，避免 .article-shell 包含块与层叠上下文影响定位 --> </div> <aside class="article-toc hydro-post-aside-lite" aria-label="文章侧栏"> <section class="reader-panel"> <div> <p>READING</p> <strong>14 min</strong> </div> <span><i data-reader-progress></i></span> <dl> <div><dt>发布</dt><dd>2023-07-02</dd></div> <div><dt>更新</dt><dd>2023-07-02</dd></div> <div><dt>分类</dt><dd>计算机基础</dd></div> </dl> </section> <section class="toc-panel"> <strong>目录</strong> <a href="#散列查找" data-depth="2">散列查找</a><a href="#散列函数" data-depth="3">散列函数</a><a href="#散列表" data-depth="3">散列表</a><a href="#哈希冲突" data-depth="2">哈希冲突</a><a href="#线性探测法" data-depth="3">线性探测法</a><a href="#链地址法" data-depth="3">链地址法</a><a href="#算法实战" data-depth="2">算法实战</a><a href="#（简单）两数之和" data-depth="3">（简单）两数之和</a> </section> <section class="toc-actions"> <button type="button" data-share-current><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2A5 5 0 0 0 12 20.07l1.15-1.15"/></svg>分享本文</button> <button type="button" data-reward-toggle><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 22l8.8-8.8a5.4 5.4 0 0 0 0-7.6z"/></svg>赞赏作者</button> <a href="#post-comment"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>去评论</a> </section> </aside> </div> </article> <div class="content-shell"> <section id="post-comment" class="comment-panel surface" data-twikoo-env="https://comment.yuncan.xyz" data-twikoo-script="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js"> <div class="section-heading"> <p>COMMENTS</p> <h2>留言</h2> </div> <div id="twikoo-wrap"></div> </section> <script type="module">(()=>{const r=document.querySelector("#post-comment"),s=r?.dataset.twikooEnv||"",c=r?.dataset.twikooScript||"";let i=!1;const l=()=>location.pathname||"/",p=()=>new Promise((t,o)=>{const e=document.querySelector("script[data-twikoo-script]");if(e){window.twikoo?t(window.twikoo):(e.addEventListener("load",()=>t(window.twikoo)),e.addEventListener("error",()=>o(new Error("script load failed"))));return}const n=document.createElement("script");n.src=c,n.async=!0,n.defer=!0,n.charset="UTF-8",n.setAttribute("data-twikoo-script","true"),n.onload=()=>{t(window.twikoo)},n.onerror=()=>{o(new Error("twikoo script load failed"))},document.head.appendChild(n)}),w=(t,o)=>{t.innerHTML=`
+        <div style="padding: 40px 20px; text-align: center;">
+          <p style="color: var(--muted); font-size: 14px; line-height: 2;">
+            评论加载失败：${o}
+          </p>
+          <p style="color: var(--muted); font-size: 12px; margin-top: 12px;">
+            请稍后重试，或直接联系作者
+          </p>
+        </div>
+      `},a=async()=>{const t=document.querySelector("#twikoo-wrap");if(!t)return;const o=l();if(!(i&&t.dataset.lastPath===o)){i=!0,t.dataset.lastPath=o;try{t.innerHTML='<div style="padding: 30px; text-align: center;"><span style="color: var(--muted);">加载评论中...</span></div>';const e=await p();if(!e||typeof e.init!="function")throw new Error("twikoo API not available");t.innerHTML="",await e.init({envId:s,el:"#twikoo-wrap",path:o,lang:"zh-CN"})}catch(e){console.error("[Twikoo] init failed:",e),w(t,e.message||"初始化异常")}}},d=()=>{document.readyState==="loading"?document.addEventListener("DOMContentLoaded",a,{once:!0}):a()};document.addEventListener("astro:page-load",d),d()})();</script> </div>  </main> <footer class="site-footer"> <div> <strong>云灿の随笔小站</strong> <span>浮云一别后，流水十年间</span> </div> <p> <a href="https://yuncan.xyz" target="_blank" rel="noopener">前往主站</a>  · 晋ICP备2024030642号-1 · Powered by Astro · Yuncan050115 · v1.0.8 </p> </footer> <aside class="music-dock" data-music="{&quot;api&quot;:&quot;https://music.yuncan.xyz/api?server=:server&amp;type=:type&amp;id=:id&amp;r=:r&quot;,&quot;server&quot;:&quot;netease&quot;,&quot;type&quot;:&quot;playlist&quot;,&quot;id&quot;:&quot;817519033&quot;,&quot;autoplay&quot;:true,&quot;lyricMode&quot;:&quot;manual&quot;,&quot;fallbackCover&quot;:&quot;/assets/logo-yuncan.png&quot;}" data-astro-transition-persist="music-dock" data-astro-transition-scope="astro-veqaj6uj-10"> <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <img src="/assets/logo-yuncan.png" alt=""> </button> <div class="music-info"> <strong data-music-title>Yuncan Music</strong> <span data-music-artist>云灿</span> <p data-music-lyric>正在连接歌单</p> </div> <div class="music-controls"> <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16"/><path d="M20 4 8 12l12 8z"/></svg> </button> <button type="button" class="music-btn music-btn-play" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg> </button> <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4v16"/><path d="M4 4 16 12 4 20z"/></svg> </button> </div> <audio data-music-audio preload="metadata"></audio> </aside> <div class="runtime-tools" data-astro-transition-persist="runtime-tools" data-astro-transition-scope="astro-pspklqzf-11"> <span id="runtime-days" data-site-start="2023-01-01">运行 -- 天</span> <span id="fps">FPS --</span> <button class="icon-button" data-back-top title="返回顶部" aria-label="返回顶部"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg> </button> </div> <div id="context-menu" class="context-menu" aria-hidden="true" data-astro-transition-persist="context-menu" data-astro-transition-scope="astro-2226xma5-12"> <div class="context-row context-icons"> <button data-context-action="back" title="后退"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="forward" title="前进"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="reload" title="刷新"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4M6 22v-4h4"/></svg></button> <button data-context-action="top" title="回到顶部"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> </div> <div class="context-row"> <button data-context-action="copy-url">复制地址</button> <button data-context-action="comment">去评论</button> <button data-context-action="theme">昼夜切换</button> <button data-context-action="print">打印页面</button> </div> </div> <!-- 全局赞赏弹窗（从文章页提升至 body 子级，避免层叠上下文和包含块问题） --> <div class="reward-dialog" data-reward-dialog aria-hidden="true"> <button class="reward-scrim" type="button" data-reward-close aria-label="关闭赞赏"></button> <div class="reward-panel" role="dialog" aria-label="赞赏作者"> <button class="reward-close" type="button" data-reward-close aria-label="关闭"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button> <p>THANKS</p> <h2>赞赏作者</h2> <span>如果这篇文章对你有帮助，可以请我喝杯茶。微信和支付宝收款码都在下面。</span> <div class="reward-codes"> <figure> <img src="/assets/zfb.jpg" alt="支付宝收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>支付宝</figcaption> </figure><figure> <img src="/assets/wx.jpg" alt="微信收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>微信</figcaption> </figure> </div> </div> </div>  <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.Bl8ln883.js"></script> </body> </html>

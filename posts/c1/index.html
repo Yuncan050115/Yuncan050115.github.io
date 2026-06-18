@@ -1,0 +1,614 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme-default="auto"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>计算机思维导论-C语言程序设计（一） | 云灿の随笔小站</title><meta name="description" content="🎨计算机基础部分"><meta name="keywords" content="云灿, 随笔, 博客, 诗词, 编程"><meta name="author" content="云灿"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4ef"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101112"><meta property="og:title" content="计算机思维导论-C语言程序设计（一） | 云灿の随笔小站"><meta property="og:description" content="🎨计算机基础部分"><meta property="og:image" content="/assets/logo-yuncan.png"><link rel="icon" type="image/png" href="/assets/logo-yuncan.png"><link rel="apple-touch-icon" href="/assets/logo-yuncan.png"><link rel="preconnect" href="https://apir.yuncan.xyz"><link rel="preconnect" href="https://music.yuncan.xyz"><link rel="preconnect" href="https://comment.yuncan.xyz"><link rel="preconnect" href="https://api.bilibili.com"><link rel="preconnect" href="https://i0.hdslb.com"><link rel="preload" as="image" href="https://apir.yuncan.xyz/index.php?size=1600"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><script>
+      (() => {
+        const root = document.documentElement;
+        const saved = localStorage.getItem('yuncan-theme');
+        if (saved === 'light' || saved === 'dark') {
+          root.dataset.theme = saved;
+        } else {
+          const hour = new Date().getHours();
+          root.dataset.theme = (hour >= 6 && hour < 19) ? 'light' : 'dark';
+        }
+      })();
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/BaseLayout.4GRpM9d1.css"><style>[data-astro-transition-scope="astro-m542s2jb-1"] { view-transition-name: read-progress; }@layer astro { ::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-iv2bzgrw-2"] { view-transition-name: breath-scene; }@layer astro { ::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-tc6woczj-3"] { view-transition-name: global-bg; }@layer astro { ::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-if6j4wsp-4"] { view-transition-name: global-filter; }@layer astro { ::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-s6lkupbb-5"] { view-transition-name: grain; }@layer astro { ::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-jgysxpi6-6"] { view-transition-name: cursor-glow; }@layer astro { ::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-ioirsxey-7"] { view-transition-name: cursor-dot; }@layer astro { ::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-5n244hft-8"] { view-transition-name: cursor-ring; }@layer astro { ::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-fjkacnw5-9"] { view-transition-name: site-header; }@layer astro { ::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-veqaj6uj-10"] { view-transition-name: music-dock; }@layer astro { ::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-pspklqzf-11"] { view-transition-name: runtime-tools; }@layer astro { ::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-2226xma5-12"] { view-transition-name: context-menu; }@layer astro { ::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body style="--global-bg: url('https://apir.yuncan.xyz/index.php?size=1600')"> <div class="read-progress" data-astro-transition-persist="read-progress" data-astro-transition-scope="astro-m542s2jb-1"></div> <canvas id="breath-scene" data-astro-transition-persist="breath-scene" data-astro-transition-scope="astro-iv2bzgrw-2"></canvas> <div class="global-bg" aria-hidden="true" data-astro-transition-persist="global-bg" data-astro-transition-scope="astro-tc6woczj-3"></div> <div class="global-filter" aria-hidden="true" data-astro-transition-persist="global-filter" data-astro-transition-scope="astro-if6j4wsp-4"></div> <div class="grain" aria-hidden="true" data-astro-transition-persist="grain" data-astro-transition-scope="astro-s6lkupbb-5"></div> <div class="cursor-glow" aria-hidden="true" data-astro-transition-persist="cursor-glow" data-astro-transition-scope="astro-jgysxpi6-6"></div> <div class="cursor-dot" aria-hidden="true" data-astro-transition-persist="cursor-dot" data-astro-transition-scope="astro-ioirsxey-7"></div> <div class="cursor-ring" aria-hidden="true" data-astro-transition-persist="cursor-ring" data-astro-transition-scope="astro-5n244hft-8"></div> <header class="site-header" data-astro-transition-persist="site-header" data-astro-transition-scope="astro-fjkacnw5-9"> <a class="brand-mark" href="/" aria-label="返回首页"> <img src="/assets/logo-yuncan.png" alt="云灿" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'"> </a> <nav class="site-nav" aria-label="主导航"> <div class="nav-item has-children"> <a href="/archives/"> <span>文章</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/categories/">分类</a> </div> </div><div class="nav-item has-children"> <a href="/bangumis/"> <span>在看</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/bangumis/">追番</a><a href="/cinemas/">追剧</a> </div> </div><div class="nav-item"> <a href="/steamgames/"> <span>在玩</span>  </a>  </div><div class="nav-item"> <a href="/comments/"> <span>留言板</span>  </a>  </div><div class="nav-item"> <a href="/social/link/"> <span>友链</span>  </a>  </div><div class="nav-item has-children"> <a href="/personal/about/"> <span>个人</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/site/time/">旧时光</a><a href="/personal/love/">恋爱小屋</a><a href="/personal/about/">关于</a> </div> </div><div class="nav-item"> <a href="/poems/"> <span>诗集</span>  </a>  </div><div class="nav-item"> <a href="/projects/"> <span>项目</span>  </a>  </div><div class="nav-item"> <a href="https://yuncan.xyz" target="_blank" rel="noopener"> <span>主站</span>  </a>  </div> </nav> <div class="header-actions"> <button class="icon-button" data-theme-toggle title="昼夜切换" aria-label="昼夜切换"> <span class="sun"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span> <span class="moon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 7 7 0 1 0 20 15.5z"/></svg></span> </button> <button class="icon-button nav-toggle" data-nav-toggle title="菜单" aria-label="菜单"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> </button> </div> </header> <main id="main">  <article class="article-shell hydro-post-page-lite"> <header class="article-header"> <p>  <time datetime="2023-06-16">2023-06-16</time> <span>·</span> <span>20 分钟</span> </p> <h1>计算机思维导论-C语言程序设计（一）</h1> <div class="chips"> <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a> <a href="/tags/Clion/">Clion</a><a href="/tags/C/">C</a> </div> </header> <div class="article-layout"> <div class="article-main"> <div class="prose"><p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://api.yuncan.xyz/blog/260617_163658.webp" alt="cover"></p>
+<h1>计算机思维导论</h1>
+<p>计算机自1946年问世以来，几乎改变了整个世界。</p>
+<p>现在我们可以通过电脑来做很多事情，比如我们常常听到的什么人工智能、电子竞技、大数据等等，都和计算机息息相关，包括我们现在的手机、平板等智能设备，也是计算机转变而来的。各位可以看看最顶上的这张图片，如果你在小时候接触过计算机，那么一定对这张图片（照片拍摄于1996年，在美国加利福尼亚州加利福尼亚州的锁诺玛县）印象深刻，这张壁纸作为WindowsXP系统的默认壁纸，曾经展示在千家万户的电脑屏幕上。</p>
+<p>也许你没有接触过计算机，也许你唯一接触计算机就是用来打游戏，也有可能你曾经捣鼓过计算机，在学习C语言之前，先让我们来了解一下计算机的世界。</p>
+<h2 id="计算机的世界">计算机的世界</h2>
+<p>计算机虽然名字听着很高级，不过它也是由一个个简单电路组成的。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/7FLkyEadxlKHDBo.png" alt="image-20230228214034266"></p>
+<p>这是我们在初中就学习过的电路图，不过这种电路太过简单，只能完成一些很基础的的操作，比如点亮小灯泡等。</p>
+<p>很明显想要实现计算机怎么高级的运算机器，肯定是做不到的，这时我们就需要引入更加强大的数字电路了。</p>
+<blockquote>
+<p>用数字信号完成对数字量进行<a href="https://baike.baidu.com/item/%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97/3118202">算术运算</a>和<a href="https://baike.baidu.com/item/%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/7224729">逻辑运算</a>的电路称为数字电路，或数字系统。由于它具有逻辑运算和逻辑处理功能，所以又称数字逻辑电路。现代的数字电路由半导体工艺制成的若干数字集成器件构造而成。逻辑门是数字逻辑电路的<a href="https://baike.baidu.com/item/%E5%9F%BA%E6%9C%AC%E5%8D%95%E5%85%83/5246264">基本单元</a>。</p>
+<p>计算机专业一般会在大一开放《数字电路》这门课程，会对计算机底层的数字电路实现原理进行详细介绍。</p>
+</blockquote>
+<p>数字电路引入了逻辑判断，我们来看看简单的数字电路：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/OwqL2RlPQWKsI5z.png" alt="image-20230228214109516"></p>
+<p>数字电路中，用电压的高低来区分出两种信号，低电压表示0，高电压表示1，由于只能通过这种方式表示出两种类型的信号，所以计算机采用的是二进制。</p>
+<blockquote>
+<p><a href="https://baike.baidu.com/item/%E4%BA%8C%E8%BF%9B%E5%88%B6/361457">二进制</a>是计算技术中广泛采用的一种<a href="https://baike.baidu.com/item/%E6%95%B0%E5%88%B6/217113">数制</a>。二进制数据是用0和1两个数码来表示的数。它的<a href="https://baike.baidu.com/item/%E5%9F%BA%E6%95%B0/4260">基数</a>为2，进位规则是“逢二进一”，借位规则是“借一当二”。</p>
+<p>比如我们一般采用的都是十进制表示，比如9再继续加1的话，就需要进位了，变成10，在二进制中，因为只有0和1，所以当1继续加1时，就需要进位了，就变成10了（注意这不是十，读成一零就行了）</p>
+</blockquote>
+<p>当然，仅仅有两种信号还不够，我们还需要逻辑门来辅助我们完成更多的计算，最基本的逻辑关系是与、或、非，而逻辑门就有相应的是<a href="https://baike.baidu.com/item/%E4%B8%8E%E9%97%A8">与门</a>、<a href="https://baike.baidu.com/item/%E6%88%96%E9%97%A8">或门</a>和<a href="https://baike.baidu.com/item/%E9%9D%9E%E9%97%A8">非门</a>，可以用电阻、电容、二极管、三极管等分立原件构成（具体咋构成的咱这里就不说了）</p>
+<p>比如与操作，因为只有两种类型，我们一般将1表示为真，0表示为假，与操作（用&amp;表示）要求两个数参与进来，比如：</p>
+<ul>
+<li>1 &amp; 1 = 1    必须两边都是真，结果才为真。</li>
+<li>1 &amp; 0 = 0    两边任意一个或者都不是真，结果为假。</li>
+</ul>
+<p>或运算（用 | 表示）：</p>
+<ul>
+<li>1 | 0 = 1    两边只要有一个为真，结果就为真</li>
+<li>0 | 0 = 0    两边同时为假，结果才是假</li>
+</ul>
+<p>非运算实际上就是取反操作（可以是 ! 表示）</p>
+<ul>
+<li>!1 = 0</li>
+<li>!0 = 1     非运算会将真变成假，假变成真</li>
+</ul>
+<p>有了这些运算之后，我们的电路不仅仅可以实现计算，也可以实现各种各样的逻辑判断，最终才能发展成我们的计算机。</p>
+<p>前面我们大概介绍一下计算机的底层操作原理，接着我们来看看计算机的基本组成。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/61PX5Rlw3ecEGiJ.png" alt="image-20230228214242283"></p>
+<p>相信各位熟知的计算机都是一个屏幕+一个主机的形式，然后配上我们的键盘鼠标，就可以开始使用了，但是实际上标准的计算机结构并没有这么简单，我们来看看：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/Y2tyMd6mSVgro9N.png" alt="image-20230228214255379"></p>
+<p>我们电脑最核心的部件，当属CPU，因为几乎所有的运算都是依靠CPU进行（各种各样的计算电路已经在CPU中安排好了，我们只需要发送对应的指令就可以进行对应的运算），它就像我们人的大脑一样，有了大脑才能进行思考。不过光有大脑还不行，还要有一些其他的部分来辅助工作，比如我们想向电脑里面打字，那么就需要连接一个键盘才能输入，我们想要点击桌面上的图标，那么就需要一个鼠标来操作光标，这些都是输入设备。我们的电脑开机之后显示器上会显示出画面，实际上显示器就是输出设备。</p>
+<p>当然除了这些内容之外，我们的电脑还需要内存来保存运行时的一些数据，以及外存来保存文件（比如硬盘）等。我们常说的iPhone13 512G，这个512G并不是指的内存，而是指的外存，准确的说是用于存放文件硬盘大小，而真正的内存是我们常说的4G/6G/8G运行内存，内存的速度远高于外存的速度，所以1G内存的价格远超1G硬盘的价格。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/8OdrGLplIVs5ZE2.png" alt="image-20230228214446410"></p>
+<p>计算机包括五大部件：运算器、控制器、存储器、输入和输出设备。有了这一套完整的硬件环境，我们的电脑才算是有了一个完整的身体。</p>
+<p>**问题：**我们上面提到的这些硬件设备哪些是属于外设？</p>
+<h2 id="操作系统概述">操作系统概述</h2>
+<p>前面我们了解了一下计算机的大致原理和组成结构，但是光有这一套硬件可不行，如何让这一套硬件按照我们想要的方式运作起来，也是非常重要的，这时我们就需要介绍操作系统了。</p>
+<blockquote>
+<p>操作系统（operating system，简称OS）是管理<a href="https://baike.baidu.com/item/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A1%AC%E4%BB%B6/5459592">计算机硬件</a>与<a href="https://baike.baidu.com/item/%E8%BD%AF%E4%BB%B6/12053">软件</a>资源的<a href="https://baike.baidu.com/item/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F/3220205">计算机程序</a>。操作系统需要处理如管理与<a href="https://baike.baidu.com/item/%E9%85%8D%E7%BD%AE/2394679">配置</a><a href="https://baike.baidu.com/item/%E5%86%85%E5%AD%98/103614">内存</a>、决定<a href="https://baike.baidu.com/item/%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90/974435">系统资源</a>供需的优先次序、控制<a href="https://baike.baidu.com/item/%E8%BE%93%E5%85%A5%E8%AE%BE%E5%A4%87/10823368">输入设备</a>与<a href="https://baike.baidu.com/item/%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87/10823333">输出设备</a>、操作网络与管理<a href="https://baike.baidu.com/item/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/4827215">文件系统</a>等基本事务。操作系统也提供一个让用户与系统<a href="https://baike.baidu.com/item/%E4%BA%A4%E4%BA%92/6964417">交互</a>操作的界面。</p>
+<p>一般在计算机专业大二，会开放《操作系统》课程，会详细讲解操作系统的底层运作机制和调度。</p>
+</blockquote>
+<p>一般我们电脑上都安装了Windows操作系统（苹果笔记本安装的是MacOS操作系统），现在主流的电脑都已经预装Windows11了：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/WcDxHTraFAK6t9p.png" alt="image-20230228214559098"></p>
+<p>有了操作系统，我们的电脑才能真正运行起来，我们就可以轻松地通过键盘和鼠标来操作电脑了。</p>
+<p>不过操作系统最开始并不是图形化界面，它类似于Windows中的命令提示符：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/OlQp9n6ZY3qts1M.png" alt="image-20230228214618172"></p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/ilDr1HwXomgBYSx.png" alt="image-20230228214721666"></p>
+<p>没有什么图标这些概念，只有一个简简单单的黑框让我们进行操作，通过输入命令来进行一些简单的使用，程序的运行结果也会在黑框框（命令行）中打印出来，不过虽然仅仅是一个黑框，但是能运行的程序可是非常非常多的，只需要运行我们编写好的程序，就能完成各种各样复杂的计算任务，并且计算机的计算速度远超我们的人脑。</p>
+<blockquote>
+<p>中国超级计算机系统天河二号，计算速度达到每秒5.49亿亿次。</p>
+</blockquote>
+<p>当然，除了我们常见的Windows和MacOS系统之外，还有我们以后需要经常打交道的Linux操作系统，这种操作系统是开源的，意思是所有的人都可以拿到源代码进行修改，于是就出现了很多发行版：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/uYX84BNzl9FV1Mr.png" alt="image-20230228214754274"></p>
+<p>这些发行版有带图形化界面的，也有不带图形化界面的，不带图形化界面的Linux将是我们以后学习的重点。</p>
+<p>不同操作系统之间的软件并不是通用的，比如Windows下我们的软件一般是.exe后缀名称，而MacOS下则不是，并且也无法直接运行.exe文件，这是因为不同操作系统的具体实现会存在一些不同，程序编译（我们之后会介绍到）之后的格式也会不同，所以是无法做到软件通用的。</p>
+<p>正是因为有了操作系统，才能够组织我们计算机的底层硬件（包括CPU、内存、输入输出设备等）进行有序工作，没有操作系统电脑就如同一堆废铁，只有躯壳没有灵魂。</p>
+<h2 id="计算机编程语言">计算机编程语言</h2>
+<p>现在我们大致了解了我们的电脑的运作原理，实际上是一套完整的硬件+一个成形的操作系统共同存在的。接着我们就可以开始了解一下计算机的编程语言了。我们前面介绍的操作系统也是由编程语言写出来的，操作系统本身也算是一个软件。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/cu8GVYZB24PvzIR.png" alt="image-20230228214817739"></p>
+<p>那么操作系统是如何让底层硬件进行工作的呢？实际上就是通过向CPU发送指令来完成的。</p>
+<blockquote>
+<p>计算机指令就是指挥机器工作的指示和命令，程序就是一系列按一定顺序排列的指令，执行程序的过程就是计算机的工作过程。指令集，就是CPU中用来计算和控制计算机系统的一套指令的集合，而每一种新型的CPU在设计时就规定了一系列与其他硬件电路相配合的指令系统。而指令集的先进与否，也关系到CPU的性能发挥，它也是CPU性能体现的一个重要标志。</p>
+</blockquote>
+<p>我们电脑中的CPU有多种多样的，不同的CPU之间可能也会存在不同的架构，比如现在最常用的是x86架构，还有我们手机平板这样的移动设备使用的arm架构，不同的架构指令集也会有不同。</p>
+<p>我们知道，计算机底层硬件都是采用的0和1这样的二进制表示，所以指令也是一样的，比如（这里随便写的）：</p>
+<ul>
+<li>000001  -  代表开机</li>
+<li>000010  -  代表关机</li>
+<li>000011  -  代表进行加法运算</li>
+</ul>
+<p>当我们通过电路发送给CPU这样的二进制指令，CPU就能够根据我们的指令执行对应的任务，而我们编写的程序保存在硬盘中也是这样的二进制形式，我们只需要将这些指令组织好，按照我们的思路一条一条执行对应的命令，就能够让计算机计算任何我们需要的内容了，这其实就是机器语言。</p>
+<p>不过随着时代的进步，指令集越来越大，CPU支持的运算类型也越来越多，这样的纯二进制编写实在是太累了，并且越来越多的命令我们根本记不住，于是就有了汇编语言。汇编语言将这些二进制的操作码通过助记符来替换：</p>
+<ul>
+<li>MOV   传送字或字节。</li>
+<li>MOVSX  先符号扩展,再传送。</li>
+<li>MOVZX  先零扩展,再传送。</li>
+<li>PUSH  把字压入堆栈。</li>
+</ul>
+<p>把这些原有的二进制命令通过一个单词来代替，这样是不是就好记多了，在程序编写完成后，我们只需要最后将这些单词转换回二进制指令就可以了，这也是早期出现的低级编程语言。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/ypHDg3XRNFuVtrc.png" alt="image-20230228214843558"></p>
+<p>不过虽然通过这些助记符就能够很轻松地记住命令，但是还是不够方便，因为可能我们的程序需要完成一个很庞大的任务，但是如果还是这样一条一条指令进行编写，是不是太慢了点，有时候可能做一个简单的计算，都需要好几条指令来完成。于是，高级编程语言——C语言，终于诞生了。</p>
+<blockquote>
+<p> C语言诞生于美国的<a href="https://baike.baidu.com/item/%E8%B4%9D%E5%B0%94%E5%AE%9E%E9%AA%8C%E5%AE%A4/686816">贝尔实验室</a>，由<a href="https://baike.baidu.com/item/%E4%B8%B9%E5%B0%BC%E6%96%AF%C2%B7%E9%87%8C%E5%A5%87/7267171">丹尼斯·里奇</a>（Dennis MacAlistair Ritchie）以肯尼斯·蓝·汤普森（Kenneth Lane Thompson）设计的<a href="https://baike.baidu.com/item/B%E8%AF%AD%E8%A8%80/1845842">B语言</a>为基础发展而来，在它的主体设计完成后，汤普森和里奇用它完全重写了UNIX操作系统，且随着UNIX操作系统的发展，C语言也得到了不断的完善。</p>
+</blockquote>
+<p>高级语言不同于低级语言，低级语言的主要操作对象是指令本身，而高级语言却更加符合我们人脑的认知，更像是通过我们人的思维，去告诉计算机你需要做什么，包括语法也会更加的简单易懂。下面是一段简单的C语言代码：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">int main() {
+  	int a = 10;   //定义一个a等于10
+  	int b = 10;   //定义一个b等于10
+  	int c = a + b;   //语义非常明确，c就是a加上b计算出来的结果。
+  	return 0;
+}
+</code></pre></figure>
+<p>不过现在看不懂没关系，我们后面慢慢学。</p>
+<p>C语言虽然支持按照我们更容易理解的方式去进行编程，但是最后还是会编译成汇编指令最后变成计算机可以直接执行的指令，不过具体的编译过程，我们不需要再关心了，我们只需要去写就可以了，而对我们代码进行编译的东西，称为编译器。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/H8ZXlCwO3gyxTpz.png" alt="image-20230228214904604"></p>
+<p>当然，除了C语言之外，还有很多其他的高级语言，比如Java、Python、C#、PHP等等，相比其他编程语言，C算是比较古老的一种了，但是时隔多年直至今日，其他编程语言也依然无法撼动它的王者地位：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/73aeAcv2EOUqzHY.png" alt="image-20230228214946883"></p>
+<p>可以看到在2021年9月，依然排在编程语言排行榜的<strong>第一名</strong>（Python和Java紧随其后），可见这门语言是多么的不可撼动，很多操作系统、高级编程语言底层实现，几乎都是依靠C语言去编写的（包括Java的底层也是C/C++实现的）所以学习这一门语言，对于理工科尤其是计算机专业极为重要，学好C语言你甚至可以融汇贯通到其他语言，学起来也会轻松很多。</p>
+<p>那么从下节课开始，我们就先做好一些环境上的准备。</p>
+<h2 id="c语言开发环境部署">C语言开发环境部署</h2>
+<p>完成开发环境部署之后，我们就可以使用C语言来将一句话输出到控制台了，成功编译运行下面的简单程序：</p>
+<figure class="code-frame" data-lang="C"><figcaption><span></span><strong>C</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    printf(&quot;Hello, World!\n&quot;);
+    return 0;
+}
+</code></pre></figure>
+<p>首先，我们既然要将我们编写的C语言代码进行编译，那么肯定得找到一个合适的编译器才行，现代的集成开发环境IDE一般都包含了这些编译器，所以我们不需要进行单独的安装。</p>
+<p>我们只需要找一个集成开发环境去安装就行了，目前功能比较完善的集成开发环境有：</p>
+<ul>
+<li>Codeblocks（支持Windows、Linux、MacOS操作系统）</li>
+<li>Visual Studio（支持Windows、MacOS操作系统）</li>
+<li>CLion（支持Windows、Linux、MacOS操作系统）</li>
+</ul>
+<p>这里我们就使用CLion作为我们的开发工具使用（这个IDE是收费的，但是学生可以申请免费使用，别担心，大学四年肯定是够你用了，选这个是考虑到后面同学们可能会继续学习Java，Java语言的推荐IDE也是同一个公司的产品，界面都长得差不多）当然如果你想要使用其他的开发工具，也可以，但是这里我们就不演示了。</p>
+<p>首先前往官网下载：<a href="https://www.jetbrains.com/clion/">CLion: A Cross-Platform IDE for C and C++ by JetBrains</a></p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/7GMygwFJlQp9ZP8.png" alt="image-20230228215009796"></p>
+<p>下载完成后我们直接点击安装：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/4I7Ei1TsDfb9qxn.png" alt="image-20230228215151889"></p>
+<p>如果你不是很熟悉，建议直接点Next安装到C盘默认路径，不要去修改，当然如果确实C盘没有空间，那可以自行修改为其他路径，但是注意最好路径中不要出现中文。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/RTQlsGAtc89qOyX.png" alt="image-20230228215202467"></p>
+<p>勾选一下创建快捷方式，然后继续点Next等待安装就行了：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/hz7r6lTNHP9pJoM.png" alt="image-20230228215212439"></p>
+<p>安装完成后，我们可以直接打开：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/2eVK1DiEJST5PGx.png" alt="image-20230228215225580"></p>
+<p>这里会提示我们激活，点击按钮去官网注册一个账号。注册完成后，推荐去申请一下学生授权，因为试用只有30天：<a href="https://zhuanlan.zhihu.com/p/378185042">Jetbrains学生授权获取指南 - 知乎 (zhihu.com)</a></p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/pdFNa7TyJWHre3U.png" alt="image-20230228215236815"></p>
+<p>这里我们点击开始试用，然后就可以点击Continue了，现在成功来到主界面：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/buIM8HX1QY6qTvk.png" alt="image-20230228215248832"></p>
+<p>由于是英文，使用不太方便，所以我们安装一下中文插件：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/o7SXRVt35GWk6CO.png" alt="image-20230228215259946"></p>
+<p>现在我们就成功安装好CLion集成开发环境了。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/iElSmtv1aM6B2q9.png" alt="image-20230228215313007"></p>
+<p>现在我们来创建我们的第一个C语言项目（我们的程序是以一个项目的形式进行管理的，这里知道怎么创建就行了）：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/Ojk9IrAcGMXPvFn.png" alt="image-20230228215325386"></p>
+<p>这里选择C可执行文件，然后项目的保存位置可以自行修改，配置完成后点击创建：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/VGChXBaFYokxrQd.png" alt="image-20230228215336557"></p>
+<p>可以看到，在创建之后，会自动为我们生成一段示例代码，而之后我们要编写的代码，都在生成的main.c中进行编写，除了这个文件，其他的全部不要去修改，也不用管是什么意思，后面我们会慢慢介绍。</p>
+<p>接着我们需要配置一下工具链，选择捆绑的MinGW（如果已经有了就不需要配置了）</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/AFTY7rUW1glZqk3.png" alt="image-20230228215350815"></p>
+<p>那么这段示例代码有了，我们如何编译运行呢？</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/GxcwNidTHjVt1zo.png" alt="image-20230228215407064"></p>
+<p>我们可以点击代码旁边的绿色三角形符号或是右上角的绿色三角形，就可以直接编译运行我们的代码了。运行的结果是在控制台输出一个“HelloWorld！”，当然我们也可以直接运行编译出来的可执行文件：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/uLVbBOUsf1aYEWi.png" alt="image-20230228215418617"></p>
+<p>我们可以看到，这里生成了一个<code>项目名称.exe</code>文件，这种就是Windows环境下可以直接运行的应用程序，我们可以打开这个文件夹，直接使用cmd来运行：</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://oss.itbaima.cn/internal/markdown/2023/02/28/GvFUNbVnLIwqyuK.png" alt="image-20230228215428496"></p>
+<p>运行出来的效果是一样的，这种程序实际上就是最原始的命令行程序，输入和输出都是在这种黑框框中进行的，而我们的主要学习目标也是这种命令行程序。</p>
+<p>这样我们就配置好了开发环境，然后就不要去动其他的东西了，一般新手最容易遇到一些奇奇怪怪的问题。</p>
+</div> <section class="post-copyright" aria-label="文章版权信息"> <div> <span>作者</span> <strong>云灿</strong> </div> <div> <span>发布于</span> <strong>2023-06-16</strong> </div> <div> <span>更新于</span> <strong>2023-06-16</strong> </div> <div> <span>许可协议</span> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> </div> </section> <!-- 赞赏弹窗已提升至 BaseLayout 的 body 子级，避免 .article-shell 包含块与层叠上下文影响定位 --> </div> <aside class="article-toc hydro-post-aside-lite" aria-label="文章侧栏"> <section class="reader-panel"> <div> <p>READING</p> <strong>20 min</strong> </div> <span><i data-reader-progress></i></span> <dl> <div><dt>发布</dt><dd>2023-06-16</dd></div> <div><dt>更新</dt><dd>2023-06-16</dd></div> <div><dt>分类</dt><dd>计算机基础</dd></div> </dl> </section> <section class="toc-panel"> <strong>目录</strong> <a href="#计算机的世界" data-depth="2">计算机的世界</a><a href="#操作系统概述" data-depth="2">操作系统概述</a><a href="#计算机编程语言" data-depth="2">计算机编程语言</a><a href="#c语言开发环境部署" data-depth="2">C语言开发环境部署</a> </section> <section class="toc-actions"> <button type="button" data-share-current><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2A5 5 0 0 0 12 20.07l1.15-1.15"/></svg>分享本文</button> <button type="button" data-reward-toggle><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 22l8.8-8.8a5.4 5.4 0 0 0 0-7.6z"/></svg>赞赏作者</button> <a href="#post-comment"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>去评论</a> </section> </aside> </div> </article> <div class="content-shell"> <section id="post-comment" class="comment-panel surface" data-twikoo-env="https://comment.yuncan.xyz" data-twikoo-script="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js"> <div class="section-heading"> <p>COMMENTS</p> <h2>留言</h2> </div> <div id="twikoo-wrap"></div> </section> <script type="module">(()=>{const r=document.querySelector("#post-comment"),s=r?.dataset.twikooEnv||"",c=r?.dataset.twikooScript||"";let i=!1;const l=()=>location.pathname||"/",p=()=>new Promise((t,o)=>{const e=document.querySelector("script[data-twikoo-script]");if(e){window.twikoo?t(window.twikoo):(e.addEventListener("load",()=>t(window.twikoo)),e.addEventListener("error",()=>o(new Error("script load failed"))));return}const n=document.createElement("script");n.src=c,n.async=!0,n.defer=!0,n.charset="UTF-8",n.setAttribute("data-twikoo-script","true"),n.onload=()=>{t(window.twikoo)},n.onerror=()=>{o(new Error("twikoo script load failed"))},document.head.appendChild(n)}),w=(t,o)=>{t.innerHTML=`
+        <div style="padding: 40px 20px; text-align: center;">
+          <p style="color: var(--muted); font-size: 14px; line-height: 2;">
+            评论加载失败：${o}
+          </p>
+          <p style="color: var(--muted); font-size: 12px; margin-top: 12px;">
+            请稍后重试，或直接联系作者
+          </p>
+        </div>
+      `},a=async()=>{const t=document.querySelector("#twikoo-wrap");if(!t)return;const o=l();if(!(i&&t.dataset.lastPath===o)){i=!0,t.dataset.lastPath=o;try{t.innerHTML='<div style="padding: 30px; text-align: center;"><span style="color: var(--muted);">加载评论中...</span></div>';const e=await p();if(!e||typeof e.init!="function")throw new Error("twikoo API not available");t.innerHTML="",await e.init({envId:s,el:"#twikoo-wrap",path:o,lang:"zh-CN"})}catch(e){console.error("[Twikoo] init failed:",e),w(t,e.message||"初始化异常")}}},d=()=>{document.readyState==="loading"?document.addEventListener("DOMContentLoaded",a,{once:!0}):a()};document.addEventListener("astro:page-load",d),d()})();</script> </div>  </main> <footer class="site-footer"> <div> <strong>云灿の随笔小站</strong> <span>浮云一别后，流水十年间</span> </div> <p> <a href="https://yuncan.xyz" target="_blank" rel="noopener">前往主站</a>  · 晋ICP备2024030642号-1 · Powered by Astro · Yuncan050115 · v1.0.8 </p> </footer> <aside class="music-dock" data-music="{&quot;api&quot;:&quot;https://music.yuncan.xyz/api?server=:server&amp;type=:type&amp;id=:id&amp;r=:r&quot;,&quot;server&quot;:&quot;netease&quot;,&quot;type&quot;:&quot;playlist&quot;,&quot;id&quot;:&quot;817519033&quot;,&quot;autoplay&quot;:true,&quot;lyricMode&quot;:&quot;manual&quot;,&quot;fallbackCover&quot;:&quot;/assets/logo-yuncan.png&quot;}" data-astro-transition-persist="music-dock" data-astro-transition-scope="astro-veqaj6uj-10"> <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <img src="/assets/logo-yuncan.png" alt=""> </button> <div class="music-info"> <strong data-music-title>Yuncan Music</strong> <span data-music-artist>云灿</span> <p data-music-lyric>正在连接歌单</p> </div> <div class="music-controls"> <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16"/><path d="M20 4 8 12l12 8z"/></svg> </button> <button type="button" class="music-btn music-btn-play" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg> </button> <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4v16"/><path d="M4 4 16 12 4 20z"/></svg> </button> </div> <audio data-music-audio preload="metadata"></audio> </aside> <div class="runtime-tools" data-astro-transition-persist="runtime-tools" data-astro-transition-scope="astro-pspklqzf-11"> <span id="runtime-days" data-site-start="2023-01-01">运行 -- 天</span> <span id="fps">FPS --</span> <button class="icon-button" data-back-top title="返回顶部" aria-label="返回顶部"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg> </button> </div> <div id="context-menu" class="context-menu" aria-hidden="true" data-astro-transition-persist="context-menu" data-astro-transition-scope="astro-2226xma5-12"> <div class="context-row context-icons"> <button data-context-action="back" title="后退"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="forward" title="前进"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="reload" title="刷新"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4M6 22v-4h4"/></svg></button> <button data-context-action="top" title="回到顶部"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> </div> <div class="context-row"> <button data-context-action="copy-url">复制地址</button> <button data-context-action="comment">去评论</button> <button data-context-action="theme">昼夜切换</button> <button data-context-action="print">打印页面</button> </div> </div> <!-- 全局赞赏弹窗（从文章页提升至 body 子级，避免层叠上下文和包含块问题） --> <div class="reward-dialog" data-reward-dialog aria-hidden="true"> <button class="reward-scrim" type="button" data-reward-close aria-label="关闭赞赏"></button> <div class="reward-panel" role="dialog" aria-label="赞赏作者"> <button class="reward-close" type="button" data-reward-close aria-label="关闭"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button> <p>THANKS</p> <h2>赞赏作者</h2> <span>如果这篇文章对你有帮助，可以请我喝杯茶。微信和支付宝收款码都在下面。</span> <div class="reward-codes"> <figure> <img src="/assets/zfb.jpg" alt="支付宝收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>支付宝</figcaption> </figure><figure> <img src="/assets/wx.jpg" alt="微信收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>微信</figcaption> </figure> </div> </div> </div>  <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.Bl8ln883.js"></script> </body> </html>

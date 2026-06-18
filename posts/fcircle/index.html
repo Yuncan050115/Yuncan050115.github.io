@@ -1,0 +1,532 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme-default="auto"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>博客建站之插件使用范例 | 云灿の随笔小站</title><meta name="description" content="✨以hexo博客系统的朋友圈插件为例。"><meta name="keywords" content="云灿, 随笔, 博客, 诗词, 编程"><meta name="author" content="云灿"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4ef"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101112"><meta property="og:title" content="博客建站之插件使用范例 | 云灿の随笔小站"><meta property="og:description" content="✨以hexo博客系统的朋友圈插件为例。"><meta property="og:image" content="/assets/logo-yuncan.png"><link rel="icon" type="image/png" href="/assets/logo-yuncan.png"><link rel="apple-touch-icon" href="/assets/logo-yuncan.png"><link rel="preconnect" href="https://apir.yuncan.xyz"><link rel="preconnect" href="https://music.yuncan.xyz"><link rel="preconnect" href="https://comment.yuncan.xyz"><link rel="preconnect" href="https://api.bilibili.com"><link rel="preconnect" href="https://i0.hdslb.com"><link rel="preload" as="image" href="https://apir.yuncan.xyz/index.php?size=1600"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><script>
+      (() => {
+        const root = document.documentElement;
+        const saved = localStorage.getItem('yuncan-theme');
+        if (saved === 'light' || saved === 'dark') {
+          root.dataset.theme = saved;
+        } else {
+          const hour = new Date().getHours();
+          root.dataset.theme = (hour >= 6 && hour < 19) ? 'light' : 'dark';
+        }
+      })();
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><link rel="stylesheet" href="/_astro/BaseLayout.4GRpM9d1.css"><style>[data-astro-transition-scope="astro-m542s2jb-1"] { view-transition-name: read-progress; }@layer astro { ::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(read-progress) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-m542s2jb-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-m542s2jb-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-iv2bzgrw-2"] { view-transition-name: breath-scene; }@layer astro { ::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(breath-scene) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-iv2bzgrw-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-iv2bzgrw-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-tc6woczj-3"] { view-transition-name: global-bg; }@layer astro { ::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-bg) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-tc6woczj-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-tc6woczj-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-if6j4wsp-4"] { view-transition-name: global-filter; }@layer astro { ::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(global-filter) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-if6j4wsp-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-if6j4wsp-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-s6lkupbb-5"] { view-transition-name: grain; }@layer astro { ::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(grain) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-s6lkupbb-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-s6lkupbb-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-jgysxpi6-6"] { view-transition-name: cursor-glow; }@layer astro { ::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-glow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-jgysxpi6-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-jgysxpi6-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-ioirsxey-7"] { view-transition-name: cursor-dot; }@layer astro { ::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-dot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-ioirsxey-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-ioirsxey-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-5n244hft-8"] { view-transition-name: cursor-ring; }@layer astro { ::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(cursor-ring) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-5n244hft-8"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-5n244hft-8"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-fjkacnw5-9"] { view-transition-name: site-header; }@layer astro { ::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(site-header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-fjkacnw5-9"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-fjkacnw5-9"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-veqaj6uj-10"] { view-transition-name: music-dock; }@layer astro { ::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(music-dock) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-veqaj6uj-10"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-veqaj6uj-10"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-pspklqzf-11"] { view-transition-name: runtime-tools; }@layer astro { ::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(runtime-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-pspklqzf-11"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-pspklqzf-11"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-2226xma5-12"] { view-transition-name: context-menu; }@layer astro { ::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(context-menu) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-2226xma5-12"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-2226xma5-12"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body style="--global-bg: url('https://apir.yuncan.xyz/index.php?size=1600')"> <div class="read-progress" data-astro-transition-persist="read-progress" data-astro-transition-scope="astro-m542s2jb-1"></div> <canvas id="breath-scene" data-astro-transition-persist="breath-scene" data-astro-transition-scope="astro-iv2bzgrw-2"></canvas> <div class="global-bg" aria-hidden="true" data-astro-transition-persist="global-bg" data-astro-transition-scope="astro-tc6woczj-3"></div> <div class="global-filter" aria-hidden="true" data-astro-transition-persist="global-filter" data-astro-transition-scope="astro-if6j4wsp-4"></div> <div class="grain" aria-hidden="true" data-astro-transition-persist="grain" data-astro-transition-scope="astro-s6lkupbb-5"></div> <div class="cursor-glow" aria-hidden="true" data-astro-transition-persist="cursor-glow" data-astro-transition-scope="astro-jgysxpi6-6"></div> <div class="cursor-dot" aria-hidden="true" data-astro-transition-persist="cursor-dot" data-astro-transition-scope="astro-ioirsxey-7"></div> <div class="cursor-ring" aria-hidden="true" data-astro-transition-persist="cursor-ring" data-astro-transition-scope="astro-5n244hft-8"></div> <header class="site-header" data-astro-transition-persist="site-header" data-astro-transition-scope="astro-fjkacnw5-9"> <a class="brand-mark" href="/" aria-label="返回首页"> <img src="/assets/logo-yuncan.png" alt="云灿" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'"> </a> <nav class="site-nav" aria-label="主导航"> <div class="nav-item has-children"> <a href="/archives/"> <span>文章</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/archives/">归档</a><a href="/tags/">标签</a><a href="/categories/">分类</a> </div> </div><div class="nav-item has-children"> <a href="/bangumis/"> <span>在看</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/bangumis/">追番</a><a href="/cinemas/">追剧</a> </div> </div><div class="nav-item"> <a href="/steamgames/"> <span>在玩</span>  </a>  </div><div class="nav-item"> <a href="/comments/"> <span>留言板</span>  </a>  </div><div class="nav-item"> <a href="/social/link/"> <span>友链</span>  </a>  </div><div class="nav-item has-children"> <a href="/personal/about/"> <span>个人</span> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg> </a> <div class="nav-popover"> <a href="/site/time/">旧时光</a><a href="/personal/love/">恋爱小屋</a><a href="/personal/about/">关于</a> </div> </div><div class="nav-item"> <a href="/poems/"> <span>诗集</span>  </a>  </div><div class="nav-item"> <a href="/projects/"> <span>项目</span>  </a>  </div><div class="nav-item"> <a href="https://yuncan.xyz" target="_blank" rel="noopener"> <span>主站</span>  </a>  </div> </nav> <div class="header-actions"> <button class="icon-button" data-theme-toggle title="昼夜切换" aria-label="昼夜切换"> <span class="sun"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span> <span class="moon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 7 7 0 1 0 20 15.5z"/></svg></span> </button> <button class="icon-button nav-toggle" data-nav-toggle title="菜单" aria-label="菜单"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg> </button> </div> </header> <main id="main">  <article class="article-shell hydro-post-page-lite"> <header class="article-header"> <p>  <time datetime="2024-05-16">2024-05-16</time> <span>·</span> <span>3 分钟</span> </p> <h1>博客建站之插件使用范例</h1> <div class="chips"> <a href="/categories/%E7%96%91%E9%9A%BE%E8%A7%A3%E6%83%91/">疑难解惑</a> <a href="/tags/fcircle/">fcircle</a><a href="/tags/hexo/">hexo</a> </div> </header> <div class="article-layout"> <div class="article-main"> <div class="prose"><blockquote>
+<p>本文以hexo博客系统的朋友圈插件为例，解决大部分博客插件的安装与使用问题，撰供参考。</p>
+</blockquote>
+<h3 id="0.-准备环境">0. 准备环境</h3>
+<p>安装git</p>
+<figure class="code-frame" data-lang="CMD"><figcaption><span></span><strong>CMD</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-cmd">yum install git
+</code></pre></figure>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516084700096.png" alt="image-20240516084700096"></p>
+<h3 id="1.-保存项目">1. 保存项目</h3>
+<p>clone 项目并下载docker镜像</p>
+<figure class="code-frame" data-lang="CMD"><figcaption><span></span><strong>CMD</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-cmd">git clone https://github.com/Rock-Candy-Tea/hexo-circle-of-friends
+
+docker pull yyyzyyyz/fcircle:latest
+</code></pre></figure>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516084805300.png" alt="image-20240516084805300"></p>
+<h3 id="2.-部署项目">2. 部署项目</h3>
+<p>启动docker</p>
+<figure class="code-frame" data-lang="CMD"><figcaption><span></span><strong>CMD</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-cmd">docker run --name fcircle -p 8000:8000 -v ${PWD}/data:/app/data -d yyyzyyyz/fcircle
+</code></pre></figure>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516085146323.png" alt="image-20240516085146323"></p>
+<p>切换至clone好的项目路径，启动部署工具</p>
+<figure class="code-frame" data-lang="CMD"><figcaption><span></span><strong>CMD</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-cmd">cd hexo-circle-of-friends/
+
+python3 deploy.py
+</code></pre></figure>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516085224911.png" alt="image-20240516085224911"></p>
+<h3 id="3.-检测项目">3. 检测项目</h3>
+<p>分别检测docker和api的运行状态</p>
+<p>此处，stats、ps两种命令均可用</p>
+<figure class="code-frame" data-lang="CMD"><figcaption><span></span><strong>CMD</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-cmd">docker stats
+
+docker ps
+
+curl 127.0.0.1:8000/all
+</code></pre></figure>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516085507902.png" alt="image-20240516085507902"></p>
+<blockquote>
+<p>需要注意，此时还无法通过域名访问，只能通过本机IP:8000访问</p>
+</blockquote>
+<h3 id="4.-域名转发-1">4. 域名转发<a href="%E8%BF%99%E7%A7%8D%E6%9C%8D%E5%8A%A1%E9%80%9A%E5%B8%B8%E7%94%A8%E4%BA%8E%E7%BD%91%E9%A1%B5%E9%87%8D%E6%96%B0%E5%AE%9A%E4%BD%8D%E3%80%81%E7%AE%80%E5%8C%96%E7%BD%91%E5%9D%80%E3%80%81%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%88%96%E6%8F%90%E4%BE%9B%E7%BD%91%E7%AB%99%E9%95%9C%E5%83%8F%E6%9C%8D%E5%8A%A1%E7%AD%89%E5%9C%BA%E5%90%88%E3%80%82%E9%80%9A%E8%BF%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%89%B9%E6%AE%8A%E8%AE%BE%E7%BD%AE%EF%BC%8C%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%8F%91%E5%8F%AF%E4%BB%A5%E4%BD%BF%E8%AE%BF%E9%97%AE%E5%BD%93%E5%89%8D%E5%9F%9F%E5%90%8D%E7%9A%84%E7%94%A8%E6%88%B7%E8%A2%AB%E5%BC%95%E5%AF%BC%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E3%80%82">^1</a></h3>
+<p>以宝塔面板为例，新建PHP项目后，点击设置中的重定向，设置为永久重定向。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516090717095.png" alt="image-20240516090717095"></p>
+<p>此时立即申请免费SSL证书，以便进行https访问，建议使用Let&#39;s Encrypt的自动部署，可以解放双手，到期自动续签证书。</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516090950255.png" alt="image-20240516090950255"></p>
+<p>证书申请成功后，即点击配置文件修改配置，其中需要保留证书和listen相关内容，其余代码均可删除。</p>
+<figure class="code-frame" data-lang="NGINX"><figcaption><span></span><strong>NGINX</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-nginx">upstream dis {#需要配置upstream
+        server 你的IP:端口;
+    }  
+
+server {
+    listen 填写自己的listen;
+    server_name  fcircle.你的域名; #子域名
+
+    ssl_certificate    你的证书.pem;
+    ssl_certificate_key    你的证书.pem;
+    ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_ciphers 你的密文:!MD5;
+    
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    # ssl_session_cache    shared:SSL:1m;
+    ssl_session_timeout  5m;
+
+    location / {
+        #proxy_pass http://localhost:8000;
+        #proxy_pass http://dis; #这种方法，会导致出现问题
+        proxy_pass http://你的IP:端口;#建议这种写法，和主域名保持一致
+
+        # add_header Access-Control-Allow-Origin &quot;*&quot; always; #这个不要加
+        # add_header Access-Control-Allow-Methods &quot;POST, GET,PUT,DELETE, OPTIONS&quot;;
+        # add_header Access-Control-Allow-Headers &quot;Origin, Authorization, Accept&quot;;
+    }
+        
+}
+</code></pre></figure>
+<blockquote>
+<p>如果出现报错，则只粘贴最后一段location{}的内容，将原有的重定向代码内容替换</p>
+<p><img loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/logo-yuncan.png'" src="https://papi.yuncan.xyz/notephoto/image-20240516094834385.png" alt="image-20240516094834385"></p>
+</blockquote>
+</div> <section class="post-copyright" aria-label="文章版权信息"> <div> <span>作者</span> <strong>云灿</strong> </div> <div> <span>发布于</span> <strong>2024-05-16</strong> </div> <div> <span>更新于</span> <strong>2024-05-16</strong> </div> <div> <span>许可协议</span> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> </div> </section> <!-- 赞赏弹窗已提升至 BaseLayout 的 body 子级，避免 .article-shell 包含块与层叠上下文影响定位 --> </div> <aside class="article-toc hydro-post-aside-lite" aria-label="文章侧栏"> <section class="reader-panel"> <div> <p>READING</p> <strong>3 min</strong> </div> <span><i data-reader-progress></i></span> <dl> <div><dt>发布</dt><dd>2024-05-16</dd></div> <div><dt>更新</dt><dd>2024-05-16</dd></div> <div><dt>分类</dt><dd>疑难解惑</dd></div> </dl> </section> <section class="toc-panel"> <strong>目录</strong> <a href="#0.-准备环境" data-depth="3">0. 准备环境</a><a href="#1.-保存项目" data-depth="3">1. 保存项目</a><a href="#2.-部署项目" data-depth="3">2. 部署项目</a><a href="#3.-检测项目" data-depth="3">3. 检测项目</a><a href="#4.-域名转发-1" data-depth="3">4. 域名转发^1</a> </section> <section class="toc-actions"> <button type="button" data-share-current><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2A5 5 0 0 0 12 20.07l1.15-1.15"/></svg>分享本文</button> <button type="button" data-reward-toggle><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.6a5.4 5.4 0 0 0-7.6 0L12 6.8l-1.2-1.2a5.4 5.4 0 1 0-7.6 7.6L12 22l8.8-8.8a5.4 5.4 0 0 0 0-7.6z"/></svg>赞赏作者</button> <a href="#post-comment"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>去评论</a> </section> </aside> </div> </article> <div class="content-shell"> <section id="post-comment" class="comment-panel surface" data-twikoo-env="https://comment.yuncan.xyz" data-twikoo-script="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js"> <div class="section-heading"> <p>COMMENTS</p> <h2>留言</h2> </div> <div id="twikoo-wrap"></div> </section> <script type="module">(()=>{const r=document.querySelector("#post-comment"),s=r?.dataset.twikooEnv||"",c=r?.dataset.twikooScript||"";let i=!1;const l=()=>location.pathname||"/",p=()=>new Promise((t,o)=>{const e=document.querySelector("script[data-twikoo-script]");if(e){window.twikoo?t(window.twikoo):(e.addEventListener("load",()=>t(window.twikoo)),e.addEventListener("error",()=>o(new Error("script load failed"))));return}const n=document.createElement("script");n.src=c,n.async=!0,n.defer=!0,n.charset="UTF-8",n.setAttribute("data-twikoo-script","true"),n.onload=()=>{t(window.twikoo)},n.onerror=()=>{o(new Error("twikoo script load failed"))},document.head.appendChild(n)}),w=(t,o)=>{t.innerHTML=`
+        <div style="padding: 40px 20px; text-align: center;">
+          <p style="color: var(--muted); font-size: 14px; line-height: 2;">
+            评论加载失败：${o}
+          </p>
+          <p style="color: var(--muted); font-size: 12px; margin-top: 12px;">
+            请稍后重试，或直接联系作者
+          </p>
+        </div>
+      `},a=async()=>{const t=document.querySelector("#twikoo-wrap");if(!t)return;const o=l();if(!(i&&t.dataset.lastPath===o)){i=!0,t.dataset.lastPath=o;try{t.innerHTML='<div style="padding: 30px; text-align: center;"><span style="color: var(--muted);">加载评论中...</span></div>';const e=await p();if(!e||typeof e.init!="function")throw new Error("twikoo API not available");t.innerHTML="",await e.init({envId:s,el:"#twikoo-wrap",path:o,lang:"zh-CN"})}catch(e){console.error("[Twikoo] init failed:",e),w(t,e.message||"初始化异常")}}},d=()=>{document.readyState==="loading"?document.addEventListener("DOMContentLoaded",a,{once:!0}):a()};document.addEventListener("astro:page-load",d),d()})();</script> </div>  </main> <footer class="site-footer"> <div> <strong>云灿の随笔小站</strong> <span>浮云一别后，流水十年间</span> </div> <p> <a href="https://yuncan.xyz" target="_blank" rel="noopener">前往主站</a>  · 晋ICP备2024030642号-1 · Powered by Astro · Yuncan050115 · v1.0.8 </p> </footer> <aside class="music-dock" data-music="{&quot;api&quot;:&quot;https://music.yuncan.xyz/api?server=:server&amp;type=:type&amp;id=:id&amp;r=:r&quot;,&quot;server&quot;:&quot;netease&quot;,&quot;type&quot;:&quot;playlist&quot;,&quot;id&quot;:&quot;817519033&quot;,&quot;autoplay&quot;:true,&quot;lyricMode&quot;:&quot;manual&quot;,&quot;fallbackCover&quot;:&quot;/assets/logo-yuncan.png&quot;}" data-astro-transition-persist="music-dock" data-astro-transition-scope="astro-veqaj6uj-10"> <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <img src="/assets/logo-yuncan.png" alt=""> </button> <div class="music-info"> <strong data-music-title>Yuncan Music</strong> <span data-music-artist>云灿</span> <p data-music-lyric>正在连接歌单</p> </div> <div class="music-controls"> <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16"/><path d="M20 4 8 12l12 8z"/></svg> </button> <button type="button" class="music-btn music-btn-play" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg> </button> <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 4v16"/><path d="M4 4 16 12 4 20z"/></svg> </button> </div> <audio data-music-audio preload="metadata"></audio> </aside> <div class="runtime-tools" data-astro-transition-persist="runtime-tools" data-astro-transition-scope="astro-pspklqzf-11"> <span id="runtime-days" data-site-start="2023-01-01">运行 -- 天</span> <span id="fps">FPS --</span> <button class="icon-button" data-back-top title="返回顶部" aria-label="返回顶部"> <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg> </button> </div> <div id="context-menu" class="context-menu" aria-hidden="true" data-astro-transition-persist="context-menu" data-astro-transition-scope="astro-2226xma5-12"> <div class="context-row context-icons"> <button data-context-action="back" title="后退"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="forward" title="前进"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> <button data-context-action="reload" title="刷新"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4M6 22v-4h4"/></svg></button> <button data-context-action="top" title="回到顶部"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button> </div> <div class="context-row"> <button data-context-action="copy-url">复制地址</button> <button data-context-action="comment">去评论</button> <button data-context-action="theme">昼夜切换</button> <button data-context-action="print">打印页面</button> </div> </div> <!-- 全局赞赏弹窗（从文章页提升至 body 子级，避免层叠上下文和包含块问题） --> <div class="reward-dialog" data-reward-dialog aria-hidden="true"> <button class="reward-scrim" type="button" data-reward-close aria-label="关闭赞赏"></button> <div class="reward-panel" role="dialog" aria-label="赞赏作者"> <button class="reward-close" type="button" data-reward-close aria-label="关闭"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button> <p>THANKS</p> <h2>赞赏作者</h2> <span>如果这篇文章对你有帮助，可以请我喝杯茶。微信和支付宝收款码都在下面。</span> <div class="reward-codes"> <figure> <img src="/assets/zfb.jpg" alt="支付宝收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>支付宝</figcaption> </figure><figure> <img src="/assets/wx.jpg" alt="微信收款码" onerror="this.closest('figure').style.display='none'"> <figcaption>微信</figcaption> </figure> </div> </div> </div>  <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.Bl8ln883.js"></script> </body> </html>
