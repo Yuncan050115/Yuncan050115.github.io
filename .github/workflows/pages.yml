@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          PUBLIC_TWIKOO_API: ${{ secrets.PUBLIC_TWIKOO_API }}
+          PUBLIC_METING_API: ${{ secrets.PUBLIC_METING_API }}
+          PUBLIC_SONG_ID: ${{ secrets.PUBLIC_SONG_ID }}
+          PUBLIC_BG_IMAGE_API: ${{ secrets.PUBLIC_BG_IMAGE_API }}
+          PUBLIC_STEAM_API_KEY: ${{ secrets.PUBLIC_STEAM_API_KEY }}
+          PUBLIC_CIRCLE_API: ${{ secrets.PUBLIC_CIRCLE_API }}
+          POST_PASSWORD: ${{ secrets.POST_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
+          GITHUB_BRANCH: ${{ secrets.GITHUB_BRANCH }}
+
+      - name: Verify build output
+        run: |
+          echo "Checking dist directory..."
+          if [ ! -d "dist" ]; then
+            echo "ERROR: dist directory not found!"
+            exit 1
+          fi
+          echo "Checking _astro directory (CSS/JS assets)..."
+          if [ ! -d "dist/_astro" ]; then
+            echo "ERROR: dist/_astro directory not found! CSS/JS assets are missing!"
+            exit 1
+          fi
+          echo "Build output verified successfully."
+          echo "dist contents:"
+          ls -la dist/
+          echo "_astro contents (first 10):"
+          ls -la dist/_astro/ | head -10
+
+      - name: Deploy to main branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: main

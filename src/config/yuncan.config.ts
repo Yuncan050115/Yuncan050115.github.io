@@ -10,23 +10,23 @@ export const yuncanConfig = {
   /** 站点基本信息 */
   site: {
     /** 站点名称 */
-    name: '云灿',
+    name: import.meta.env.PUBLIC_SITE_NAME || '云灿',
     /** 站点标题（浏览器标签页标题） */
-    title: '云灿の随笔小站',
+    title: import.meta.env.PUBLIC_SITE_TITLE || '云灿の随笔小站',
     /** 站点描述（SEO） */
-    description: '浮云一别后，流水十年间',
+    description: import.meta.env.PUBLIC_SITE_DESC || '浮云一别后，流水十年间',
     /** 站点副标题 */
     subtitle: '浮云一别后，流水十年间',
     /** 站点作者 */
-    author: '云灿',
+    author: import.meta.env.PUBLIC_SITE_AUTHOR || '云灿',
     /** 联系邮箱 */
     email: 'yuncan3543@gmail.com',
     /** 主站地址 */
-    mainSite: 'https://yuncan.xyz',
+    mainSite: import.meta.env.PUBLIC_SITE_URL || 'https://yuncan.xyz',
     /** 站点起始日期（用于计算建站时长） */
-    siteStart: '2023-01-01',
+    siteStart: import.meta.env.PUBLIC_SITE_START || '2023-01-01',
     /** ICP 备案号 */
-    icp: '晋ICP备2024030642号-1',
+    icp: import.meta.env.PUBLIC_SITE_ICP || '晋ICP备2024030642号-1',
     /** GitHub 用户名 */
     githubUser: 'Yuncan050115',
     /** GitHub 仓库（用于 Issues 评论等） */
@@ -70,7 +70,7 @@ export const yuncanConfig = {
   /** Twikoo 评论系统配置 */
   twikoo: {
     /** Twikoo 环境 ID（部署地址） */
-    envId: 'https://comment.yuncan.xyz',
+    envId: import.meta.env.PUBLIC_TWIKOO_API || 'https://comment.yuncan.xyz',
     /** Twikoo 脚本 CDN 地址 */
     script: 'https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js'
   },
@@ -82,9 +82,9 @@ export const yuncanConfig = {
     /** 数据类型（playlist/song/album 等） */
     type: 'playlist',
     /** 歌单 ID */
-    playlistId: '817519033',
+    playlistId: import.meta.env.PUBLIC_SONG_ID || '817519033',
     /** MetingJS API 地址 */
-    api: 'https://music.yuncan.xyz/api?server=:server&type=:type&id=:id&r=:r',
+    api: import.meta.env.PUBLIC_METING_API || '',
     /** 是否自动播放 */
     autoplay: true,
     /** 歌词模式（manual/auto） */
@@ -112,9 +112,9 @@ export const yuncanConfig = {
     /**
      * Steam Web API Key
      * 从 https://steamcommunity.com/dev/apikey 获取
-     * 在 .env 文件中配置 STEAM_API_KEY，参考 .env.example
+     * 在 .env 文件中配置 PUBLIC_STEAM_API_KEY，参考 .env.example
      */
-    steamApiKey: import.meta.env.STEAM_API_KEY || '',
+    steamApiKey: import.meta.env.PUBLIC_STEAM_API_KEY || '',
     /** Steam 拥有游戏接口地址模板（:key 与 :steamId 会被替换） */
     steamOwnedGamesApi: 'https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=:key&steamid=:steamId&include_appinfo=true&include_played_free_games=true&format=json'
   },
@@ -161,18 +161,27 @@ export const yuncanConfig = {
     },
     { label: '在玩', href: '/steamgames/' },
     { label: '留言板', href: '/comments/' },
-    { label: '友链', href: '/social/link/' },
+    {
+      label: '友链',
+      href: '/social/link/',
+      children: [
+        { label: '友人帐', href: '/social/link/' },
+        { label: '朋友圈', href: '/social/circle/' }
+      ]
+    },
     {
       label: '个人',
       href: '/personal/about/',
       children: [
         { label: '旧时光', href: '/site/time/' },
         { label: '恋爱小屋', href: '/personal/love/' },
-        { label: '关于', href: '/personal/about/' }
+        { label: '关于', href: '/personal/about/' },
+        { label: '项目', href: '/projects/' },
+        { label: '学术', href: 'https://scholar.google.com/citations?hl=en&user=6wnxnLgAAAAJ' },
+        { label: '作曲编曲', href: 'https://music.163.com/#/artist?id=52634647' }
       ]
     },
     { label: '诗集', href: '/poems/' },
-    { label: '项目', href: '/projects/' },
     { label: '主站', href: 'https://yuncan.xyz' }
   ],
 

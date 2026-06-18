@@ -14,6 +14,9 @@ type Poem = {
   group: string;
   groupIndex: number;
   notes: string[];
+  slug: string;
+  excerpt: string;
+  tags: string[];
 };
 
 type PoemGroup = {
@@ -59,6 +62,8 @@ const noteStartPattern = /^(注\s*[：:]|背景\s*[：:]|说明\s*[：:]|整理�
 const imageLabelPattern = /^配图\s*[：:]/;
 // 注释续行：一、 二、 三、 等（仅用于"注："之后）
 const noteContinuationPattern = /^[一二三四五六七八九十]+[、.．]/;
+// 标签行：标签：tag1 / 标签：tag1, tag2
+const tagPattern = /^标签\s*[：:]/;
 // 作者关键字
 const authorPattern = /(云灿|武笑宇|江漓|花魂)/;
 
@@ -135,7 +140,7 @@ function parseDateForSort(dateStr: string): number {
   return year * 10000 + month * 100 + day;
 }
 
-// 解析单首诗：区分元数据（作者、日期）、注释（背景/说明/注）、配图、正文
+// 解析单首诗：区分元数据（作者、日期）、注释（背景/说明/注）、配图、正文、标签
 function parsePoem(headerLine: string, bodyLines: string[], group: PoemGroup): Poem {
   const title = headerLine.replace(/^#+\s*/, '').trim();
   const poem: Poem = {
@@ -147,6 +152,9 @@ function parsePoem(headerLine: string, bodyLines: string[], group: PoemGroup): P
     group: group.name,
     groupIndex: 0,
     notes: [],
+    slug: title.replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
+    excerpt: '',
+    tags: [],
   };
 
   let inNotesSection = false;
@@ -185,7 +193,7 @@ function parsePoem(headerLine: string, bodyLines: string[], group: PoemGroup): P
       continue;
     }
 
-    // 元数据识别（作者、日期，仅在正文开始前）
+    // 元数据识别（作者、日期、标签，仅在正文开始前）
     if (!metadataDone) {
       if (!poem.author && isAuthorLine(line)) {
         poem.author = line;
@@ -196,6 +204,12 @@ function parsePoem(headerLine: string, bodyLines: string[], group: PoemGroup): P
         metadataDone = true;
         continue;
       }
+      // 标签行
+      const tagMatch = line.match(tagPattern);
+      if (tagMatch) {
+        poem.tags = line.split(/[：:]/)[1].split(/[,，]/).map(t => t.trim()).filter(t => t);
+        continue;
+      }
     }
 
     // 其余非空行均为诗文正文，完整保留
@@ -204,6 +218,7 @@ function parsePoem(headerLine: string, bodyLines: string[], group: PoemGroup): P
   }
 
   if (!poem.author) poem.author = '云灿';
+  if (!poem.excerpt && poem.body.length > 0) poem.excerpt = poem.body[0];
   return poem;
 }
 
@@ -263,13 +278,30 @@ for (let gi = 0; gi < groups.length; gi++) {
   }
 }
 
-// 时间轴视图：所有诗按日期排序
+// 时间轴视图：所有诗按日期排序，并按年份分组
 const allPoems: Poem[] = groups.flatMap(g => g.poems);
 allPoems.sort((a, b) => parseDateForSort(a.date) - parseDateForSort(b.date));
+
+// 按年份分组
+const yearMap: Record<number, Poem[]> = {};
+for (const poem of allPoems) {
+  const chineseYearMatch = poem.date.match(/二[〇一二三四五六七八九]{3}/);
+  const arabicYearMatch = poem.date.match(/\d{4}/);
+  let year = 0;
+  if (chineseYearMatch) {
+    const digitMap: Record<string, number> = { '〇': 0, '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9 };
+    year = chineseYearMatch[0].split('').reduce((acc, c) => acc * 10 + (digitMap[c] ?? 0), 0);
+  } else if (arabicYearMatch) {
+    year = parseInt(arabicYearMatch[0], 10);
+  }
+  if (!yearMap[year]) yearMap[year] = [];
+  yearMap[year].push(poem);
+}
+const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseInt(a)).map(year => ({ year: parseInt(year), poems: yearMap[parseInt(year)] }));
 ---
 
 <BaseLayout title="诗集">
-  <PageHero title="诗集" description="少时至今的诗，按辑与按时间两种方式读。未敢言工，只是自己的字。" />
+  <PageHero title="诗集" description="诗与远方" />
 
   <!-- 防复制保护脚本 -->
   <script is:inline>
@@ -340,13 +372,13 @@ allPoems.sort((a, b) => parseDateForSort(a.date) - parseDateForSort(b.date));
   <!-- 视图切换按钮 -->
   <section class="content-shell poem-view-toggle">
     <div class="view-switcher">
-      <button id="view-catalog" class="view-btn active" aria-label="诗集视图">
+      <button id="view-catalog" class="view-btn" aria-label="诗集视图">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
           <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <span>诗集</span>
       </button>
-      <button id="view-timeline" class="view-btn" aria-label="时间轴视图">
+      <button id="view-timeline" class="view-btn active" aria-label="时间轴视图">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
           <path d="M12 2v20M2 12h4M18 12h4M6 6l2 2M16 16l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -356,7 +388,7 @@ allPoems.sort((a, b) => parseDateForSort(a.date) - parseDateForSort(b.date));
   </section>
 
   <!-- 目录视图（按辑分组，古生古色风格） -->
-  <section class="content-shell poem-catalog-view" id="catalog-view">
+  <section class="content-shell poem-catalog-view" id="catalog-view" style="display: none;">
     {groups.map((group, gi) => (
       <div class="poem-group classical-group" style={`--gi: ${gi}`}>
         <header class="group-header classical-header">
@@ -394,36 +426,45 @@ allPoems.sort((a, b) => parseDateForSort(a.date) - parseDateForSort(b.date));
     ))}
   </section>
 
-  <!-- 时间轴视图（按日期排序，时间线设计） -->
-  <section class="content-shell poem-timeline-view" id="timeline-view" style="display: none;">
+  <!-- 时间轴视图：按年份分组，与归档页面布局一致 -->
+  <section class="content-shell poem-timeline-view" id="timeline-view">
     <div class="section-heading small">
       <p>TIMELINE</p>
       <h2>按时间读</h2>
     </div>
     <div class="poem-list">
-      {allPoems.map((poem, index) => (
-        <article class="poem-line breathe-card" style={`--i:${index}`}>
-          <time>{poem.date}</time>
-          <div>
-            <h3>{poem.title}</h3>
-            <p>{poem.author}</p>
-            <div class="poem-lines">
-              {poem.body.map((line) => <span>{line}</span>)}
-            </div>
-            {poem.notes.length > 0 && (
-              <div class="poem-notes">
-                {poem.notes.map((note) => <small class="poem-note-line">{note}</small>)}
-              </div>
-            )}
-            {poem.images.length > 0 && (
-              <div class="poem-timeline-gallery">
-                {poem.images.map((src, i) => (
-                  <img src={src} alt={`${poem.title}配图 ${i + 1}`} loading="lazy" decoding="async" referrerpolicy="no-referrer" />
-                ))}
-              </div>
-            )}
+      {timelineGroups.map(({ year, poems: yearPoems }) => (
+        <div class="poem-archive-year-group">
+          <div class="poem-archive-year">{year}</div>
+          <div class="poem-archive-list">
+            {yearPoems.map((poem) => (
+              <article class="poem-archive-item">
+                <div class="poem-meta">
+                  <time>{poem.date}</time>
+                </div>
+                <div class="poem-content">
+                  <h3><a href={`/posts/${poem.slug}/`}>{poem.title}</a></h3>
+                  <p class="poem-author-line">{poem.author}</p>
+                  <div class="poem-excerpt-multi">
+                    {poem.body.map((line) => <p>{line}</p>)}
+                  </div>
+                  {poem.images.length > 0 && (
+                    <div class="poem-archive-gallery">
+                      {poem.images.slice(0, 3).map((src, i) => (
+                        <img src={src} alt={`${poem.title}配图 ${i + 1}`} loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                      ))}
+                    </div>
+                  )}
+                  {poem.tags.length > 0 && (
+                    <div class="poem-tags">
+                      {poem.tags.map(tag => <span class="tag">{tag}</span>)}
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
-        </article>
+        </div>
       ))}
     </div>
   </section>

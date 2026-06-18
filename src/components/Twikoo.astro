@@ -1,21 +1,28 @@
 ---
 import { site } from '../data/site';
+const { twikooEnvId, twikooScript } = site;
+// 如果未配置 Twikoo API，不渲染评论
 ---
 
-<section id="post-comment" class="comment-panel surface" data-twikoo-env={site.twikooEnvId} data-twikoo-script={site.twikooScript}>
-  <div class="section-heading">
-    <p>COMMENTS</p>
-    <h2>留言</h2>
-  </div>
-  <div id="twikoo-wrap"></div>
-</section>
+{twikooEnvId && (
+  <section id="post-comment" class="comment-panel surface" data-twikoo-env={twikooEnvId} data-twikoo-script={twikooScript}>
+    <div class="section-heading">
+      <p>COMMENTS</p>
+      <h2>留言</h2>
+    </div>
+    <div id="twikoo-wrap"></div>
+  </section>
+)}
 
 <script>
   (() => {
     const root = document.querySelector<HTMLElement>('#post-comment');
     const envId = root?.dataset.twikooEnv || '';
     const scriptUrl = root?.dataset.twikooScript || '';
-    
+
+    // 未配置 Twikoo API，不初始化
+    if (!envId || !scriptUrl) return;
+
     let twikooLoaded = false;
     let initAttempted = false;
 
@@ -54,7 +61,7 @@ import { site } from '../data/site';
       });
     };
 
-    const showError = (el, msg) => {
+    const showError = (el: HTMLElement, msg: string) => {
       el.innerHTML = `
         <div style="padding: 40px 20px; text-align: center;">
           <p style="color: var(--muted); font-size: 14px; line-height: 2;">
@@ -68,7 +75,7 @@ import { site } from '../data/site';
     };
 
     const initTwikoo = async () => {
-      const el = document.querySelector('#twikoo-wrap');
+      const el = document.querySelector<HTMLElement>('#twikoo-wrap');
       if (!el) return;
 
       const path = getPath();
@@ -83,7 +90,7 @@ import { site } from '../data/site';
       try {
         el.innerHTML = '<div style="padding: 30px; text-align: center;"><span style="color: var(--muted);">加载评论中...</span></div>';
         
-        const twikoo = await insertScript();
+        const twikoo = await insertScript() as any;
         
         if (!twikoo || typeof twikoo.init !== 'function') {
           throw new Error('twikoo API not available');
@@ -100,7 +107,8 @@ import { site } from '../data/site';
 
       } catch (error) {
         console.error('[Twikoo] init failed:', error);
-        showError(el, error.message || '初始化异常');
+        const errMsg = (error instanceof Error) ? error.message : '初始化异常';
+        showError(el, errMsg);
       }
     };
 

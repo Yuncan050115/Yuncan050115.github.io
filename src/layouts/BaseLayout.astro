@@ -2,11 +2,14 @@
 import { ClientRouter } from 'astro:transitions';
 import { site } from '../data/site';
 import Icon from '../components/Icon.astro';
+import SettingsPanel from '../components/SettingsPanel.astro';
+import PostEditor from '../components/PostEditor.astro';
 import '../styles/site.css';
 
 const { title = site.title, description = site.description } = Astro.props;
 const pageTitle = title === site.title ? site.title : `${title} | ${site.title}`;
-const musicPayload = {
+const hasMusic = !!(site.music?.api && site.music?.playlistId);
+const musicPayload = hasMusic ? {
   api: site.musicApi,
   server: site.music.server,
   type: site.music.type,
@@ -14,7 +17,7 @@ const musicPayload = {
   autoplay: site.music.autoplay,
   lyricMode: site.music.lyricMode,
   fallbackCover: site.music.fallbackCover
-};
+} : null;
 const preconnectOrigins = Array.from(new Set(
   [site.background.image, site.music.api, site.twikooEnvId]
     .map((url) => {
@@ -45,6 +48,28 @@ const preconnectOrigins = Array.from(new Set(
     <link rel="preconnect" href="https://i0.hdslb.com" />
     <link rel="preload" as="image" href={site.background.image} />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" />
+    <style is:global>
+      @font-face {
+        font-family: 'JinghuaLaosong';
+        src: url('/assets/fonts/JinghuaLaosong.woff2') format('woff2');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'LXGWWenKai';
+        src: url('/assets/fonts/LXGWWenKai-Light.woff2') format('woff2');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'SourceHanSansOLD';
+        src: url('/assets/fonts/SourceHanSansOLD-ExtraLight-2.woff2') format('woff2');
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'FZYanSong';
+        src: url('/assets/fonts/方正颜宋简体_中.woff2') format('woff2');
+        font-display: swap;
+      }
+    </style>
     <script is:inline>
       (() => {
         const root = document.documentElement;
@@ -84,7 +109,10 @@ const preconnectOrigins = Array.from(new Set(
             </a>
             {'children' in item && item.children?.length ? (
               <div class="nav-popover">
-                {item.children.map((child) => <a href={child.href}>{child.label}</a>)}
+                {item.children.map((child) => {
+                  const childExternal = typeof child.href === 'string' && /^https?:\/\//.test(child.href);
+                  return <a href={child.href} target={childExternal ? '_blank' : undefined} rel={childExternal ? 'noopener' : undefined}>{child.label}</a>;
+                })}
               </div>
             ) : null}
           </div>
@@ -92,6 +120,7 @@ const preconnectOrigins = Array.from(new Set(
         })}
       </nav>
       <div class="header-actions">
+        <SettingsPanel />
         <button class="icon-button" data-theme-toggle title="昼夜切换" aria-label="昼夜切换">
           <span class="sun"><Icon name="sun" /></span>
           <span class="moon"><Icon name="moon" /></span>
@@ -117,31 +146,42 @@ const preconnectOrigins = Array.from(new Set(
       </p>
     </footer>
 
-    <aside class="music-dock" data-music={JSON.stringify(musicPayload)} transition:name="music-dock" transition:persist>
-      <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐">
-        <img src={site.music.fallbackCover || site.logo} alt="" />
-      </button>
-      <div class="music-info">
-        <strong data-music-title>Yuncan Music</strong>
-        <span data-music-artist>{site.name}</span>
-        <p data-music-lyric>正在连接歌单</p>
-      </div>
-      <div class="music-controls">
-        <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首">
-          <Icon name="prev" />
+    {hasMusic && (
+      <aside class="music-dock" data-music={JSON.stringify(musicPayload)} transition:name="music-dock" transition:persist>
+        <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐">
+          <img src={site.music.fallbackCover || site.logo} alt="" />
         </button>
-        <button type="button" class="music-btn music-btn-play" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐">
-          <Icon name="play" />
-          <Icon name="pause" />
-        </button>
-        <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首">
-          <Icon name="next" />
-        </button>
-      </div>
-      <audio data-music-audio preload="metadata"></audio>
-    </aside>
+        <div class="music-info">
+          <strong data-music-title>Yuncan Music</strong>
+          <span data-music-artist>{site.name}</span>
+          <p data-music-lyric>正在连接歌单</p>
+        </div>
+        <div class="music-controls">
+          <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首">
+            <Icon name="prev" />
+          </button>
+          <button type="button" class="music-btn music-btn-play" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐">
+            <Icon name="play" />
+            <Icon name="pause" />
+          </button>
+          <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首">
+            <Icon name="next" />
+          </button>
+        </div>
+        {/* 歌单列表 */}
+        <div class="music-list" data-music-list></div>
+        <audio data-music-audio preload="metadata"></audio>
+      </aside>
+    )}
 
-    <div class="runtime-tools" transition:name="runtime-tools" transition:persist>
+    <!-- 歌词栏 -->
+    <div id="lyric-bar" class="lyric-bar" data-lyric-bar transition:persist>
+      <div class="lyric-bar-inner">
+        <span class="lyric-bar-text" data-lyric-text>暂无歌词</span>
+      </div>
+    </div>
+
+    <div class="runtime-tools" transition:persist>
       <span id="runtime-days" data-site-start={site.siteStart}>运行 -- 天</span>
       <span id="fps">FPS --</span>
       <button class="icon-button" data-back-top title="返回顶部" aria-label="返回顶部">
@@ -188,5 +228,6 @@ const preconnectOrigins = Array.from(new Set(
     </style>
 
     <script src="../scripts/app.ts"></script>
+    <PostEditor />
   </body>
 </html>

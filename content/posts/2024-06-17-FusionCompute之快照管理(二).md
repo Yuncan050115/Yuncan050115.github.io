@@ -7,7 +7,6 @@ tags:
 categories:
   - 虚拟机
 mathjax: true
-sticky: 2
 swiper_index: 2
 description: "\U0001F387华为云虚拟机操作与使用。"
 abbrlink: fc4
@@ -21,7 +20,7 @@ date: 2024-06-17 17:41:56
 touch test
 ```
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image002.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--51.jpg)
 
 进入文件写入随机内容
 
@@ -31,11 +30,11 @@ vi test
 :wq
 ```
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image004.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--52.jpg)
 
 在平台创建虚拟机快照，选择内存快照
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image006.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--53.jpg)
 
 快照创建成功后将先前创建的文本删除
 
@@ -43,16 +42,16 @@ vi test
 rm test
 ```
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image008.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--54.jpg)
 
 此时在快照页点击恢复虚拟机
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image010.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--55.jpg)
 
 此时回到VNC界面，发现删除的文本又出现了
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image012.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--56.jpg)
 
 测试结束后，删除该快照，以免占用空间
 
-![img](https://papi.yuncan.xyz/notephoto/clip_image014.png)
+![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--57.jpg)

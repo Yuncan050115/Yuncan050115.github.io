@@ -12,7 +12,7 @@
   --shadow: 0 24px 80px rgba(41, 48, 62, .12);
   --radius: 8px;
   --ease: cubic-bezier(.19, 1, .22, 1);
-  --font-sans: "LXGW WenKai Screen", "LXGW WenKai", "MiSans", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "JinghuaLaosong", "LXGW WenKai Screen", "LXGW WenKai", "MiSans", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
   --music-bg: rgba(255, 255, 255, .78);
   --music-bg-hover: rgba(255, 255, 255, .88);
   --music-border: rgba(21, 25, 31, .15);
@@ -2584,6 +2584,20 @@ main,
     opacity .6s ease !important;
 }
 
+/* 夜间模式导航栏：明确背景色，避免页面切换闪白 */
+:root[data-theme="dark"] .site-header {
+  background: rgba(15, 15, 20, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* 白天模式导航栏：明确背景色 */
+:root[data-theme="light"] .site-header {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 .site-header.is-docked {
   left: auto !important;
   right: 18px !important;
@@ -4379,4 +4393,1019 @@ body:not(.cursor-active) .cursor-glow {
   .poem-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* ========== 歌词栏样式 ========== */
+
+/* 歌词栏：底部半透明栏 */
+.lyric-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
+  background: rgba(var(--bg-rgb, 15,15,20), 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border, rgba(255,255,255,.1));
+  padding: 8px 20px;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.lyric-bar.is-active {
+  opacity: 0.55;
+  transform: translateY(0);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.lyric-bar-inner {
+  flex: 1;
+  text-align: center;
+  overflow: hidden;
+}
+
+.lyric-bar-text {
+  font-size: .85rem;
+  color: var(--text-2, rgba(255,255,255,.7));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.lyric-bar.is-active .lyric-bar-text {
+  color: var(--text-1, rgba(255,255,255,.9));
+}
+
+/* 白天模式歌词栏 */
+:root[data-theme="light"] .lyric-bar {
+  background: rgba(255, 255, 255, 0.75);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+:root[data-theme="light"] .lyric-bar .lyric-bar-text {
+  color: rgba(0, 0, 0, 0.7);
+}
+:root[data-theme="light"] .lyric-bar.is-active .lyric-bar-text {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* 夜间模式歌词栏 */
+:root[data-theme="dark"] .lyric-bar {
+  background: rgba(15, 15, 20, 0.75);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+:root[data-theme="dark"] .lyric-bar .lyric-bar-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+:root[data-theme="dark"] .lyric-bar.is-active .lyric-bar-text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 诗集时间轴：与归档页面时间块样式一致 */
+.poem-archive-year-group {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 40px;
+  align-items: flex-start;
+}
+.poem-archive-year {
+  flex: 0 0 80px;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent, #b8860b);
+  text-align: right;
+  padding-top: 2px;
+  line-height: 1;
+}
+.poem-archive-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.poem-archive-item {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.poem-archive-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  border-color: var(--accent, #b8860b);
+}
+.poem-meta {
+  flex: 0 0 90px;
+  text-align: right;
+  font-size: .8rem;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+.poem-content {
+  flex: 1;
+  min-width: 0;
+}
+.poem-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--text-1);
+}
+.poem-content h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.poem-content h3 a:hover {
+  color: var(--accent, #b8860b);
+}
+.poem-excerpt {
+  font-size: .85rem;
+  color: var(--text-2);
+  margin: 0 0 6px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.poem-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.poem-tags .tag {
+  font-size: .7rem;
+  padding: 1px 7px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 4px;
+}
+
+/* 时间轴诗作者行 */
+.poem-archive-item .poem-author-line {
+  font-size: .9rem;
+  color: var(--text-3);
+  margin: 0 0 6px;
+}
+
+/* 时间轴诗文多行预览 */
+.poem-archive-item .poem-excerpt-multi {
+  margin: 0 0 8px;
+}
+.poem-archive-item .poem-excerpt-multi p {
+  font-size: 1.05rem;
+  color: var(--text-2);
+  line-height: 1.9;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* 时间轴配图 */
+.poem-archive-gallery {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+.poem-archive-gallery img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* ========== 设置面板 ========== */
+.settings-panel {
+  position: relative;
+}
+
+.settings-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--surface-1, rgba(255,255,255,0.95));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border, rgba(0,0,0,0.1));
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  z-index: 1001;
+  font-size: .9rem;
+}
+
+:root[data-theme="dark"] .settings-popup {
+  background: rgba(20,20,28,0.95);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
+}
+
+.settings-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-3, #999);
+  padding: 0;
+  line-height: 1;
+}
+
+.settings-body {
+  padding: 12px 20px;
+}
+
+.settings-group {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.06));
+}
+
+.settings-group:last-child {
+  border-bottom: none;
+}
+
+.settings-label {
+  display: block;
+  font-size: .8rem;
+  color: var(--text-3, #888);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.settings-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.setting-opt {
+  padding: 5px 12px;
+  font-size: .8rem;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  background: transparent;
+  color: var(--text-2, #555);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.setting-opt:hover {
+  border-color: var(--accent, #b8860b);
+  color: var(--accent, #b8860b);
+}
+
+.setting-opt.active {
+  background: var(--accent, #b8860b);
+  color: #fff;
+  border-color: var(--accent, #b8860b);
+}
+
+:root[data-theme="dark"] .setting-opt {
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
+}
+
+.settings-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-toggle-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: .85rem;
+  color: var(--text-2, #555);
+}
+
+.settings-toggle-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.settings-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border, rgba(0,0,0,0.08));
+  text-align: right;
+}
+
+.settings-reset {
+  background: none;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  color: var(--text-3, #888);
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .8rem;
+  transition: all .2s;
+}
+
+.settings-reset:hover {
+  border-color: var(--accent, #b8860b);
+  color: var(--accent, #b8860b);
+}
+
+/* ========== 移动端适配优化 ========== */
+
+/* 680px 以下断点 */
+@media (max-width: 680px) {
+  /* 导航栏：汉堡菜单全屏抽屉 */
+  .site-header nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--surface-1, rgba(255,255,255,0.98));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    padding: 80px 24px 24px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+    overflow-y: auto;
+  }
+  .site-header nav.is-open {
+    transform: translateX(0);
+  }
+  :root[data-theme="dark"] .site-header nav {
+    background: rgba(20,20,28,0.98);
+  }
+
+  /* 导航项垂直排列 */
+  .site-header nav .nav-item {
+    width: 100%;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border, rgba(0,0,0,0.06));
+  }
+  :root[data-theme="dark"] .site-header nav .nav-item {
+    border-bottom-color: rgba(255,255,255,0.06);
+  }
+
+  /* header-actions 间距缩小 */
+  .header-actions {
+    gap: 4px;
+  }
+
+  /* 文章内容适配 */
+  .post-body, .article-shell {
+    padding: 16px 12px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .post-body h1 { font-size: 1.5rem; }
+  .post-body h2 { font-size: 1.3rem; }
+  .post-body h3 { font-size: 1.15rem; }
+  .post-body pre {
+    font-size: 0.8rem;
+    padding: 12px;
+    overflow-x: auto;
+  }
+  .post-body img {
+    max-width: 100%;
+    height: auto;
+  }
+  .post-body table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* 卡片网格单列 */
+  .post-grid, .poem-grid, .hydro-home-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 诗集时间轴上下布局 */
+  .poem-archive-year-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .poem-archive-year {
+    flex: none;
+    text-align: left;
+    font-size: 2rem;
+  }
+  .poem-archive-item {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
+  .poem-meta {
+    flex: none;
+    text-align: left;
+  }
+
+  /* 音乐播放器迷你模式 */
+  .music-dock {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    padding: 6px 10px !important;
+    gap: 8px !important;
+  }
+  .music-dock .music-info {
+    min-width: 0;
+    flex: 1;
+  }
+  .music-dock .music-info strong {
+    font-size: 0.75rem;
+  }
+  .music-dock .music-info span {
+    font-size: 0.7rem;
+  }
+  .music-dock .music-info p {
+    display: none;
+  }
+  .music-dock .music-controls {
+    gap: 4px;
+  }
+  .music-dock .music-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* 设置面板全屏 */
+  .settings-popup {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  /* 首页 hero 区域 */
+  .first-screen {
+    min-height: 60vh;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem !important;
+  }
+  .hero-content p {
+    font-size: 0.9rem !important;
+  }
+
+  /* 归档/标签等列表 */
+  .archive-row, .tag-cloud, .friend-grid {
+    padding: 0 8px;
+  }
+
+  /* 内容区域通用边距 */
+  .content-shell {
+    padding: 16px 12px;
+  }
+
+  /* 页脚 */
+  .site-footer {
+    padding: 16px 12px;
+    font-size: 0.75rem;
+  }
+  .site-footer p {
+    word-break: break-all;
+  }
+
+  /* 歌词栏 */
+  .lyric-bar {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  /* TOC 面板隐藏 */
+  .toc-panel {
+    display: none !important;
+  }
+
+  /* 赞赏弹窗等全屏弹窗 */
+  .reward-modal, .modal-overlay {
+    width: calc(100% - 24px);
+    max-width: none;
+  }
+}
+
+/* 480px 以下进一步优化 */
+@media (max-width: 480px) {
+  /* 文章标题更小 */
+  .post-body h1 { font-size: 1.3rem; }
+  .post-body h2 { font-size: 1.15rem; }
+  .post-body h3 { font-size: 1rem; }
+
+  /* 首页 hero */
+  .hero-content h1 {
+    font-size: 1.5rem !important;
+  }
+
+  /* 诗集卡片 */
+  .poem-card {
+    padding: 12px;
+  }
+
+  /* 设置面板选项更小 */
+  .setting-opt {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  /* 音乐播放器进一步简化 */
+  .music-dock .music-info span {
+    display: none;
+  }
+
+  /* header 图标按钮更小 */
+  .icon-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* 内容区域更小边距 */
+  .content-shell {
+    padding: 12px 8px;
+  }
+}
+
+/* ========== 播放器歌单列表 ========== */
+.music-dock .music-list {
+  max-height: 160px;
+  overflow-y: auto;
+  width: 100%;
+  margin-top: 6px;
+  border-top: 1px solid var(--border, rgba(0,0,0,0.08));
+  padding-top: 6px;
+}
+
+:root[data-theme="dark"] .music-dock .music-list {
+  border-top-color: rgba(255,255,255,0.08);
+}
+
+.music-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .2s;
+  font-size: .75rem;
+  color: var(--text-3, #888);
+}
+
+.music-list-item:hover {
+  background: var(--surface-3, rgba(0,0,0,0.05));
+}
+
+:root[data-theme="dark"] .music-list-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.music-list-item.is-active {
+  color: var(--accent, #b8860b);
+  font-weight: 600;
+}
+
+.music-list-item .music-list-index {
+  flex: 0 0 20px;
+  text-align: center;
+  font-size: .7rem;
+  opacity: .6;
+}
+
+.music-list-item .music-list-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music-list-item .music-list-artist {
+  flex: 0 0 auto;
+  font-size: .7rem;
+  opacity: .6;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 歌单列表滚动条 */
+.music-list::-webkit-scrollbar {
+  width: 4px;
+}
+.music-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.music-list::-webkit-scrollbar-thumb {
+  background: var(--border, rgba(0,0,0,0.15));
+  border-radius: 2px;
+}
+
+/* ========== 文章管理页样式 ========== */
+.post-editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-editor-modal {
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  background: var(--surface-1, #fff);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  overflow: hidden; /* 防止整个 modal 滚动 */
+  display: flex;
+  flex-direction: column;
+}
+
+:root[data-theme="dark"] .post-editor-modal {
+  background: rgba(20,20,28,0.98);
+}
+
+.pe-auth {
+  padding: 40px;
+  text-align: center;
+  position: relative;
+}
+
+.pe-auth h3 {
+  margin: 0 0 20px;
+  font-size: 1.2rem;
+}
+
+.pe-auth input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 14px;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  border-radius: 8px;
+  font-size: .9rem;
+  background: transparent;
+  color: inherit;
+  margin-bottom: 12px;
+}
+
+.pe-auth button#pe-auth-btn {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  background: var(--accent, #b8860b);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .9rem;
+}
+
+.pe-error {
+  color: #e53e3e;
+  font-size: .8rem;
+  margin: 8px 0 0;
+  min-height: 1em;
+}
+
+.pe-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-3, #999);
+  line-height: 1;
+}
+
+.pe-panel {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.pe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
+}
+
+.pe-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.pe-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pe-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  background: transparent;
+  color: var(--text-2, #555);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .85rem;
+  transition: all .2s;
+}
+
+.pe-btn:hover {
+  border-color: var(--accent, #b8860b);
+}
+
+.pe-btn-primary {
+  background: var(--accent, #b8860b);
+  color: #fff;
+  border-color: var(--accent, #b8860b);
+}
+
+.pe-btn-danger {
+  color: #e53e3e;
+  border-color: #e53e3e;
+}
+
+.pe-list-view {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pe-search {
+  margin: 12px 20px;
+  padding: 8px 12px;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  border-radius: 6px;
+  font-size: .85rem;
+  background: transparent;
+  color: inherit;
+}
+
+.pe-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 12px;
+}
+
+.pe-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+  border: 1px solid transparent;
+}
+
+.pe-list-item:hover {
+  background: var(--surface-3, rgba(0,0,0,0.04));
+  border-color: var(--border, rgba(0,0,0,0.08));
+}
+
+.pe-list-item-title {
+  flex: 1;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.pe-list-item-date {
+  font-size: .75rem;
+  color: var(--text-3, #888);
+}
+
+.pe-list-item-cat {
+  font-size: .7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--surface-3, rgba(0,0,0,0.06));
+  color: var(--text-3, #888);
+}
+
+.pe-loading, .pe-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-3, #888);
+  font-size: .85rem;
+}
+
+.pe-editor-view {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+.pe-editor-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pe-editor-header span {
+  font-size: .9rem;
+  color: var(--text-3, #888);
+}
+
+.pe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pe-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pe-field-row {
+  display: flex;
+  gap: 12px;
+}
+
+.pe-field-row .pe-field {
+  flex: 1;
+}
+
+.pe-field label {
+  font-size: .8rem;
+  color: var(--text-3, #888);
+}
+
+.pe-field input, .pe-field textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--border, rgba(0,0,0,0.15));
+  border-radius: 6px;
+  font-size: .85rem;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+}
+
+.pe-field textarea {
+  resize: vertical;
+  font-family: 'Courier New', monospace;
+  line-height: 1.6;
+}
+
+.pe-editor-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pe-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: var(--accent, #b8860b);
+  color: #fff;
+  border-radius: 8px;
+  font-size: .85rem;
+  z-index: 10001;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* 移动端管理页适配 */
+@media (max-width: 680px) {
+  .post-editor-modal {
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+  }
+  .pe-panel {
+    height: 100vh;
+  }
+  .pe-field-row {
+    flex-direction: column;
+  }
+}
+
+/* ========== 朋友圈页面 ========== */
+.circle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.circle-card {
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(0,0,0,0.08));
+  background: var(--surface-2);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+
+.circle-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-color: var(--accent, #b8860b);
+}
+
+.circle-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.circle-author {
+  font-size: .85rem;
+  color: var(--accent, #b8860b);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.circle-author:hover {
+  text-decoration: underline;
+}
+
+.circle-date {
+  font-size: .75rem;
+  color: var(--text-3, #888);
+}
+
+.circle-title {
+  font-size: 1rem;
+  margin: 0 0 6px;
+}
+
+.circle-title a {
+  color: var(--text-1, #333);
+  text-decoration: none;
+}
+
+.circle-title a:hover {
+  color: var(--accent, #b8860b);
+}
+
+.circle-desc {
+  font-size: .85rem;
+  color: var(--text-2, #555);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.circle-loading, .circle-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-3, #888);
+  font-size: .9rem;
+}
+
+.circle-empty small {
+  display: block;
+  margin-top: 8px;
+  font-size: .75rem;
+  opacity: .7;
 }

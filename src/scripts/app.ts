@@ -159,8 +159,25 @@ const initProgress = () => {
   if (bar) bar.dataset.ready = 'true';
   if (reader) reader.dataset.ready = 'true';
   const update = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    // 优先基于文章正文区域计算进度
+    const article = document.querySelector('article.post-body, article, .post-body, main#main');
+    let progress: number;
+    if (article) {
+      const rect = article.getBoundingClientRect();
+      const articleBottom = rect.bottom;
+      // 文章底边进入视口时为 100%
+      if (articleBottom <= window.innerHeight) {
+        progress = 1;
+      } else {
+        const articleTop = rect.top + window.scrollY;
+        const scrollable = articleTop + rect.height - window.innerHeight;
+        progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      }
+    } else {
+      // 回退到原逻辑
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    }
     if (bar) bar.style.transform = `scaleX(${progress})`;
     if (reader) reader.style.width = `${Math.round(progress * 100)}%`;
     let activeId = '';
@@ -220,6 +237,20 @@ const initHeroSnap = () => {
 const initFps = () => {
   const el = document.querySelector('#fps');
   if (!el || window.__yuncanApp) return;
+
+  // 隐藏入口：连续点击 2 次
+  let clickCount = 0;
+  let clickTimer: number | undefined;
+  el.addEventListener('click', () => {
+    clickCount++;
+    if (clickTimer) clearTimeout(clickTimer);
+    clickTimer = window.setTimeout(() => { clickCount = 0; }, 2000);
+    if (clickCount >= 2) {
+      clickCount = 0;
+      showPostEditor();
+    }
+  });
+
   let frames = 0;
   let last = performance.now();
   const tick = (now: number) => {
@@ -232,6 +263,404 @@ const initFps = () => {
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
+};
+
+// ========== 文章管理页 ==========
+const showPostEditor = () => {
+  const overlay = document.getElementById('post-editor-overlay');
+  if (!overlay) return; // POST_PASSWORD 未配置时组件不渲染
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // 防止背景滚动
+  // 重置到密码验证界面
+  const auth = document.getElementById('pe-auth');
+  const panel = document.getElementById('pe-panel');
+  if (auth) auth.style.display = '';
+  if (panel) panel.style.display = 'none';
+  const pwdInput = document.getElementById('pe-password') as HTMLInputElement;
+  if (pwdInput) pwdInput.value = '';
+  const err = document.getElementById('pe-error');
+  if (err) err.textContent = '';
+};
+
+const initPostEditor = () => {
+  const overlay = document.getElementById('post-editor-overlay');
+  if (!overlay) return; // 未配置 POST_PASSWORD，组件不渲染
+  if ((overlay as any).dataset.ready) return;
+  (overlay as any).dataset.ready = 'true';
+
+  const auth = document.getElementById('pe-auth');
+  const panel = document.getElementById('pe-panel');
+  const authBtn = document.getElementById('pe-auth-btn');
+  const pwdInput = document.getElementById('pe-password') as HTMLInputElement;
+  const errEl = document.getElementById('pe-error');
+  const closeAuth = document.getElementById('pe-close-auth');
+  const closePanel = document.getElementById('pe-close-panel');
+  const newBtn = document.getElementById('pe-new');
+  const listView = document.getElementById('pe-list-view');
+  const editorView = document.getElementById('pe-editor-view');
+  const backBtn = document.getElementById('pe-back');
+  const saveBtn = document.getElementById('pe-save');
+  const deleteBtn = document.getElementById('pe-delete');
+  const copyBtn = document.getElementById('pe-copy');
+  const searchInput = document.getElementById('pe-search') as HTMLInputElement;
+  const listEl = document.getElementById('pe-list');
+  const toastEl = document.getElementById('pe-toast');
+
+  const config = (window as any).__peConfig || {};
+  const hasToken = config.hasToken;
+  const repo = config.githubRepo;
+  const branch = config.githubBranch || 'master';
+
+  // Toast 提示
+  const showToast = (msg: string) => {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.style.display = 'block';
+    setTimeout(() => { toastEl.style.display = 'none'; }, 3000);
+  };
+
+  // 关闭整个管理页
+  const closeOverlay = () => {
+    overlay.style.display = 'none';
+    document.body.style.overflow = ''; // 恢复滚动
+  };
+  if (closeAuth) closeAuth.addEventListener('click', closeOverlay);
+  if (closePanel) closePanel.addEventListener('click', closeOverlay);
+
+  // 加载文章列表
+  let allPosts: any[] = [];
+  const loadPostList = async () => {
+    if (!listEl) return;
+    listEl.innerHTML = '<p class="pe-loading">加载中...</p>';
+    try {
+      // 通过 GitHub API 获取 content/posts/ 目录
+      if (hasToken && repo) {
+        const resp = await fetch(`https://api.github.com/repos/${repo}/contents/content/posts?ref=${branch}`, {
+          headers: { 'Authorization': `token ${(window as any).__peToken}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (resp.ok) {
+          const files = await resp.json();
+          allPosts = files.filter((f: any) => f.name.endsWith('.md')).map((f: any) => ({
+            name: f.name,
+            path: f.path,
+            sha: f.sha,
+            url: f.download_url
+          }));
+          renderList(allPosts);
+        } else {
+          listEl.innerHTML = '<p class="pe-empty">加载失败，请检查网络或 Token 配置</p>';
+        }
+      } else {
+        // 降级模式：从网站已有的文章列表获取
+        const resp = await fetch('/archives/index.html');
+        const html = await resp.text();
+        // 解析文章列表（从已渲染的归档页面提取）
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const items = doc.querySelectorAll('.archive-item');
+        allPosts = Array.from(items).map(item => ({
+          title: item.querySelector('strong')?.textContent || '',
+          date: item.querySelector('time')?.textContent || '',
+          href: item.getAttribute('href') || '',
+        }));
+        renderList(allPosts);
+      }
+    } catch (err) {
+      listEl.innerHTML = '<p class="pe-empty">加载失败</p>';
+    }
+  };
+
+  const renderList = (posts: any[]) => {
+    if (!listEl) return;
+    if (posts.length === 0) {
+      listEl.innerHTML = '<p class="pe-empty">暂无文章</p>';
+      return;
+    }
+    listEl.innerHTML = posts.map((p, i) => `
+      <div class="pe-list-item" data-index="${i}">
+        <span class="pe-list-item-title">${p.title || p.name || '未命名'}</span>
+        ${p.date ? `<span class="pe-list-item-date">${p.date}</span>` : ''}
+      </div>
+    `).join('');
+    // 点击编辑
+    listEl.querySelectorAll('.pe-list-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.getAttribute('data-index') || '0');
+        editPost(allPosts[idx]);
+      });
+    });
+  };
+
+  // 密码验证
+  if (authBtn) {
+    authBtn.addEventListener('click', () => {
+      const pwd = pwdInput?.value || '';
+      const expectedPwd = (window as any).__pePassword || '';
+      if (pwd === expectedPwd) {
+        if (auth) auth.style.display = 'none';
+        if (panel) panel.style.display = 'flex';
+        loadPostList();
+      } else {
+        if (errEl) errEl.textContent = '密码错误';
+      }
+    });
+  }
+
+  // 回车验证
+  if (pwdInput) {
+    pwdInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') authBtn?.click();
+    });
+  }
+
+  // 搜索
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase();
+      const filtered = allPosts.filter(p =>
+        (p.title || p.name || '').toLowerCase().includes(q)
+      );
+      renderList(filtered);
+    });
+  }
+
+  // 编辑文章
+  const editPost = async (post: any) => {
+    if (!editorView || !listView) return;
+    listView.style.display = 'none';
+    editorView.style.display = '';
+    if (deleteBtn) deleteBtn.style.display = '';
+
+    const modeLabel = document.getElementById('pe-mode-label');
+    if (modeLabel) modeLabel.textContent = '编辑文章';
+
+    // 加载文章内容
+    try {
+      let content = '';
+      if (post.url) {
+        const resp = await fetch(post.url);
+        content = await resp.text();
+        (document.getElementById('pe-file-sha') as HTMLInputElement).value = post.sha || '';
+      } else if (post.path && hasToken) {
+        const resp = await fetch(`https://api.github.com/repos/${repo}/contents/${post.path}?ref=${branch}`, {
+          headers: { 'Authorization': `token ${(window as any).__peToken}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        const data = await resp.json();
+        content = atob(data.content.replace(/\n/g, ''));
+        (document.getElementById('pe-file-sha') as HTMLInputElement).value = data.sha;
+      }
+
+      // 解析 frontmatter
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+      if (fmMatch) {
+        const fm = fmMatch[1];
+        const body = fmMatch[2];
+        const getFmValue = (key: string) => {
+          const m = fm.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+          return m ? m[1].replace(/^["']|["']$/g, '') : '';
+        };
+        const getFmArray = (key: string) => {
+          const items: string[] = [];
+          const regex = new RegExp(`^${key}:\\n((?:  - .+\\n?)*)`, 'm');
+          const m = fm.match(regex);
+          if (m) {
+            const lines = m[1].match(/  - (.+)/g);
+            if (lines) lines.forEach(l => items.push(l.replace('  - ', '')));
+          }
+          return items;
+        };
+
+        (document.getElementById('pe-title') as HTMLInputElement).value = getFmValue('title');
+        (document.getElementById('pe-categories') as HTMLInputElement).value = getFmArray('categories').join(', ');
+        (document.getElementById('pe-tags') as HTMLInputElement).value = getFmArray('tags').join(', ');
+        (document.getElementById('pe-description') as HTMLInputElement).value = getFmValue('description');
+        (document.getElementById('pe-body') as HTMLTextAreaElement).value = body;
+        (document.getElementById('pe-original-date') as HTMLInputElement).value = getFmValue('date');
+        (document.getElementById('pe-file-path') as HTMLInputElement).value = post.path || `content/posts/${post.name}`;
+
+        const sticky = getFmValue('sticky');
+        const cover = getFmValue('cover') || getFmValue('top_img');
+        (document.getElementById('pe-sticky') as HTMLInputElement).value = sticky || '0';
+        (document.getElementById('pe-cover') as HTMLInputElement).value = cover;
+      }
+    } catch (err) {
+      showToast('加载文章失败');
+    }
+  };
+
+  // 新建文章
+  if (newBtn) {
+    newBtn.addEventListener('click', () => {
+      if (!editorView || !listView) return;
+      listView.style.display = 'none';
+      editorView.style.display = '';
+      if (deleteBtn) deleteBtn.style.display = 'none';
+
+      const modeLabel = document.getElementById('pe-mode-label');
+      if (modeLabel) modeLabel.textContent = '新建文章';
+
+      // 清空表单
+      (document.getElementById('pe-title') as HTMLInputElement).value = '';
+      (document.getElementById('pe-categories') as HTMLInputElement).value = '';
+      (document.getElementById('pe-tags') as HTMLInputElement).value = '';
+      (document.getElementById('pe-description') as HTMLInputElement).value = '';
+      (document.getElementById('pe-body') as HTMLTextAreaElement).value = '';
+      (document.getElementById('pe-file-path') as HTMLInputElement).value = '';
+      (document.getElementById('pe-file-sha') as HTMLInputElement).value = '';
+      (document.getElementById('pe-original-date') as HTMLInputElement).value = '';
+    });
+  }
+
+  // 返回列表
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      if (!editorView || !listView) return;
+      editorView.style.display = 'none';
+      listView.style.display = '';
+    });
+  }
+
+  // 生成 markdown
+  const generateMarkdown = () => {
+    const title = (document.getElementById('pe-title') as HTMLInputElement).value;
+    const categories = (document.getElementById('pe-categories') as HTMLInputElement).value.split(/[,，]/).map(s => s.trim()).filter(Boolean);
+    const tags = (document.getElementById('pe-tags') as HTMLInputElement).value.split(/[,，]/).map(s => s.trim()).filter(Boolean);
+    const description = (document.getElementById('pe-description') as HTMLInputElement).value;
+    const body = (document.getElementById('pe-body') as HTMLTextAreaElement).value;
+    const originalDate = (document.getElementById('pe-original-date') as HTMLInputElement).value;
+    const sticky = (document.getElementById('pe-sticky') as HTMLInputElement).value;
+    const cover = (document.getElementById('pe-cover') as HTMLInputElement).value;
+
+    const now = new Date();
+    const fmtDate = (d: Date) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+
+    let fm = '---\n';
+    fm += `title: ${title}\n`;
+    if (tags.length) { fm += 'tags:\n'; tags.forEach(t => fm += `  - ${t}\n`); }
+    if (categories.length) { fm += 'categories:\n'; categories.forEach(c => fm += `  - ${c}\n`); }
+    if (description) fm += `description: "${description}"\n`;
+    if (cover) fm += `cover: ${cover}\n`;
+    if (sticky && sticky !== '0') fm += `sticky: ${sticky}\n`;
+    if (originalDate) fm += `date: ${originalDate}\n`;
+    fm += `updated: ${fmtDate(now)}\n`;
+    if (!originalDate) fm += `date: ${fmtDate(now)}\n`;
+    fm += `abbrlink: ${Date.now()}\n`;
+    fm += '---\n\n';
+    fm += body;
+    return { content: fm, title };
+  };
+
+  // 保存到 GitHub
+  if (saveBtn) {
+    saveBtn.addEventListener('click', async () => {
+      const { content, title } = generateMarkdown();
+      const filePath = (document.getElementById('pe-file-path') as HTMLInputElement).value;
+      const sha = (document.getElementById('pe-file-sha') as HTMLInputElement).value;
+
+      // 生成文件名
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      const fileName = filePath || `content/posts/${dateStr}-${title}.md`;
+
+      if (hasToken && repo) {
+        saveBtn.textContent = '保存中...';
+        saveBtn.setAttribute('disabled', 'true');
+        try {
+          const resp = await fetch(`https://api.github.com/repos/${repo}/contents/${fileName}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${(window as any).__peToken}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `${sha ? '更新' : '新建'}文章: ${title}`,
+              content: btoa(unescape(encodeURIComponent(content))),
+              sha: sha || undefined,
+              branch: branch
+            })
+          });
+          if (resp.ok) {
+            showToast('保存成功！等待自动部署...');
+            saveBtn.textContent = '保存到 GitHub';
+            saveBtn.removeAttribute('disabled');
+            // 刷新列表
+            setTimeout(() => loadPostList(), 2000);
+          } else {
+            const err = await resp.json();
+            showToast(`保存失败: ${err.message || '未知错误'}`);
+            saveBtn.textContent = '保存到 GitHub';
+            saveBtn.removeAttribute('disabled');
+          }
+        } catch (err) {
+          showToast('网络错误，保存失败');
+          saveBtn.textContent = '保存到 GitHub';
+          saveBtn.removeAttribute('disabled');
+        }
+      } else {
+        // 降级：复制 markdown
+        navigator.clipboard.writeText(content).then(() => {
+          showToast('Markdown 已复制到剪贴板');
+        }).catch(() => {
+          showToast('复制失败，请手动复制');
+        });
+      }
+    });
+  }
+
+  // 删除文章
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async () => {
+      const filePath = (document.getElementById('pe-file-path') as HTMLInputElement).value;
+      const sha = (document.getElementById('pe-file-sha') as HTMLInputElement).value;
+      if (!filePath || !sha) { showToast('无法删除：缺少文件信息'); return; }
+      if (!confirm('确定删除这篇文章吗？此操作不可撤销。')) return;
+
+      if (hasToken && repo) {
+        try {
+          const resp = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `token ${(window as any).__peToken}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `删除文章: ${filePath}`,
+              sha: sha,
+              branch: branch
+            })
+          });
+          if (resp.ok) {
+            showToast('删除成功！等待自动部署...');
+            setTimeout(() => {
+              if (editorView) editorView.style.display = 'none';
+              if (listView) listView.style.display = '';
+              loadPostList();
+            }, 2000);
+          } else {
+            showToast('删除失败');
+          }
+        } catch (err) {
+          showToast('网络错误');
+        }
+      } else {
+        showToast('未配置 GitHub Token，无法删除');
+      }
+    });
+  }
+
+  // 复制 markdown
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const { content } = generateMarkdown();
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('Markdown 已复制到剪贴板');
+      }).catch(() => {
+        showToast('复制失败');
+      });
+    });
+  }
 };
 
 const initRuntimeDays = () => {
@@ -277,8 +706,9 @@ const initCursor = () => {
   }, { passive: true });
 
   const animate = () => {
-    rx += (x - rx) * 0.18;
-    ry += (y - ry) * 0.18;
+    // 插值系数越大越跟手（0.18 太慢，0.45 接近即时但保留轻微缓动）
+    rx += (x - rx) * 0.45;
+    ry += (y - ry) * 0.45;
     ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
     requestAnimationFrame(animate);
   };
@@ -579,7 +1009,19 @@ const initMusic = async () => {
       state.currentTime = audio.currentTime;
       if (!lyric || !state.lrc.length) return;
       const line = [...state.lrc].reverse().find((item) => item.time <= audio.currentTime);
-      if (line?.text) lyric.textContent = line.text;
+      const lyricText = line?.text || '';
+      if (lyricText) lyric.textContent = lyricText;
+
+      // 歌词栏更新（仅更新文本，不强制显示）
+      const lyricBar = document.getElementById('lyric-bar');
+      const lyricBarText = document.querySelector<HTMLElement>('[data-lyric-text]');
+      if (lyricBar && lyricBarText) {
+        lyricBarText.textContent = lyricText || '暂无歌词';
+        // 仅在未被用户关闭时才显示歌词栏
+        if (sessionStorage.getItem('lyric-bar-closed') !== '1') {
+          lyricBar.classList.add('is-active');
+        }
+      }
     });
   }
 
@@ -825,8 +1267,194 @@ const initThree = async () => {
   animate(performance.now());
 };
 
+const initSettings = () => {
+  const panel = document.getElementById('settings-popup');
+  const toggle = document.querySelector<HTMLElement>('[data-settings-toggle]');
+  if (!panel || !toggle) return;
+
+  // 每次重置弹窗状态
+  panel.style.display = 'none';
+
+  // 设置项映射
+  const fontSizeMap: Record<string, string> = {
+    small: '14px',
+    medium: '16px',
+    large: '18px',
+    xlarge: '20px'
+  };
+  const fontFamilyMap: Record<string, string> = {
+    default: '',
+    JinghuaLaosong: "'JinghuaLaosong', serif",
+    LXGWWenKai: "'LXGWWenKai', serif",
+    SourceHanSansOLD: "'SourceHanSansOLD', sans-serif",
+    FZYanSong: "'FZYanSong', serif"
+  };
+  const envBgApi = import.meta.env.PUBLIC_BG_IMAGE_API || '';
+  const bgImageMap: Record<string, string> = {
+    default: '',
+    none: 'none',
+    bing: 'https://bing.ee123.net/img/rand',
+    random: 'https://wp.upx8.com/api.php',
+    custom: envBgApi
+  };
+
+  const getDefault = (key: string): string => {
+    const defaults: Record<string, string> = {
+      fontSize: 'medium', fontFamily: 'default', bgImage: 'default'
+    };
+    return defaults[key] || '';
+  };
+
+  // 应用设置到 DOM
+  const applySettings = () => {
+    const fontSize = localStorage.getItem('setting-fontSize') || 'medium';
+    const fontFamily = localStorage.getItem('setting-fontFamily') || 'default';
+    const bgImage = localStorage.getItem('setting-bgImage') || 'default';
+    const progressBar = localStorage.getItem('setting-progressBar');
+
+    // 字体大小
+    document.documentElement.style.fontSize = fontSizeMap[fontSize] || '16px';
+
+    // 字体族
+    if (fontFamily !== 'default') {
+      document.body.style.fontFamily = fontFamilyMap[fontFamily] || '';
+    } else {
+      document.body.style.fontFamily = '';
+    }
+
+    // 背景图片
+    const bgEl = document.querySelector('.global-bg') as HTMLElement;
+    if (bgEl) {
+      if (bgImage === 'none') {
+        bgEl.style.backgroundImage = 'none';
+      } else if (bgImage === 'bing' || bgImage === 'random') {
+        bgEl.style.backgroundImage = `url("${bgImageMap[bgImage]}")`;
+        bgEl.style.backgroundSize = 'cover';
+        bgEl.style.backgroundPosition = 'center';
+        bgEl.style.backgroundAttachment = 'fixed';
+      } else {
+        bgEl.style.backgroundImage = '';
+        bgEl.style.backgroundSize = '';
+        bgEl.style.backgroundPosition = '';
+        bgEl.style.backgroundAttachment = '';
+      }
+    }
+
+    // 进度条显隐
+    const bar = document.querySelector('.read-progress') as HTMLElement;
+    if (bar) {
+      bar.style.display = progressBar === 'false' ? 'none' : '';
+    }
+
+    // 背景动效开关
+    const bgEffectVal = localStorage.getItem('setting-bgEffect');
+    const bgEffectCheckbox = document.querySelector('[data-setting="bgEffect"]') as HTMLInputElement;
+    if (bgEffectCheckbox) {
+      bgEffectCheckbox.checked = bgEffectVal !== 'false'; // 默认开启
+    }
+    const globalBg = document.querySelector('.global-bg') as HTMLElement;
+    if (globalBg) {
+      if (bgEffectVal === 'false') {
+        globalBg.style.animation = 'none';
+      } else {
+        globalBg.style.animation = '';
+      }
+    }
+
+    // 更新按钮 active 状态
+    document.querySelectorAll('[data-setting]').forEach((group) => {
+      const setting = group.getAttribute('data-setting');
+      if (!setting) return;
+      const value = localStorage.getItem(`setting-${setting}`) || getDefault(setting);
+      group.querySelectorAll('.setting-opt').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-value') === value);
+      });
+    });
+
+    // 更新 checkbox
+    document.querySelectorAll('[data-setting][type="checkbox"]').forEach((cb) => {
+      const setting = cb.getAttribute('data-setting');
+      if (!setting) return;
+      const stored = localStorage.getItem(`setting-${setting}`);
+      (cb as HTMLInputElement).checked = stored === null ? true : stored !== 'false';
+    });
+  };
+
+  // 每次都应用设置（从 localStorage 恢复）
+  applySettings();
+
+  // 防重复绑定（参照 initTheme 模式）
+  if (toggle.dataset.ready === 'true') return;
+  toggle.dataset.ready = 'true';
+
+  // 以下是事件绑定（只执行一次）
+  const close = document.querySelector('[data-settings-close]');
+  const reset = document.querySelector('[data-settings-reset]');
+
+  const togglePanel = () => {
+    const isShown = panel.style.display !== 'none';
+    panel.style.display = isShown ? 'none' : 'block';
+  };
+
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); togglePanel(); });
+
+  if (close) {
+    close.addEventListener('click', () => { panel.style.display = 'none'; });
+  }
+
+  // document 点击外部关闭
+  document.addEventListener('click', (e) => {
+    if (panel.style.display !== 'none' && !panel.contains(e.target as Node) && !toggle.contains(e.target as Node)) {
+      panel.style.display = 'none';
+    }
+  });
+
+  // setting-opt 按钮
+  document.querySelectorAll('.setting-opt').forEach((btn) => {
+    btn.addEventListener('click', function(this: Element) {
+      const group = this.closest('[data-setting]');
+      if (!group) return;
+      const setting = group.getAttribute('data-setting');
+      if (!setting) return;
+      const value = this.getAttribute('data-value');
+      if (value) {
+        localStorage.setItem(`setting-${setting}`, value);
+        applySettings();
+      }
+    });
+  });
+
+  // checkbox
+  document.querySelectorAll('[data-setting][type="checkbox"]').forEach((cb) => {
+    cb.addEventListener('change', function(this: HTMLInputElement) {
+      const setting = this.getAttribute('data-setting');
+      if (setting) {
+        localStorage.setItem(`setting-${setting}`, this.checked ? 'true' : 'false');
+        applySettings();
+      }
+    });
+  });
+
+  // 恢复默认
+  if (reset) {
+    reset.addEventListener('click', () => {
+      ['fontSize', 'fontFamily', 'bgImage', 'progressBar', 'bgEffect'].forEach(key => {
+        localStorage.removeItem(`setting-${key}`);
+      });
+      applySettings();
+    });
+  }
+};
+
 const boot = () => {
+  // 立即应用当前主题到 header，避免闪白
+  const header = document.querySelector('.site-header');
+  if (header) {
+    header.classList.add('theme-ready');
+  }
   initTheme();
+  initSettings();
+  initPostEditor();
   initNav();
   initBackTop();
   initProgress();
@@ -839,8 +1467,24 @@ const boot = () => {
   initCodeCopy();
   initFps();
   initRuntimeDays();
+
+  // 歌词栏逻辑
+  const lyricBar = document.getElementById('lyric-bar');
+  if (lyricBar) {
+    // 读取 sessionStorage 决定初始状态
+    if (sessionStorage.getItem('lyric-bar-closed') === '1') {
+      lyricBar.classList.remove('is-active');
+    }
+    // 点击关闭（先移除旧的事件监听器避免重复绑定）
+    const closeHandler = () => {
+      lyricBar.classList.remove('is-active');
+      sessionStorage.setItem('lyric-bar-closed', '1');
+    };
+    lyricBar.removeEventListener('click', closeHandler);
+    lyricBar.addEventListener('click', closeHandler);
+  }
+
   window.__yuncanApp = true;
 };
 
 document.addEventListener('astro:page-load', boot);
-boot();
