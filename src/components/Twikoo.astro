@@ -1,0 +1,118 @@
+---
+import { site } from '../data/site';
+---
+
+<section id="post-comment" class="comment-panel surface" data-twikoo-env={site.twikooEnvId} data-twikoo-script={site.twikooScript}>
+  <div class="section-heading">
+    <p>COMMENTS</p>
+    <h2>留言</h2>
+  </div>
+  <div id="twikoo-wrap"></div>
+</section>
+
+<script>
+  (() => {
+    const root = document.querySelector<HTMLElement>('#post-comment');
+    const envId = root?.dataset.twikooEnv || '';
+    const scriptUrl = root?.dataset.twikooScript || '';
+    
+    let twikooLoaded = false;
+    let initAttempted = false;
+
+    const getPath = () => {
+      const path = location.pathname;
+      return path || '/';
+    };
+
+    const insertScript = () => {
+      return new Promise((resolve, reject) => {
+        const existing = document.querySelector('script[data-twikoo-script]');
+        if (existing) {
+          if (window.twikoo) {
+            resolve(window.twikoo);
+          } else {
+            existing.addEventListener('load', () => resolve(window.twikoo));
+            existing.addEventListener('error', () => reject(new Error('script load failed')));
+          }
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = scriptUrl;
+        script.async = true;
+        script.defer = true;
+        script.charset = 'UTF-8';
+        script.setAttribute('data-twikoo-script', 'true');
+        script.onload = () => {
+          twikooLoaded = true;
+          resolve(window.twikoo);
+        };
+        script.onerror = () => {
+          reject(new Error('twikoo script load failed'));
+        };
+        document.head.appendChild(script);
+      });
+    };
+
+    const showError = (el, msg) => {
+      el.innerHTML = `
+        <div style="padding: 40px 20px; text-align: center;">
+          <p style="color: var(--muted); font-size: 14px; line-height: 2;">
+            评论加载失败：${msg}
+          </p>
+          <p style="color: var(--muted); font-size: 12px; margin-top: 12px;">
+            请稍后重试，或直接联系作者
+          </p>
+        </div>
+      `;
+    };
+
+    const initTwikoo = async () => {
+      const el = document.querySelector('#twikoo-wrap');
+      if (!el) return;
+
+      const path = getPath();
+      
+      if (initAttempted && el.dataset.lastPath === path) {
+        return;
+      }
+
+      initAttempted = true;
+      el.dataset.lastPath = path;
+
+      try {
+        el.innerHTML = '<div style="padding: 30px; text-align: center;"><span style="color: var(--muted);">加载评论中...</span></div>';
+        
+        const twikoo = await insertScript();
+        
+        if (!twikoo || typeof twikoo.init !== 'function') {
+          throw new Error('twikoo API not available');
+        }
+
+        el.innerHTML = '';
+
+        await twikoo.init({
+          envId: envId,
+          el: '#twikoo-wrap',
+          path: path,
+          lang: 'zh-CN'
+        });
+
+      } catch (error) {
+        console.error('[Twikoo] init failed:', error);
+        showError(el, error.message || '初始化异常');
+      }
+    };
+
+    const handleLoad = () => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTwikoo, { once: true });
+      } else {
+        initTwikoo();
+      }
+    };
+
+    document.addEventListener('astro:page-load', handleLoad);
+    handleLoad();
+  })();
+</script>

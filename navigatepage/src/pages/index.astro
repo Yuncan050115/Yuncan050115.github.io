@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import App from '../components/App.vue';
+---
+
+<Layout title={import.meta.env.VITE_SITE_NAME} description={import.meta.env.VITE_SITE_DES}>
+  <App client:only="vue" transition:animate="none" />
+</Layout>
+
+<script>
+  // 为了确保页面已加载，防止Pinia初始化问题
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('页面加载完成，开始初始化应用');
+  });
+</script>
+

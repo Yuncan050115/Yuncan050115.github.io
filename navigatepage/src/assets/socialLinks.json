@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Github",
+    "icon": "/images/icon/github.png",
+    "tip": "Github 主页",
+    "url": "https://github.com/Yuncan050115"
+  },
+  {
+    "name": "BiliBili",
+    "icon": "/images/icon/bilibili.png",
+    "tip": "(゜-゜)つロ 干杯 ~",
+    "url": "https://space.bilibili.com/189708807"
+  },
+  {
+    "name": "QQ",
+    "icon": "/images/icon/qq.png",
+    "tip": "闲聊",
+    "url": "https://res.abeim.cn/api/qq/?qq=3295308018"
+  },
+  {
+    "name": "Email",
+    "icon": "/images/icon/email.png",
+    "tip": "邮一个",
+    "url": "mailto:yuncan3543@gmail.com"
+  },
+  {
+    "name": "Twitter",
+    "icon": "/images/icon/music.png",
+    "tip": "云村",
+    "url": "https://music.163.com/#/user/home?id=545827723"
+  },
+  {
+    "name": "Telegram",
+    "icon": "/images/icon/telegram.png",
+    "tip": "一起聊原铁",
+    "url": "https://t.me/xycx_bot"
+  }
+]

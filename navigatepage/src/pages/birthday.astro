@@ -1,0 +1,400 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BirthdayCakeWrapper from '../components/BirthdayCakeWrapper.astro';
+---
+
+<Layout title="生日快乐" description="生日祝福">
+  <main class="birthday-container">
+    <header class="birthday-header">
+      <h1 class="birthday-title">生日快乐</h1>
+      <h2 class="birthday-subtitle">&nbsp;附：赛博蛋糕与自制曲目一份</h2>
+    </header>
+
+    <div class="birthday-message">
+      <p>在这样特别的日子里，祝愿你——</p>
+      <p>🎉 生日快乐！</p>
+      <p>✨ 心想事成！</p>
+      <p>🚀 抽卡必中！</p>
+      <p>❤️ 欧皇附体！</p>
+      <p>🌌 天天开心！</p>
+    </div>
+
+    <div class="fireworks-container">
+      <!-- 烟花效果会在这里显示 -->
+    </div>
+
+    <BirthdayCakeWrapper birthdayPerson="ZHX" />
+
+    <!-- 添加音乐播放器（自动播放） -->
+    <audio id="bgMusic" src="/assets/happy-birthday.mp3" loop autoplay style="display: none;"
+    ></audio>
+  </main>
+</Layout>
+
+<style>
+  /* 引入精华老宋字体 */
+  @font-face {
+    font-family: 'JingHuaLaoSong';
+    src: url('/assets/JingHuaLaoSong.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  .birthday-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #fff5f8, #fff9fa);
+    position: relative;
+    overflow: hidden;
+    /* 应用精华老宋字体 */
+    font-family: 'JingHuaLaoSong', serif;
+  }
+
+  .birthday-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/assets/confetti-bg.png');
+    opacity: 0.05;
+    z-index: 1;
+  }
+
+  /* 添加漂浮的气球装饰 */
+  .birthday-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.15) 20px, transparent 40px),
+      radial-gradient(circle at 80% 40%, rgba(173, 216, 230, 0.15) 30px, transparent 50px),
+      radial-gradient(circle at 40% 70%, rgba(255, 223, 186, 0.15) 25px, transparent 45px),
+      radial-gradient(circle at 70% 90%, rgba(152, 251, 152, 0.15) 35px, transparent 55px),
+      radial-gradient(circle at 90% 10%, rgba(221, 160, 221, 0.15) 20px, transparent 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .birthday-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    z-index: 2;
+    position: relative;
+  }
+
+  .birthday-header::before {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #ff9eb5, transparent);
+    bottom: -20px;
+    left: -10%;
+  }
+
+  .birthday-title {
+    font-size: 5rem;
+    color: #ff6699;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(255, 102, 153, 0.3);
+    animation: pulse 2s infinite;
+    font-family: 'JingHuaLaoSong', serif;
+    position: relative;
+    display: inline-block;
+  }
+
+  .birthday-title::before,
+  .birthday-title::after {
+    content: '✨';
+    position: absolute;
+    font-size: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .birthday-title::before {
+    left: -2.5rem;
+    animation: twinkle 3s infinite;
+  }
+
+  .birthday-title::after {
+    right: -2.5rem;
+    animation: twinkle 3s 1.5s infinite;
+  }
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: translateY(-50%) scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.2);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .birthday-subtitle {
+    font-size: 2.2rem;
+    color: #ff9eb5;
+    font-weight: 500;
+    font-family: 'JingHuaLaoSong', serif;
+    position: relative;
+    display: inline-block;
+  }
+
+  .birthday-message {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(255, 102, 153, 0.15);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #666;
+    z-index: 2;
+    font-family: 'JingHuaLaoSong', serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .birthday-message::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    z-index: -1;
+    opacity: 0.4;
+    animation: pulse-light 4s infinite;
+  }
+
+  @keyframes pulse-light {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.6;
+    }
+  }
+
+  .birthday-message p {
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .birthday-message p:nth-child(2),
+  .birthday-message p:nth-child(3),
+  .birthday-message p:nth-child(4),
+  .birthday-message p:nth-child(5),
+  .birthday-message p:nth-child(6) {
+    font-weight: bold;
+    color: #ff6699;
+    font-size: 1.3rem;
+    display: inline-block;
+    margin: 0.8rem 1.5rem;
+  }
+
+  .fireworks-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .birthday-title {
+      font-size: 3rem;
+    }
+
+    .birthday-subtitle {
+      font-size: 1.5rem;
+    }
+
+    .birthday-message {
+      padding: 1.5rem;
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // 导入confetti库
+  import 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 确保音乐播放
+    const bgMusic = document.getElementById('bgMusic');
+    if (bgMusic) {
+      // 尝试自动播放
+      bgMusic.play().catch((err) => {
+        console.warn('自动播放音乐失败，需要用户交互才能播放:', err);
+
+        // 监听用户交互事件，一旦用户与页面交互，立即播放音乐
+        const playMusicOnInteraction = () => {
+          bgMusic.play().catch((e) => console.error('播放音乐失败:', e));
+          // 播放成功后移除事件监听
+          document.removeEventListener('click', playMusicOnInteraction);
+          document.removeEventListener('touchstart', playMusicOnInteraction);
+        };
+
+        document.addEventListener('click', playMusicOnInteraction);
+        document.addEventListener('touchstart', playMusicOnInteraction);
+      });
+    }
+
+    // 烟花效果
+    function createFireworks() {
+      if (!window.confetti) return;
+
+      const duration = 15 * 1000;
+      const animationEnd = Date.now() + duration;
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function fireworks() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return;
+
+        const particleCount = 50;
+
+        // 随机位置发射烟花
+        window.confetti({
+          startVelocity: 30,
+          spread: 360,
+          ticks: 60,
+          zIndex: 0,
+          particleCount,
+          origin: {
+            x: Math.random(),
+            y: Math.random() - 0.2,
+          },
+        });
+
+        // 每隔一段时间发射一次
+        requestAnimationFrame(fireworks);
+      }
+
+      fireworks();
+    }
+
+    // 背景彩带效果
+    function createBackgroundConfetti() {
+      if (!window.confetti) return;
+
+      const duration = 20 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        window.confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#ff6699', '#ff9eb5', '#ffc6d9'],
+        });
+
+        window.confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#ff6699', '#ff9eb5', '#ffc6d9'],
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    // 启动特效
+    createFireworks();
+    createBackgroundConfetti();
+
+    // 添加飘落效果
+    function createFallingElements() {
+      const container = document.querySelector('.fireworks-container');
+      if (!container) return;
+
+      const elements = ['🎂', '🎁', '🎈', '🎉', '✨', '🎊'];
+      const colors = ['#ff6699', '#66ccff', '#99ff99', '#ffcc66', '#cc99ff'];
+
+      for (let i = 0; i < 20; i++) {
+        const element = document.createElement('div');
+        const isEmoji = Math.random() > 0.5;
+
+        if (isEmoji) {
+          element.textContent = elements[Math.floor(Math.random() * elements.length)];
+          element.style.fontSize = `${Math.random() * 20 + 10}px`;
+        } else {
+          element.style.width = `${Math.random() * 15 + 5}px`;
+          element.style.height = `${Math.random() * 15 + 5}px`;
+          element.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          element.style.borderRadius = '50%';
+        }
+
+        element.style.position = 'absolute';
+        element.style.top = '-20px';
+        element.style.left = `${Math.random() * 100}%`;
+        element.style.opacity = Math.random() * 0.7 + 0.3;
+        element.style.animation = `fall ${Math.random() * 10 + 10}s linear infinite`;
+        element.style.animationDelay = `${Math.random() * 20}s`;
+        element.style.zIndex = '1';
+
+        container.appendChild(element);
+      }
+
+      // 添加CSS动画
+      const style = document.createElement('style');
+      style.textContent = `
+      @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(100vh) rotate(360deg); }
+      }
+    `;
+      document.head.appendChild(style);
+    }
+
+    // 启动飘落效果
+    createFallingElements();
+  });
+</script>
+

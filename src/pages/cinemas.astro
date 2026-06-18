@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import MediaBoard from '../components/MediaBoard.astro';
+import Twikoo from '../components/Twikoo.astro';
+import { site } from '../data/site';
+import { getBiliMedia } from '../lib/content';
+
+const groups = await getBiliMedia('cinemas');
+---
+
+<BaseLayout title="追剧">
+  <PageHero title="追剧" description="看过的和想看的剧，记在这里。" />
+  <section class="content-shell">
+    <MediaBoard groups={groups} source={site.media.cinemaSource} />
+  </section>
+  <section class="content-shell">
+    <Twikoo />
+  </section>
+</BaseLayout>

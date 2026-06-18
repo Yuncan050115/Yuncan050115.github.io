@@ -1,0 +1,47 @@
+{
+  "name": "home",
+  "author": "云灿",
+  "github": "https://github.com/CN-Yuncan",
+  "home": "https://yuncan.xyz",
+  "private": true,
+  "version": "3.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview",
+    "format": "prettier --write src/",
+    "init": "pnpm install"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@icon-park/vue-next": "^1.4.2",
+    "@iconify-json/icon-park": "^1.2.2",
+    "@vicons/fa": "^0.13.0",
+    "@vicons/utils": "^0.1.4",
+    "@vueuse/core": "^13.1.0",
+    "astro": "^5.7.4",
+    "canvas-confetti": "^1.9.3",
+    "element-plus": "^2.9.8",
+    "fetch-jsonp": "^1.3.0",
+    "pinia": "^3.0.2",
+    "pinia-plugin-persistedstate": "^4.2.0",
+    "swiper": "^11.2.6",
+    "vue": "^3.5.13",
+    "vue3-aplayer": "^1.7.3"
+  },
+  "devDependencies": {
+    "@astrojs/vue": "^5.0.10",
+    "@iconify/vue": "^4.3.0",
+    "@vite-pwa/astro": "^1.0.1",
+    "astro-compress": "^2.3.8",
+    "eslint": "^9.25.1",
+    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-vue": "^10.0.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "sass": "^1.87.0",
+    "terser": "^5.39.0"
+  },
+  "packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620"
+}

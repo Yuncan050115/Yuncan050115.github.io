@@ -1,0 +1,5 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": { "types": ["@netlify/functions"] },
+  "exclude": ["backup", "dist", "hydro-theme", "Yuncan050115.github.io-main", "旧项目Hexo启动器", "旧项目Hexo生成的前端页面", "node_modules"]
+}

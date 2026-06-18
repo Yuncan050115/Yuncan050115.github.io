@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href={import.meta.env.VITE_SITE_LOGO} />
+    <link rel="apple-touch-icon" href={import.meta.env.VITE_SITE_APPLE_LOGO} />
+    <link rel="bookmark" href={import.meta.env.VITE_SITE_APPLE_LOGO} />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="200x200"
+      href={import.meta.env.VITE_SITE_APPLE_LOGO}
+    />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={import.meta.env.VITE_SITE_KEYWORDS} />
+    <meta name="author" content={import.meta.env.VITE_SITE_ANTHOR} />
+    <meta name="theme-color" content="#424242" />
+    <title>{title}</title>
+    
+    <!-- DNS预解析 - 性能优化 -->
+    <link rel="dns-prefetch" href="https://apir.yuncan.xyz" />
+    <link rel="dns-prefetch" href="https://music.yuncan.xyz" />
+    <link rel="dns-prefetch" href="https://v1.hitokoto.cn" />
+    
+    <!-- 资源预连接 -->
+    <link rel="preconnect" href="https://apir.yuncan.xyz" crossorigin />
+    <link rel="preconnect" href="https://music.yuncan.xyz" crossorigin />
+    
+    <!-- HarmonyOS Sans（非阻塞加载） -->
+    <link rel="stylesheet" href="https://s1.hdslb.com/bfs/static/jinkela/long/font/regular.css" media="print" onload="this.media='all'" />
+    
+    <!-- 仅预加载首屏关键字体，其余字体懒加载 -->
+    <link rel="preload" href="/font/JinghuaLaosong.ttf" as="font" type="font/ttf" crossorigin />
+    
+    <!-- IE Out -->
+    <script>
+      if (/*@cc_on!@*/ false || (!!window.MSInputMethodContext && !!document.documentMode))
+        window.location.href =
+          'https://support.dmeng.net/upgrade-your-browser.html?referrer=' +
+          encodeURIComponent(window.location.href);
+    </script>
+  </head>
+  <body>
+    <slot />
+    <!-- noscript -->
+    <noscript>
+      <div style="text-align: center">请开启 JavaScript</div>
+    </noscript>
+  </body>
+</html>
+
+<style is:global>
+  /* 全局样式将通过导入的global.scss提供 */
+</style>
+

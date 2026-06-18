@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import MediaBoard from '../components/MediaBoard.astro';
+import Twikoo from '../components/Twikoo.astro';
+import { site } from '../data/site';
+import { getBiliMedia } from '../lib/content';
+
+const groups = await getBiliMedia('bangumis');
+---
+
+<BaseLayout title="追番">
+  <PageHero title="追番" description="在追的番，攒成一页清单。" />
+  <section class="content-shell">
+    <MediaBoard groups={groups} source={site.media.bangumiSource} />
+  </section>
+  <section class="content-shell">
+    <Twikoo />
+  </section>
+</BaseLayout>

@@ -1,0 +1,26 @@
+{
+  "name": "yuncan-blog-astro",
+  "version": "1.0.8",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "latest",
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.5",
+    "three": "^0.184.0",
+    "typescript": "latest",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.184.1"
+  },
+  "packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620"
+}
