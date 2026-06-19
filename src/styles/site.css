@@ -2492,20 +2492,29 @@ body {
   }
 
   .nav-popover {
-    position: static;
+    position: static !important;
     display: none;
-    min-width: 0;
-    margin-top: 4px;
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-    box-shadow: none;
+    min-width: 0 !important;
+    margin-top: 4px !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    box-shadow: none !important;
+    padding-left: 16px;
+    left: auto !important;
+    top: auto !important;
   }
 
+  /* 移动端只用 JS 的 is-open 控制二级菜单，避免 hover/focus-within 触摸异常 */
+  .nav-item.is-open .nav-popover {
+    display: grid !important;
+    transform: none !important;
+  }
+
+  /* 移动端禁用 hover/focus-within 触发的二级菜单显示 */
   .nav-item:hover .nav-popover,
   .nav-item:focus-within .nav-popover {
-    display: grid;
-    transform: none;
+    display: none !important;
   }
 
   .article-layout {
@@ -3135,10 +3144,8 @@ body {
     width: 74px !important;
   }
 
-  .music-dock:hover,
-  .music-dock:focus-within,
-  .music-dock.playing:hover,
-  .music-dock.playing:focus-within {
+  /* 移动端音乐 dock 不用 hover 展开（触摸会异常），仅 playing 状态展开 */
+  .music-dock.playing {
     width: min(320px, calc(100vw - 28px)) !important;
   }
 }
@@ -4867,9 +4874,9 @@ body::after {
     border: none;
   }
 
-  /* 首页 hero 区域 */
+  /* 首页 hero 区域：移动端也要占满第一屏 */
   .first-screen {
-    min-height: 60vh;
+    min-height: 100svh;
   }
   .hero-content h1 {
     font-size: 1.8rem !important;
@@ -4905,6 +4912,11 @@ body::after {
 
   /* TOC 面板隐藏 */
   .toc-panel {
+    display: none !important;
+  }
+
+  /* 移动端隐藏 FPS 检测（不初始化也不显示） */
+  #fps {
     display: none !important;
   }
 

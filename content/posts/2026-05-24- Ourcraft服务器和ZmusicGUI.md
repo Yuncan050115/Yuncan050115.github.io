@@ -6,6 +6,7 @@ tags:
   - Ourcraft
 categories:
   - Ourcraft
+  - 此间话闲
 cover: https://api.yuncan.xyz/blog/260620_014554.webp
 description: "服务器。"
 abbrlink: zmusic-gui

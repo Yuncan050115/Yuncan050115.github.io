@@ -18,6 +18,11 @@ type MusicConfig = {
   fallbackCover: string;
 };
 
+// 移动端判断：触屏设备或窄屏
+const isMobile = () =>
+  window.matchMedia('(max-width: 768px)').matches ||
+  window.matchMedia('(pointer: coarse)').matches;
+
 type LrcLine = { time: number; text: string };
 
 type MusicState = {
@@ -1062,7 +1067,10 @@ const initMusic = async () => {
 
   if (config.autoplay && !state.triedAutoplay) {
     state.triedAutoplay = true;
-    await playCurrent();
+    // 移动端不自动播放（浏览器限制 + 流量考虑），仅桌面端自动播放
+    if (!isMobile()) {
+      await playCurrent();
+    }
   } else if (state.wasPlaying && audio.paused) {
     await playCurrent();
   }
@@ -1087,8 +1095,8 @@ const initThree = async () => {
   const particleState = { mouseX: 0, mouseY: 0 };
   window.__yuncanParticles = particleState;
 
-  // 粒子数量适中（320），白天为气泡、夜间为星空
-  const COUNT = 320;
+  // 粒子数量：桌面端 320，移动端降到 120 保证流畅
+  const COUNT = isMobile() ? 120 : 320;
   const WORLD_H = 14;
   const origins = new Float32Array(COUNT * 3);
   const sizes = new Float32Array(COUNT);
@@ -1500,13 +1508,22 @@ const boot = () => {
     // 仅首次加载时运行的初始化（这些函数有单例守卫或绑定的 DOM 元素使用 transition:persist）
     initTheme();
     initSettings();
-    initCursor();
-    initContextMenu();
+    // 自定义光标仅在桌面端启用（移动端无鼠标，光标会停在原点）
+    if (!isMobile()) {
+      initCursor();
+    }
+    // 右键菜单仅在桌面端启用（移动端长按会触发系统菜单，拦截影响体验）
+    if (!isMobile()) {
+      initContextMenu();
+    }
     initPostEditor();
-    initFps();
+    // FPS 检测仅在桌面端运行（移动端不显示，也省 rAF 开销）
+    if (!isMobile()) {
+      initFps();
+    }
     // Three.js 延迟加载，不阻塞首次渲染
     (window.requestIdleCallback || window.setTimeout)(() => initThree());
-    // 音乐延迟加载
+    // 音乐延迟加载（移动端不自动播放，但仍初始化控件供手动点播）
     (window.requestIdleCallback || window.setTimeout)(() => initMusic());
     firstBoot = false;
   }
@@ -1519,7 +1536,10 @@ const boot = () => {
   initPostActions();
   initCodeCopy();
   initRuntimeDays();
-  initImageCursorEffect();
+  // 图片光标交互仅在桌面端启用
+  if (!isMobile()) {
+    initImageCursorEffect();
+  }
 
   // 歌词栏逻辑
   const lyricBar = document.getElementById('lyric-bar');
