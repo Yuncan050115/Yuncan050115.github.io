@@ -59,6 +59,7 @@ const entrances = [
           <span>{String(index + 1).padStart(2, '0')}</span>
           <div>
             <time datetime={post.date}>{post.date}</time>
+            {post.pinned && <span class="pin-badge">置顶</span>}
             <strong>{post.title}</strong>
             <p>{post.description}</p>
           </div>

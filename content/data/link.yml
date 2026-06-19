@@ -1,73 +1,58 @@
 - class_name: 推荐网站🍔
-  class_desc: 这里是最熟悉的小伙伴或者赞助商
+  class_desc: 小伙伴
   link_list:
     - name: 云灿の随笔小站
       link: https://blog.yuncan.xyz/
       avatar: https://yuncan.xyz/images/icon/favicon.ico
       descr: 浮云一别后，流水十年间
-      siteshot: https://papi.yuncan.xyz/siteshot/Yuncan.png
+      siteshot: https://api.yuncan.xyz/blog/260619_193332.webp
     - name: 果果小站
       link: https://xn--bsr.cn/
       avatar: https://www.ecpan.cn/sfs/file?digest=fid72486173df6c8fe6f83642539c6e64de
       descr: 人生如梦，一尊还酹江月。
-      siteshot: https://papi.yuncan.xyz/siteshot/%E6%9E%9C%E5%AD%90.png
+      siteshot: https://api.yuncan.xyz/blog/260619_193904.webp
     - name: TomyJan
       link: https://blog.tomys.top/
       avatar: https://public-cdn.tomys.top/head.png
       descr: 一只菜的要死还每天不努力只知道bbll娱乐至死的废柴
-      siteshot: https://papi.yuncan.xyz/siteshot/TomyJan.png
+      siteshot: https://api.yuncan.xyz/blog/260619_194049.webp
     - name: Nana⚝Nana
       link: https://nananana.net/
       avatar: https://nananana.net/wp-content/uploads/2021/11/202103181.jpg
       descr: 加拿大苟且偷生的男高中生¯_(ツ)_/¯
-      siteshot: https://papi.yuncan.xyz/siteshot/Nana%E2%9A%9DNana.png
+      siteshot: https://api.yuncan.xyz/blog/260619_194150.webp
     - name: 云游君
       link: https://www.yunyoujun.cn/
       avatar: https://yunyoujun.cn/images/avatar.jpg
       descr: 希望能成为一个有趣的人
-      siteshot: https://papi.yuncan.xyz/siteshot/%E4%BA%91%E6%B8%B8%E5%90%9B.png
-    - name: SetekhのArcadia
-      link: https://blog.setekh.fun/
-      avatar: https://papi.yuncan.xyz/1714911911-Setekh-Avatar-A.webp
-      descr: (❁´◡`❁)编程笨蛋萌新也想折腾博客！
-      siteshot: https://imgbed.setekh.fun/i/2024/05/15/index-2.png
-    - name: 我鬼知道の博客
-      link: https://www.wgzdy.top
-      avatar: https://cdn.jsdelivr.net/gh/MyGodKnow/CDN/avatar.webp
-      descr: If you wanna achieve you gotta believe
-      siteshot: https://papi.yuncan.xyz/notephoto/www.wgzdy.top
+      siteshot: https://api.yuncan.xyz/blog/260619_194247.webp
     - name: iMaeGoo’s Blog
       link: https://www.imaegoo.com
       avatar: https://www.imaegoo.com/images/avatar.jpg
       descr: 虹墨空间站
-      siteshot: https://papi.yuncan.xyz/notephoto/www.imaegoo.com
+      siteshot: https://api.yuncan.xyz/blog/260619_194808.webp
     - name: 苏苏の休憩小屋
       link: https://luckysusu.top/
       avatar: https://bu.dusays.com/2023/10/10/6524e2dc0735a.jpg
       descr: 归途依旧可爱
-      screenshot: https://bu.dusays.com/2023/10/10/6524e3938eb7e.png
+      screenshot: https://api.yuncan.xyz/blog/260619_195032.webp
     - name: 万叶阁
-      link: https://static.kazuhahub.cn/redirect/index.html
-      avatar: https://papi.yuncan.xyz/HeadPicture.png
+      link: https://www.kazuhahub.com/
+      avatar: https://www.kazuhahub.com/usr/uploads/config/HeadPicture.png
       descr: 希望我们都能像对方一样勇敢！
-      siteshot: https://papi.yuncan.xyz/siteshot/%E4%B8%87%E5%8F%B6%E9%98%81.png
+      siteshot: https://api.yuncan.xyz/blog/260619_195533.webp
     - name: 慕雪的寒舍
       link: https://blog.musnow.top/
       avatar: https://blog.musnow.top/favicon.jpg
       descr: 爱折腾的代码初学者
-      siteshot: https://blog.musnow.top/page_sc.png
+      siteshot: https://api.yuncan.xyz/blog/260619_200006.webp
     - name: UtopiaXC Sites
       link: https://www.utopiaxc.cn/
-      avater: https://papi.yuncan.xyz/notephoto/avatar.png
+      avater: https://imgs.utopiaxc.cn/2021/08/28/ccd08b1e5dd5b.png
       descr: 尽管如此，世界依旧美丽
-      siteshot: https://papi.yuncan.xyz/siteshot/UtopiaXC.png
+      siteshot: https://api.yuncan.xyz/blog/260619_200059.webp
     - name: 楠笙
       link: https://nanshengwx.cn/
-      avatar: https://nanshengwx.cn/upload/logo.png
+      avatar: https://blog.nanshengwx.cn/upload/logo.png
       descr: 空谈误国，实干兴邦
-      siteshot: https://papi.yuncan.xyz/siteshot/sheng.png
-    - name: 满心记
-      link: https://blog.lovelu.top/
-      avatar: https://bu.dusays.com/2023/01/29/63d5bf7fa0d2c.png
-      descr: 追求让人充实，分享让人快乐
-      siteshot: https://image.thum.io/get/allowJPG/wait/20/width/600/crop/950/https://blog.lovelu.top/
+      siteshot: https://api.yuncan.xyz/blog/260619_200655.webp

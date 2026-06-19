@@ -5,17 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/postbuild.mjs",
+    "build": "node scripts/fetch-external-data.mjs && astro build && node scripts/postbuild.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "new": "node scripts/new-post.mjs"
   },
   "dependencies": {
     "@astrojs/check": "latest",
+    "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "latest",
+    "astro-bangumi": "^1.0.0",
     "gray-matter": "^4.0.3",
+    "katex": "^0.17.0",
     "marked": "^18.0.5",
+    "marked-katex-extension": "^5.1.10",
+    "shiki": "^4.2.0",
     "three": "^0.184.0",
     "typescript": "latest",
     "yaml": "^2.9.0"

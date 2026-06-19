@@ -2,12 +2,41 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
+import markedKatex from 'marked-katex-extension';
 import YAML from 'yaml';
 import { site } from '../data/site';
+import { createHighlighterCoreSync } from 'shiki/core';
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
+import bashLang from 'shiki/langs/bash.mjs';
+import shellLang from 'shiki/langs/shell.mjs';
+import cLang from 'shiki/langs/c.mjs';
+import cppLang from 'shiki/langs/cpp.mjs';
+import cssLang from 'shiki/langs/css.mjs';
+import scssLang from 'shiki/langs/scss.mjs';
+import dockerLang from 'shiki/langs/docker.mjs';
+import goLang from 'shiki/langs/go.mjs';
+import htmlLang from 'shiki/langs/html.mjs';
+import iniLang from 'shiki/langs/ini.mjs';
+import javaLang from 'shiki/langs/java.mjs';
+import jsLang from 'shiki/langs/javascript.mjs';
+import jsonLang from 'shiki/langs/json.mjs';
+import latexLang from 'shiki/langs/latex.mjs';
+import mdLang from 'shiki/langs/markdown.mjs';
+import nginxLang from 'shiki/langs/nginx.mjs';
+import cmdLang from 'shiki/langs/cmd.mjs';
+import psLang from 'shiki/langs/powershell.mjs';
+import pyLang from 'shiki/langs/python.mjs';
+import rustLang from 'shiki/langs/rust.mjs';
+import sqlLang from 'shiki/langs/sql.mjs';
+import tomlLang from 'shiki/langs/toml.mjs';
+import tsLang from 'shiki/langs/typescript.mjs';
+import xmlLang from 'shiki/langs/xml.mjs';
+import yamlLang from 'shiki/langs/yaml.mjs';
+import githubLight from 'shiki/themes/github-light.mjs';
+import githubDark from 'shiki/themes/github-dark.mjs';
 
 const root = process.cwd();
 const oldSource = path.join(root, 'content');
-const oldGenerated = path.join(root, 'content', 'fallback');
 const postsDir = path.join(oldSource, 'posts');
 
 export type TocItem = {
@@ -54,24 +83,62 @@ export type MediaGroup = {
   items: MediaItem[];
 };
 
-export type SteamGame = {
-  appId: string;
-  title: string;
-  cover: string;
-  storeUrl: string;
-  playtimeForever?: number;
-  playtimeHours?: string;
-  forumUrl?: string;
-  communityUrl?: string;
-  officialUrl?: string;
-  newsUrl?: string;
-  steamdbUrl?: string;
-};
-
 marked.setOptions({
   gfm: true,
   breaks: false
 });
+
+marked.use(markedKatex({
+  throwOnError: false,
+  strict: false,
+  output: 'html'
+}));
+
+const highlighter = createHighlighterCoreSync({
+  langs: [
+    bashLang, shellLang, cLang, cppLang, cssLang, scssLang, dockerLang,
+    goLang, htmlLang, iniLang, javaLang, jsLang, jsonLang, latexLang,
+    mdLang, nginxLang, cmdLang, psLang, pyLang, rustLang, sqlLang,
+    tomlLang, tsLang, xmlLang, yamlLang
+  ],
+  themes: [githubLight, githubDark],
+  engine: createJavaScriptRegexEngine()
+});
+
+const langAliases: Record<string, string> = {
+  'c++': 'cpp', 'cxx': 'cpp', 'hpp': 'cpp', 'cc': 'cpp',
+  'sh': 'bash', 'shell': 'bash', 'zsh': 'bash',
+  'py': 'python', 'golang': 'go',
+  'js': 'javascript', 'jsx': 'javascript', 'cjs': 'javascript', 'mjs': 'javascript',
+  'ts': 'typescript', 'tsx': 'typescript',
+  'yml': 'yaml',
+  'bat': 'cmd', 'batch': 'cmd',
+  'ps1': 'powershell',
+  'dockerfile': 'docker',
+  'rs': 'rust',
+  'tex': 'latex',
+  'md': 'markdown',
+  'conf': 'ini', 'properties': 'ini'
+};
+
+const normalizeLang = (lang: string) => {
+  const key = lang.toLowerCase().trim();
+  return langAliases[key] || key;
+};
+
+const highlightCode = (code: string, lang: string) => {
+  const normalized = normalizeLang(lang);
+  const options = { themes: { light: 'github-light', dark: 'github-dark' } };
+  try {
+    return highlighter.codeToHtml(code, { lang: normalized, ...options });
+  } catch {
+    try {
+      return highlighter.codeToHtml(code, { lang: 'text', ...options });
+    } catch {
+      return `<pre class="shiki"><code>${escapeHtml(code)}</code></pre>`;
+    }
+  }
+};
 
 const toArray = (value: unknown) => {
   if (Array.isArray(value)) return value.map(String);
@@ -158,7 +225,9 @@ const protectArticleImages = (html: string) =>
 const addCodeFrames = (html: string) =>
   html.replace(/<pre><code(?: class="language-([^"]+)")?>([\s\S]*?)<\/code><\/pre>/g, (_, lang = 'text', code) => {
     const label = String(lang || 'text').toUpperCase();
-    return `<figure class="code-frame" data-lang="${escapeHtml(label)}"><figcaption><span></span><strong>${escapeHtml(label)}</strong><button type="button" data-copy-code>复制</button></figcaption><pre><code class="language-${escapeHtml(String(lang || 'text'))}">${code}</code></pre></figure>`;
+    const rawCode = decodeHtml(code);
+    const highlighted = highlightCode(rawCode, String(lang || 'text'));
+    return `<figure class="code-frame" data-lang="${escapeHtml(label)}"><figcaption><span></span><strong>${escapeHtml(label)}</strong><button type="button" data-copy-code>复制</button></figcaption>${highlighted}</figure>`;
   });
 
 const renderMarkdown = (content: string) => {
@@ -187,10 +256,16 @@ const stickyValue = (data: Record<string, unknown>) => {
   return Number.isFinite(raw) ? raw : 0;
 };
 
-export function getPosts(): Post[] {
-  if (!fs.existsSync(postsDir)) return [];
+let cachedPosts: Post[] | null = null;
 
-  return fs
+export function getPosts(): Post[] {
+  if (cachedPosts) return cachedPosts;
+  if (!fs.existsSync(postsDir)) {
+    cachedPosts = [];
+    return cachedPosts;
+  }
+
+  const result = fs
     .readdirSync(postsDir)
     .filter((file) => file.endsWith('.md'))
     .map((file) => {
@@ -223,13 +298,20 @@ export function getPosts(): Post[] {
       };
     })
     .sort((a, b) => b.sticky - a.sticky || +new Date(b.date) - +new Date(a.date));
+
+  cachedPosts = result;
+  return result;
 }
 
 export function getPost(slug: string) {
   return getPosts().find((post) => post.slug === slug);
 }
 
-export function getTaxonomy(type: 'tags' | 'categories') {
+export type TaxonomyItem = { name: string; slug: string; posts: Post[] };
+
+let cachedTaxonomy: Record<'tags' | 'categories', TaxonomyItem[]> | null = null;
+
+const computeTaxonomy = (type: 'tags' | 'categories'): TaxonomyItem[] => {
   const map = new Map<string, Post[]>();
   getPosts().forEach((post) => {
     post[type].forEach((name) => {
@@ -241,6 +323,16 @@ export function getTaxonomy(type: 'tags' | 'categories') {
   return Array.from(map.entries())
     .map(([name, posts]) => ({ name, slug: slugify(name), posts }))
     .sort((a, b) => b.posts.length - a.posts.length || a.name.localeCompare(b.name, 'zh-CN'));
+};
+
+export function getTaxonomy(type: 'tags' | 'categories'): TaxonomyItem[] {
+  if (!cachedTaxonomy) {
+    cachedTaxonomy = {
+      tags: computeTaxonomy('tags'),
+      categories: computeTaxonomy('categories')
+    };
+  }
+  return cachedTaxonomy[type];
 }
 
 export function getPageMarkdown(relativePath: string) {
@@ -273,123 +365,40 @@ export function getLinks() {
   }));
 }
 
-const normalizeBiliItem = (item: any): MediaItem => ({
-  title: item.title || item.season_title || '未命名条目',
-  type: item.season_type_name || item.type,
-  area: Array.isArray(item.areas) ? item.areas.map((area: any) => area.name).join(' / ') : item.area,
-  cover: item.cover || item.square_cover || site.assets.defaultPostCover,
-  totalCount: item.new_ep?.index_show || item.total_count || item.totalCount,
-  score: item.rating?.score || item.score,
-  des: item.evaluate || item.summary || item.des || item.subtitle || '',
-  view: item.stat?.view || item.view,
-  follow: item.stat?.follow || item.follow,
-  url: item.url || (item.id ? `https://www.bilibili.com/bangumi/play/ss${item.id}` : ''),
-  badge: item.badge || item.renewal_time || ''
-});
-
-export function getMedia(kind: 'bangumis' | 'cinemas'): MediaGroup[] {
-  const file = path.join(oldSource, 'data', `${kind}.json`);
-  if (!fs.existsSync(file)) return [];
-  const json = JSON.parse(fs.readFileSync(file, 'utf8')) as Record<string, MediaItem[]>;
-  return [
-    { key: 'watching', title: '正在看', items: (json.watching || []).map(normalizeBiliItem) },
-    { key: 'wantWatch', title: '想看', items: (json.wantWatch || []).map(normalizeBiliItem) },
-    { key: 'watched', title: '看过', items: (json.watched || []).map(normalizeBiliItem) }
-  ].filter((group) => group.items.length);
-}
-
-export async function getBiliMedia(kind: 'bangumis' | 'cinemas'): Promise<MediaGroup[]> {
-  return getMedia(kind);
-}
-
-const minutesToHours = (minutes = 0) => {
-  if (!minutes) return '0 小时';
-  const hours = minutes / 60;
-  return hours >= 10 ? `${Math.round(hours)} 小时` : `${hours.toFixed(1)} 小时`;
+export type BangumiItem = {
+  title: string;
+  cover: string;
+  url: string;
+  type?: string;
+  total?: number;
+  follow?: number;
+  view?: number;
+  score?: number;
+  desc?: string;
+  category?: number;
 };
 
-const steamApiUrl = () =>
-  site.media.steamOwnedGamesApi
-    .replace(':key', encodeURIComponent(site.media.steamApiKey || ''))
-    .replace(':steamId', encodeURIComponent(site.media.steamId));
+export type BangumiData = {
+  want: BangumiItem[];
+  watching: BangumiItem[];
+  watched: BangumiItem[];
+  lastUpdate: string;
+};
 
-async function getSteamGamesFromApi(): Promise<SteamGame[]> {
-  if (!site.media.steamApiKey || !site.media.steamId) return [];
+export function getBangumiData(categoryFilter?: 1 | 2): BangumiData {
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(steamApiUrl(), { signal: controller.signal });
-    clearTimeout(timeout);
-    if (!res.ok) return [];
-    const data = await res.json();
-    const games = Array.isArray(data?.response?.games) ? data.response.games : [];
-    return games
-      .map((game: any) => {
-        const appId = String(game.appid || '');
-        const playtime = Number(game.playtime_forever || 0);
-        return {
-          appId,
-          title: String(game.name || 'Steam Game'),
-          cover: appId ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg` : site.assets.defaultPostCover,
-          storeUrl: appId ? `https://store.steampowered.com/app/${appId}/` : site.media.steamProfile,
-          communityUrl: appId ? `https://steamcommunity.com/app/${appId}` : undefined,
-          newsUrl: appId ? `https://store.steampowered.com/news/app/${appId}` : undefined,
-          steamdbUrl: appId ? `https://steamdb.info/app/${appId}/` : undefined,
-          playtimeForever: playtime,
-          playtimeHours: minutesToHours(playtime)
-        };
-      })
-      .sort((a: SteamGame, b: SteamGame) => (b.playtimeForever || 0) - (a.playtimeForever || 0));
-  } catch {
-    return [];
-  }
-}
-
-function getSteamGamesFromGenerated(): SteamGame[] {
-  const file = path.join(oldGenerated, 'steamgames', 'index.html');
-  if (!fs.existsSync(file)) return [];
-  const html = fs.readFileSync(file, 'utf8');
-  const blocks = html.match(/<div class="steam-game-item"[\s\S]*?(?=<div class="steam-game-item"|<div class="steam-pagination"|<\/main>)/g) || [];
-
-  return blocks.map((block) => {
-    const appId = block.match(/store\.steampowered\.com\/app\/(\d+)/)?.[1] || '';
-    const title = decodeHtml(stripHtml(block.match(/<div class="steam-game-title">([\s\S]*?)<\/div>/)?.[1] || 'Steam Game'));
-    const cover =
-      decodeHtml(block.match(/data-src="([^"]+)"/)?.[1] || block.match(/src="([^"]+steam[^"]+)"/)?.[1] || (appId ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg` : site.assets.defaultPostCover));
-    const links = Array.from(block.matchAll(/<a[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)).map((match) => ({
-      href: decodeHtml(match[1]),
-      text: stripHtml(match[2])
-    }));
-    const find = (keyword: string) => links.find((link) => link.text.includes(keyword))?.href;
-
+    const dataPath = path.join(process.cwd(), 'content', 'data', 'bangumi-data.json');
+    if (!fs.existsSync(dataPath)) return { want: [], watching: [], watched: [], lastUpdate: '' };
+    const raw = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+    const filter = (items: any[]) =>
+      categoryFilter ? items.filter(item => String(item.category || 1) === String(categoryFilter)) : items;
     return {
-      appId,
-      title,
-      cover,
-      storeUrl: find('商店') || (appId ? `https://store.steampowered.com/app/${appId}/` : site.media.steamProfile),
-      forumUrl: find('论坛'),
-      communityUrl: find('社区'),
-      officialUrl: find('官网'),
-      newsUrl: find('新闻'),
-      steamdbUrl: find('SteamDB')
+      want: filter(raw.want || []),
+      watching: filter(raw.watching || []),
+      watched: filter(raw.watched || []),
+      lastUpdate: raw.lastUpdate || '',
     };
-  });
-}
-
-export type SteamGamesResult = {
-  games: SteamGame[];
-  error?: string;
-  source: 'api' | 'fallback' | 'none';
-};
-
-export async function getSteamGames(): Promise<SteamGamesResult> {
-  const apiGames = await getSteamGamesFromApi();
-  if (apiGames.length) {
-    return { games: apiGames, source: 'api' };
+  } catch {
+    return { want: [], watching: [], watched: [], lastUpdate: '' };
   }
-  const fallbackGames = getSteamGamesFromGenerated();
-  if (fallbackGames.length) {
-    return { games: fallbackGames, source: 'fallback' };
-  }
-  return { games: [], source: 'none', error: '无法获取游戏数据，请稍后再试或检查 Steam API 配置。' };
 }

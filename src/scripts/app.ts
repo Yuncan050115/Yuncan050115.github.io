@@ -90,6 +90,11 @@ const initTheme = () => {
   }
 };
 
+// Track page-scoped listeners so they can be removed on re-boot (View Transitions re-runs boot on every navigation)
+let navScrollHandler: (() => void) | null = null;
+let progressScrollHandler: (() => void) | null = null;
+let heroSnapCleanup: (() => void) | null = null;
+
 const initNav = () => {
   const nav = document.querySelector<HTMLElement>('.site-nav');
   const header = document.querySelector<HTMLElement>('.site-header');
@@ -98,7 +103,7 @@ const initNav = () => {
 
   if (toggle && toggle.dataset.ready !== 'true') {
     toggle.dataset.ready = 'true';
-    toggle.addEventListener('click', () => nav.classList.toggle('open'));
+    toggle.addEventListener('click', () => nav.classList.toggle('is-open'));
   }
 
   nav.querySelectorAll<HTMLElement>('.nav-item.has-children > a').forEach((link) => {
@@ -119,7 +124,7 @@ const initNav = () => {
     if (link.dataset.ready === 'true') return;
     link.dataset.ready = 'true';
     link.addEventListener('click', () => {
-      nav.classList.remove('open');
+      nav.classList.remove('is-open');
       nav.querySelectorAll('.nav-item.is-open').forEach((node) => node.classList.remove('is-open'));
     });
   });
@@ -133,11 +138,15 @@ const initNav = () => {
     }, { passive: true });
   }
 
+  if (navScrollHandler) {
+    window.removeEventListener('scroll', navScrollHandler);
+  }
   const update = () => {
     header.classList.toggle('is-docked', window.scrollY > 160);
   };
   update();
   window.addEventListener('scroll', update, { passive: true });
+  navScrollHandler = update;
 };
 
 const initBackTop = () => {
@@ -149,15 +158,16 @@ const initBackTop = () => {
 };
 
 const initProgress = () => {
-  const bar = document.querySelector<HTMLElement>('.read-progress');
   const reader = document.querySelector<HTMLElement>('[data-reader-progress]');
   const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-panel a[href^="#"]'));
   const headings = tocLinks
     .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
     .filter(Boolean) as HTMLElement[];
-  if (bar?.dataset.ready === 'true' && reader?.dataset.ready === 'true') return;
-  if (bar) bar.dataset.ready = 'true';
-  if (reader) reader.dataset.ready = 'true';
+  // Remove previous scroll handler before binding a new one (prevents accumulation across navigations)
+  if (progressScrollHandler) {
+    window.removeEventListener('scroll', progressScrollHandler);
+    progressScrollHandler = null;
+  }
   const update = () => {
     // 优先基于文章正文区域计算进度
     const article = document.querySelector('article.post-body, article, .post-body, main#main');
@@ -178,7 +188,6 @@ const initProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
     }
-    if (bar) bar.style.transform = `scaleX(${progress})`;
     if (reader) reader.style.width = `${Math.round(progress * 100)}%`;
     let activeId = '';
     for (const heading of headings) {
@@ -188,9 +197,15 @@ const initProgress = () => {
   };
   update();
   window.addEventListener('scroll', update, { passive: true });
+  progressScrollHandler = update;
 };
 
 const initHeroSnap = () => {
+  // Clean up previous page's hero listeners (hero element is page-scoped, not persisted)
+  if (heroSnapCleanup) {
+    heroSnapCleanup();
+    heroSnapCleanup = null;
+  }
   const hero = document.querySelector<HTMLElement>('.first-screen');
   if (!hero || hero.dataset.snapReady === 'true') return;
   hero.dataset.snapReady = 'true';
@@ -203,66 +218,31 @@ const initHeroSnap = () => {
       locked = false;
     }, 720);
   };
-  window.addEventListener(
-    'wheel',
-    (event) => {
-      if (locked) return;
-      const heroBottom = hero.offsetTop + hero.offsetHeight;
-      if (event.deltaY > 20 && window.scrollY < hero.offsetHeight * 0.72) jump(heroBottom);
-      if (event.deltaY < -20 && window.scrollY > 80 && window.scrollY < heroBottom + 180) jump(0);
-    },
-    { passive: true }
-  );
-  window.addEventListener(
-    'touchstart',
-    (event) => {
-      touchStart = event.touches[0]?.clientY || 0;
-    },
-    { passive: true }
-  );
-  window.addEventListener(
-    'touchend',
-    (event) => {
-      if (locked || !touchStart) return;
-      const end = event.changedTouches[0]?.clientY || 0;
-      const delta = touchStart - end;
-      const heroBottom = hero.offsetTop + hero.offsetHeight;
-      if (delta > 46 && window.scrollY < hero.offsetHeight * 0.72) jump(heroBottom);
-      if (delta < -46 && window.scrollY > 80 && window.scrollY < heroBottom + 180) jump(0);
-    },
-    { passive: true }
-  );
-};
-
-const initFps = () => {
-  const el = document.querySelector('#fps');
-  if (!el || window.__yuncanApp) return;
-
-  // 隐藏入口：连续点击 2 次
-  let clickCount = 0;
-  let clickTimer: number | undefined;
-  el.addEventListener('click', () => {
-    clickCount++;
-    if (clickTimer) clearTimeout(clickTimer);
-    clickTimer = window.setTimeout(() => { clickCount = 0; }, 2000);
-    if (clickCount >= 2) {
-      clickCount = 0;
-      showPostEditor();
-    }
-  });
-
-  let frames = 0;
-  let last = performance.now();
-  const tick = (now: number) => {
-    frames += 1;
-    if (now - last >= 500) {
-      el.textContent = `FPS ${Math.round((frames * 1000) / (now - last))}`;
-      frames = 0;
-      last = now;
-    }
-    requestAnimationFrame(tick);
+  const onWheel = (event: WheelEvent) => {
+    if (locked) return;
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
+    if (event.deltaY > 20 && window.scrollY < hero.offsetHeight * 0.72) jump(heroBottom);
+    if (event.deltaY < -20 && window.scrollY > 80 && window.scrollY < heroBottom + 180) jump(0);
   };
-  requestAnimationFrame(tick);
+  const onTouchStart = (event: TouchEvent) => {
+    touchStart = event.touches[0]?.clientY || 0;
+  };
+  const onTouchEnd = (event: TouchEvent) => {
+    if (locked || !touchStart) return;
+    const end = event.changedTouches[0]?.clientY || 0;
+    const delta = touchStart - end;
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
+    if (delta > 46 && window.scrollY < hero.offsetHeight * 0.72) jump(heroBottom);
+    if (delta < -46 && window.scrollY > 80 && window.scrollY < heroBottom + 180) jump(0);
+  };
+  window.addEventListener('wheel', onWheel, { passive: true });
+  window.addEventListener('touchstart', onTouchStart, { passive: true });
+  window.addEventListener('touchend', onTouchEnd, { passive: true });
+  heroSnapCleanup = () => {
+    window.removeEventListener('wheel', onWheel);
+    window.removeEventListener('touchstart', onTouchStart);
+    window.removeEventListener('touchend', onTouchEnd);
+  };
 };
 
 // ========== 文章管理页 ==========
@@ -280,6 +260,51 @@ const showPostEditor = () => {
   if (pwdInput) pwdInput.value = '';
   const err = document.getElementById('pe-error');
   if (err) err.textContent = '';
+};
+
+// 轻量级 FPS 检测：每 5 秒采样一次，采样窗口内用 rAF 计数帧数，1 秒后计算 FPS。
+// 白天和夜间都运行（不持续运行 rAF 循环，仅在采样窗口内计数）。
+// #fps 元素同时作为隐藏入口：连续点击 2 次打开文章管理页。
+const initFps = () => {
+  const fpsEl = document.querySelector<HTMLElement>('#fps');
+  if (!fpsEl || fpsEl.dataset.ready === 'true') return;
+  fpsEl.dataset.ready = 'true';
+
+  let frameCount = 0;
+  let lastTime = performance.now();
+  let rafId: number | null = null;
+
+  const sampleFps = () => {
+    frameCount = 0;
+    lastTime = performance.now();
+    const countFrame = () => {
+      frameCount++;
+      rafId = requestAnimationFrame(countFrame);
+    };
+    countFrame();
+    window.setTimeout(() => {
+      if (rafId) cancelAnimationFrame(rafId);
+      const elapsed = (performance.now() - lastTime) / 1000;
+      const fps = elapsed > 0 ? Math.round(frameCount / elapsed) : 0;
+      fpsEl.textContent = `FPS ${fps}`;
+    }, 1000);
+  };
+
+  sampleFps();
+  window.setInterval(sampleFps, 5000);
+
+  // 保留双击打开文章管理页的隐藏入口
+  let clickCount = 0;
+  let clickTimer: number | undefined;
+  fpsEl.addEventListener('click', () => {
+    clickCount++;
+    if (clickTimer) clearTimeout(clickTimer);
+    clickTimer = window.setTimeout(() => { clickCount = 0; }, 2000);
+    if (clickCount >= 2) {
+      clickCount = 0;
+      showPostEditor();
+    }
+  });
 };
 
 const initPostEditor = () => {
@@ -673,46 +698,56 @@ const initRuntimeDays = () => {
 
 const initCursor = () => {
   const dot = document.querySelector<HTMLElement>('.cursor-dot');
-  const ring = document.querySelector<HTMLElement>('.cursor-ring');
-  const glow = document.querySelector<HTMLElement>('.cursor-glow');
-  if (!dot || !ring || dot.dataset.ready === 'true') return;
+  if (!dot || dot.dataset.ready === 'true') return;
   dot.dataset.ready = 'true';
-  let x = window.innerWidth / 2;
-  let y = window.innerHeight / 2;
-  let rx = x;
-  let ry = y;
 
-  window.addEventListener(
-    'mousemove',
-    (event) => {
-      x = event.clientX;
-      y = event.clientY;
-      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      if (glow) glow.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      document.body.classList.toggle('cursor-active', true);
-      const state = window.__yuncanParticles;
-      if (state) {
-        state.mouseX = (x / window.innerWidth) * 2 - 1;
-        state.mouseY = -(y / window.innerHeight) * 2 + 1;
-      }
-    },
-    { passive: true }
-  );
+  // 使用 requestAnimationFrame 批量处理 transform 更新，避免同步布局
+  let pendingX = 0, pendingY = 0, needsUpdate = false;
+  window.addEventListener('pointermove', (event) => {
+    pendingX = event.clientX;
+    pendingY = event.clientY;
+    if (!needsUpdate) {
+      needsUpdate = true;
+      requestAnimationFrame(() => {
+        dot.style.transform = `translate3d(${pendingX}px, ${pendingY}px, 0)`;
+        needsUpdate = false;
+      });
+    }
+    // 只在 cursor-active 未设置时才设置，避免每帧都 toggle
+    if (!document.body.classList.contains('cursor-active')) {
+      document.body.classList.add('cursor-active');
+    }
+    // 夜间模式下与粒子交互
+    const state = window.__yuncanParticles;
+    if (state) {
+      state.mouseX = (pendingX / window.innerWidth) * 2 - 1;
+      state.mouseY = -(pendingY / window.innerHeight) * 2 + 1;
+    }
+  }, { passive: true });
   window.addEventListener('mousedown', () => document.body.classList.add('cursor-down'), { passive: true });
   window.addEventListener('mouseup', () => document.body.classList.remove('cursor-down'), { passive: true });
-  document.addEventListener('mouseover', (event) => {
+  // 缓存上次检查的 target，避免重复 closest 调用
+  let lastOver: HTMLElement | null = null;
+  let lastLink = false;
+  document.addEventListener('pointerover', (event) => {
     const target = event.target as HTMLElement;
-    document.body.classList.toggle('cursor-link', Boolean(target.closest('a, button, input, textarea, select, [role="button"]')));
+    if (target === lastOver) return;
+    lastOver = target;
+    const isLink = Boolean(target.closest('a, button, input, textarea, select, [role="button"]'));
+    if (isLink !== lastLink) {
+      lastLink = isLink;
+      document.body.classList.toggle('cursor-link', isLink);
+    }
   }, { passive: true });
-
-  const animate = () => {
-    // 插值系数越大越跟手（0.18 太慢，0.45 接近即时但保留轻微缓动）
-    rx += (x - rx) * 0.45;
-    ry += (y - ry) * 0.45;
-    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
-    requestAnimationFrame(animate);
-  };
-  animate();
+  // 页面隐藏时重置光标状态，避免切回窗口后首次点击卡住
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      document.body.classList.remove('cursor-active', 'cursor-down', 'cursor-link');
+      lastOver = null;
+      lastLink = false;
+      needsUpdate = false;
+    }
+  });
 };
 
 const initCodeCopy = () => {
@@ -1038,8 +1073,6 @@ const initThree = async () => {
   const canvas = document.querySelector<HTMLCanvasElement>('#breath-scene');
   if (!canvas) return;
   window.__yuncanThree = true;
-  const particleState = { mouseX: 0, mouseY: 0 };
-  window.__yuncanParticles = particleState;
 
   const THREE = await import('three');
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
@@ -1049,6 +1082,10 @@ const initThree = async () => {
   camera.position.z = 8;
 
   const isDark = () => document.documentElement.dataset.theme === 'dark';
+
+  // 光标排斥状态：由 initCursor 的 mousemove 回调写入，夜间模式下驱动粒子避开光标
+  const particleState = { mouseX: 0, mouseY: 0 };
+  window.__yuncanParticles = particleState;
 
   // 粒子数量适中（320），白天为气泡、夜间为星空
   const COUNT = 320;
@@ -1094,11 +1131,11 @@ const initThree = async () => {
     uTime: { value: 0 },
     uDark: { value: isDark() ? 1 : 0 },
     uPixelRatio: { value: renderer.getPixelRatio() },
-    uMouse: { value: new THREE.Vector2(0, 0) },
-    uWorldH: { value: WORLD_H }
+    uWorldH: { value: WORLD_H },
+    uMouse: { value: new THREE.Vector2(0, 0) }
   };
 
-  // 所有逐粒子计算（上升、漂浮、光标排斥、闪烁）都在 GPU 顶点着色器完成，CPU 仅更新时间与鼠标
+  // 所有逐粒子计算（上升、漂浮、闪烁）都在 GPU 顶点着色器完成，CPU 仅更新时间
   const material = new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
@@ -1115,8 +1152,8 @@ const initThree = async () => {
       uniform float uTime;
       uniform float uDark;
       uniform float uPixelRatio;
-      uniform vec2 uMouse;
       uniform float uWorldH;
+      uniform vec2 uMouse;
       void main() {
         // 白天气泡快速上升，夜间星星缓慢漂浮
         float rise = mod(position.y + uTime * aSpeed * mix(1.0, 0.15, uDark) + uWorldH * 0.5, uWorldH) - uWorldH * 0.5;
@@ -1125,7 +1162,7 @@ const initThree = async () => {
           rise,
           position.z + cos(uTime * 0.18 + aPhase) * 0.3
         );
-        // 光标排斥（GPU 计算，避免 CPU 逐粒子循环）
+        // 光标排斥：夜间模式下粒子避开鼠标位置
         vec2 toMouse = pos.xy - uMouse;
         float dist = max(length(toMouse), 0.001);
         float repel = 1.0 - smoothstep(0.0, 3.0, dist);
@@ -1189,8 +1226,15 @@ const initThree = async () => {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
+  let rafId: number | null = null;
+  const startAnimation = () => {
+    if (rafId === null && isDark()) {
+      rafId = requestAnimationFrame(animate);
+    }
+  };
   new MutationObserver(() => {
     uniforms.uDark.value = isDark() ? 1 : 0;
+    startAnimation();
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   const startTime = performance.now();
@@ -1213,9 +1257,16 @@ const initThree = async () => {
   const TARGET_INTERVAL = 1000 / 36; // 约 27.8ms
   let lastFrameTime = 0;
   const animate = (time: number) => {
-    requestAnimationFrame(animate);
+    // 白天模式停止 rAF 循环，由 MutationObserver 在切回夜间时重启
+    if (!isDark()) {
+      rafId = null;
+      return;
+    }
     const delta = time - lastFrameTime;
-    if (delta < TARGET_INTERVAL) return;
+    if (delta < TARGET_INTERVAL) {
+      rafId = requestAnimationFrame(animate);
+      return;
+    }
     lastFrameTime = time - (delta % TARGET_INTERVAL);
 
     const now = performance.now();
@@ -1223,6 +1274,7 @@ const initThree = async () => {
     lastFrame = now;
     const t = (now - startTime) / 1000;
     uniforms.uTime.value = t;
+    // 更新光标位置（夜间模式下驱动粒子排斥），归一化坐标映射到可视世界范围
     uniforms.uMouse.value.set(particleState.mouseX * viewW * 0.5, particleState.mouseY * viewH * 0.5);
 
     const dark = isDark();
@@ -1263,8 +1315,9 @@ const initThree = async () => {
     meteorGeom.attributes.position.needsUpdate = true;
 
     renderer.render(scene, camera);
+    rafId = requestAnimationFrame(animate);
   };
-  animate(performance.now());
+  startAnimation();
 };
 
 const initSettings = () => {
@@ -1310,7 +1363,6 @@ const initSettings = () => {
     const fontSize = localStorage.getItem('setting-fontSize') || 'medium';
     const fontFamily = localStorage.getItem('setting-fontFamily') || 'default';
     const bgImage = localStorage.getItem('setting-bgImage') || 'default';
-    const progressBar = localStorage.getItem('setting-progressBar');
 
     // 字体大小
     document.documentElement.style.fontSize = fontSizeMap[fontSize] || '16px';
@@ -1340,27 +1392,6 @@ const initSettings = () => {
       }
     }
 
-    // 进度条显隐
-    const bar = document.querySelector('.read-progress') as HTMLElement;
-    if (bar) {
-      bar.style.display = progressBar === 'false' ? 'none' : '';
-    }
-
-    // 背景动效开关
-    const bgEffectVal = localStorage.getItem('setting-bgEffect');
-    const bgEffectCheckbox = document.querySelector('[data-setting="bgEffect"]') as HTMLInputElement;
-    if (bgEffectCheckbox) {
-      bgEffectCheckbox.checked = bgEffectVal !== 'false'; // 默认开启
-    }
-    const globalBg = document.querySelector('.global-bg') as HTMLElement;
-    if (globalBg) {
-      if (bgEffectVal === 'false') {
-        globalBg.style.animation = 'none';
-      } else {
-        globalBg.style.animation = '';
-      }
-    }
-
     // 更新按钮 active 状态
     document.querySelectorAll('[data-setting]').forEach((group) => {
       const setting = group.getAttribute('data-setting');
@@ -1369,14 +1400,6 @@ const initSettings = () => {
       group.querySelectorAll('.setting-opt').forEach((btn) => {
         btn.classList.toggle('active', btn.getAttribute('data-value') === value);
       });
-    });
-
-    // 更新 checkbox
-    document.querySelectorAll('[data-setting][type="checkbox"]').forEach((cb) => {
-      const setting = cb.getAttribute('data-setting');
-      if (!setting) return;
-      const stored = localStorage.getItem(`setting-${setting}`);
-      (cb as HTMLInputElement).checked = stored === null ? true : stored !== 'false';
     });
   };
 
@@ -1424,21 +1447,10 @@ const initSettings = () => {
     });
   });
 
-  // checkbox
-  document.querySelectorAll('[data-setting][type="checkbox"]').forEach((cb) => {
-    cb.addEventListener('change', function(this: HTMLInputElement) {
-      const setting = this.getAttribute('data-setting');
-      if (setting) {
-        localStorage.setItem(`setting-${setting}`, this.checked ? 'true' : 'false');
-        applySettings();
-      }
-    });
-  });
-
   // 恢复默认
   if (reset) {
     reset.addEventListener('click', () => {
-      ['fontSize', 'fontFamily', 'bgImage', 'progressBar', 'bgEffect'].forEach(key => {
+      ['fontSize', 'fontFamily', 'bgImage'].forEach(key => {
         localStorage.removeItem(`setting-${key}`);
       });
       applySettings();
@@ -1446,27 +1458,68 @@ const initSettings = () => {
   }
 };
 
+let firstBoot = true;
+
+const initImageCursorEffect = () => {
+  const images = document.querySelectorAll<HTMLImageElement>('article img, .post-body img');
+  images.forEach((img) => {
+    if (img.dataset.cursorReady === 'true') return;
+    img.dataset.cursorReady = 'true';
+
+    img.addEventListener('pointermove', (e) => {
+      const rect = img.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 to 0.5
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const maxTilt = 6; // 最大倾斜角度
+      const maxShift = 8; // 最大位移 px
+      img.style.transform = `scale(1.03) translate(${x * maxShift}px, ${y * maxShift}px) rotateX(${-y * maxTilt}deg) rotateY(${x * maxTilt}deg)`;
+    });
+
+    img.addEventListener('pointerenter', () => {
+      img.classList.add('img-cursor-active');
+    });
+
+    img.addEventListener('pointerleave', () => {
+      img.classList.remove('img-cursor-active');
+      img.style.transform = '';
+    });
+  });
+};
+
 const boot = () => {
+  // 重新应用主题（View Transitions 导航后 <html> 被替换，需要恢复主题）
+  applyTheme();
+
   // 立即应用当前主题到 header，避免闪白
   const header = document.querySelector('.site-header');
   if (header) {
     header.classList.add('theme-ready');
   }
-  initTheme();
-  initSettings();
-  initPostEditor();
+
+  if (firstBoot) {
+    // 仅首次加载时运行的初始化（这些函数有单例守卫或绑定的 DOM 元素使用 transition:persist）
+    initTheme();
+    initSettings();
+    initCursor();
+    initContextMenu();
+    initPostEditor();
+    initFps();
+    // Three.js 延迟加载，不阻塞首次渲染
+    (window.requestIdleCallback || window.setTimeout)(() => initThree());
+    // 音乐延迟加载
+    (window.requestIdleCallback || window.setTimeout)(() => initMusic());
+    firstBoot = false;
+  }
+
+  // 每次页面加载都需要重新绑定（页面内容在 View Transitions 后被替换）
   initNav();
   initBackTop();
   initProgress();
   initHeroSnap();
-  initMusic();
-  initThree();
-  initCursor();
-  initContextMenu();
   initPostActions();
   initCodeCopy();
-  initFps();
   initRuntimeDays();
+  initImageCursorEffect();
 
   // 歌词栏逻辑
   const lyricBar = document.getElementById('lyric-bar');
@@ -1486,5 +1539,13 @@ const boot = () => {
 
   window.__yuncanApp = true;
 };
+
+// View Transitions: 在 DOM 替换前恢复主题，避免夜间模式导航栏闪白
+document.addEventListener('astro:before-swap', (event) => {
+  const saved = localStorage.getItem('yuncan-theme');
+  const hour = new Date().getHours();
+  const theme = saved === 'light' || saved === 'dark' ? saved : (hour >= 6 && hour < 19 ? 'light' : 'dark');
+  event.newDocument.documentElement.dataset.theme = theme;
+});
 
 document.addEventListener('astro:page-load', boot);

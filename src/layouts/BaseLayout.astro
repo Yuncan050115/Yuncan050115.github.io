@@ -43,11 +43,19 @@ const preconnectOrigins = Array.from(new Set(
     <meta property="og:image" content={site.logo} />
     <link rel="icon" type="image/png" href="/assets/logo-yuncan.png" />
     <link rel="apple-touch-icon" href="/assets/logo-yuncan.png" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml" />
     {preconnectOrigins.map((origin) => <link rel="preconnect" href={origin} />)}
     <link rel="preconnect" href="https://api.bilibili.com" />
     <link rel="preconnect" href="https://i0.hdslb.com" />
     <link rel="preload" as="image" href={site.background.image} />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" />
+    {/* 非关键 CSS 异步加载：字体与 KaTeX 仅在 print 媒体下加载，加载完成后切回 all，避免阻塞首屏渲染。
+        本地 @font-face（JinghuaLaosong 等）已在下方内联 <style> 中同步定义，主字体不受影响。 */}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" />
+    </noscript>
     <style is:global>
       @font-face {
         font-family: 'JinghuaLaosong';
@@ -85,18 +93,15 @@ const preconnectOrigins = Array.from(new Set(
     <ClientRouter />
   </head>
   <body style={`--global-bg: url('${site.background.image}')`}>
-    <div class="read-progress" transition:name="read-progress" transition:persist></div>
     <canvas id="breath-scene" transition:name="breath-scene" transition:persist></canvas>
     <div class="global-bg" aria-hidden="true" transition:name="global-bg" transition:persist></div>
     <div class="global-filter" aria-hidden="true" transition:name="global-filter" transition:persist></div>
     <div class="grain" aria-hidden="true" transition:name="grain" transition:persist></div>
-    <div class="cursor-glow" aria-hidden="true" transition:name="cursor-glow" transition:persist></div>
     <div class="cursor-dot" aria-hidden="true" transition:name="cursor-dot" transition:persist></div>
-    <div class="cursor-ring" aria-hidden="true" transition:name="cursor-ring" transition:persist></div>
 
     <header class="site-header" transition:name="site-header" transition:persist>
       <a class="brand-mark" href="/" aria-label="返回首页">
-        <img src={site.logo} alt={site.name} onerror={`this.onerror=null;this.src='${site.assets.defaultPostCover}'`} />
+        <img src={site.logo} alt={site.name} decoding="async" onerror={`this.onerror=null;this.src='${site.assets.defaultPostCover}'`} />
       </a>
       <nav class="site-nav" aria-label="主导航">
         {site.nav.map((item) => {
@@ -149,7 +154,7 @@ const preconnectOrigins = Array.from(new Set(
     {hasMusic && (
       <aside class="music-dock" data-music={JSON.stringify(musicPayload)} transition:name="music-dock" transition:persist>
         <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐">
-          <img src={site.music.fallbackCover || site.logo} alt="" />
+          <img src={site.music.fallbackCover || site.logo} alt="" decoding="async" />
         </button>
         <div class="music-info">
           <strong data-music-title>Yuncan Music</strong>
@@ -215,7 +220,7 @@ const preconnectOrigins = Array.from(new Set(
         <div class="reward-codes">
           {site.reward.images.map((image) => (
             <figure>
-              <img src={image.src} alt={`${image.label}收款码`} onerror="this.closest('figure').style.display='none'" />
+              <img src={image.src} alt={`${image.label}收款码`} loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'" />
               <figcaption>{image.label}</figcaption>
             </figure>
           ))}

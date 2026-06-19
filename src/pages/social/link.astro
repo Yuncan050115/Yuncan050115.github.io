@@ -7,8 +7,8 @@ import { getLinks } from '../../lib/content';
 const groups = getLinks();
 ---
 
-<BaseLayout title="友链">
-  <PageHero title="友链" description="一些朋友的小站，值得去看看他们写的东西。" />
+<BaseLayout title="友人帐">
+  <PageHero title="友人帐" description="一些朋友的小站，值得去看看他们写的东西。" />
   <section class="content-shell">
     {groups.map((group) => (
       <div class="friend-group">
@@ -32,6 +32,21 @@ const groups = getLinks();
         </div>
       </div>
     ))}
+  </section>
+  <section class="content-shell">
+    <div class="friend-apply">
+      <div class="section-heading small">
+        <p>APPLY</p>
+        <h2>申请友链</h2>
+        <span>欢迎按以下格式留言申请</span>
+      </div>
+      <div class="friend-apply-template">
+        <p>站点名称：你的博客名</p>
+        <p>站点链接：https://your-site.com</p>
+        <p>站点头像：https://your-site.com/avatar.png</p>
+        <p>站点描述：一句话介绍你的站点</p>
+      </div>
+    </div>
   </section>
   <section class="content-shell">
     <Twikoo />

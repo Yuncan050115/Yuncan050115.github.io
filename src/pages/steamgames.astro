@@ -3,15 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Twikoo from '../components/Twikoo.astro';
 import { site } from '../data/site';
-import { getSteamGames } from '../lib/content';
+import steamGames from '../../content/data/steam-games.json';
 
-const result = await getSteamGames();
-const games = Array.isArray(result.games) ? result.games : [];
-const totalHours = Math.round(games.reduce((sum, game) => sum + (game.playtimeForever || 0), 0) / 60);
+const games = Array.isArray(steamGames) ? steamGames : [];
+const totalHours = Math.round(games.reduce((sum, g) => sum + (g.playtimeForever || 0), 0) / 60);
+const heroDesc = games.length
+  ? `Steam 游戏库，${games.length} 款，累计约 ${totalHours} 小时。`
+  : 'Steam 游戏库';
 ---
 
 <BaseLayout title="在玩">
-  <PageHero title="在玩" description={`Steam 游戏库，${games.length} 款，累计约 ${totalHours} 小时。`} />
+  <PageHero title="在玩" description={heroDesc} />
   <section class="content-shell">
     <div class="media-section-header">
       <div class="section-heading small">
@@ -43,7 +45,7 @@ const totalHours = Math.round(games.reduce((sum, game) => sum + (game.playtimeFo
     ) : (
       <div class="empty-state">
         <h2>暂时无法加载游戏库</h2>
-        <p>{result.error || '请稍后再试，或访问 Steam 主页查看。'}</p>
+        <p>请稍后再试，或访问 Steam 主页查看。</p>
         <p style="margin-top: 1rem; color: var(--text-muted, #888); font-size: 0.9em;">
           Steam ID: {site.media.steamId}
         </p>

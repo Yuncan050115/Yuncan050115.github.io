@@ -20,7 +20,6 @@ date: 2024-06-17 17:41:56
 touch test
 ```
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--51.jpg)
 
 进入文件写入随机内容
 
@@ -30,11 +29,9 @@ vi test
 :wq
 ```
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--52.jpg)
 
 在平台创建虚拟机快照，选择内存快照
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--53.jpg)
 
 快照创建成功后将先前创建的文本删除
 
@@ -42,16 +39,12 @@ vi test
 rm test
 ```
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--54.jpg)
 
 此时在快照页点击恢复虚拟机
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--55.jpg)
 
 此时回到VNC界面，发现删除的文本又出现了
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--56.jpg)
 
 测试结束后，删除该快照，以免占用空间
 
-![原图遗失，AI生成](content/assets/ai-2024-06-17-FusionCompute之快照管理-二--57.jpg)

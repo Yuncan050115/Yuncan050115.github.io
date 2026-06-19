@@ -96,27 +96,15 @@ export const yuncanConfig = {
   /** 媒体数据配置（追番、追剧、Steam） */
   media: {
     /** B 站 UID */
-    bilibiliUid: '189708807',
+    bilibiliUid: import.meta.env.PUBLIC_BILIBILI_UID || '189708807',
     /** 追番页面标题 */
     bangumiSource: '追番记录',
     /** 追剧页面标题 */
     cinemaSource: '追剧记录',
-    /** 追番数据文件路径（相对项目根目录） */
-    bangumiData: 'content/data/bangumis.json',
-    /** 追剧数据文件路径（相对项目根目录） */
-    cinemaData: 'content/data/cinemas.json',
     /** Steam 64 位 ID */
     steamId: '76561199167590911',
     /** Steam 个人资料页地址 */
-    steamProfile: 'https://steamcommunity.com/profiles/76561199167590911/',
-    /**
-     * Steam Web API Key
-     * 从 https://steamcommunity.com/dev/apikey 获取
-     * 在 .env 文件中配置 PUBLIC_STEAM_API_KEY，参考 .env.example
-     */
-    steamApiKey: import.meta.env.PUBLIC_STEAM_API_KEY || '',
-    /** Steam 拥有游戏接口地址模板（:key 与 :steamId 会被替换） */
-    steamOwnedGamesApi: 'https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=:key&steamid=:steamId&include_appinfo=true&include_played_free_games=true&format=json'
+    steamProfile: 'https://steamcommunity.com/profiles/76561199167590911/'
   },
 
   /** 内容许可协议 */
