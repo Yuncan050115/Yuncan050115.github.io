@@ -51,6 +51,11 @@
       avatar: https://blog.musnow.top/favicon.jpg
       descr: 爱折腾的代码初学者
       siteshot: https://api.yuncan.xyz/blog/260619_200006.webp
+    - name: 雪花の博客
+      link: https://xhblog.top/blog/
+      avatar: https://xhblog.top/img/724d7fb480c8ac0db472ca5c7e36d239.jpg
+      descr: = 爬起仅仅只是因为不想输。 =
+      siteshot: https://api.yuncan.xyz/blog/260620_134436.webp
     - name: UtopiaXC Sites
       link: https://www.utopiaxc.cn/
       avater: https://imgs.utopiaxc.cn/2021/08/28/ccd08b1e5dd5b.png
@@ -66,11 +71,11 @@
       avatar: https://api.bleaz.top/img/links/logo.jpg
       descr: 不畏过往，不惧将来
       siteshot: https://api.yuncan.xyz/blog/260620_131315.webp
-    - name: Bleaz‘s Blog
-      link: https://blog.bleaz.net
-      avatar: https://api.bleaz.top/img/links/logo.jpg
+    - name: 一只小羊羔的窝
+      link: https://blog.danzaii.cn/
+      avatar: https://blog.danzaii.cn/img/avatar.png
       descr: 不畏过往，不惧将来
-      siteshot: https://api.yuncan.xyz/blog/260620_131315.webp
+      siteshot: https://api.yuncan.xyz/blog/260620_133712.webp
     - name: 安小歪
       link: https://blog.anxw.cn
       avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=2622979530&spec=640
@@ -91,5 +96,10 @@
       avatar: https://cdn.jsdmirror.com/gh/xixi-cmd/file@main/avatar.jpg
       descr: 山高路远，道阻且长
       siteshot: https://api.yuncan.xyz/blog/260620_132906.webp
+    - name: 天天的糖果屋
+      link: https://blog.rqwq.link/
+      avatar: https://blog.rqwq.link/img/avatar.webp
+      descr: = Walk softly through the world. =
+      siteshot: https://api.yuncan.xyz/blog/260620_135927.webp
 
       
