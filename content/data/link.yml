@@ -2,7 +2,7 @@
   class_desc: 小伙伴
   link_list:
     - name: 云灿の随笔小站
-      link: https://blog.yuncan.xyz/
+      link: https://yuncan.xyz/
       avatar: https://yuncan.xyz/images/icon/favicon.ico
       descr: 浮云一别后，流水十年间
       siteshot: https://api.yuncan.xyz/blog/260619_193332.webp
@@ -26,6 +26,11 @@
       avatar: https://yunyoujun.cn/images/avatar.jpg
       descr: 希望能成为一个有趣的人
       siteshot: https://api.yuncan.xyz/blog/260619_194247.webp
+    - name: mccsjs
+      link: https://blog.seln.cn
+      avatar: https://blog.seln.cn/img/ico.jpg
+      descr: 点一盏灯，等待一个迷路的夜🍁🍁🍁
+      siteshot: https://blog.seln.cn/img/a.jpg
     - name: iMaeGoo’s Blog
       link: https://www.imaegoo.com
       avatar: https://www.imaegoo.com/images/avatar.jpg
@@ -52,7 +57,39 @@
       descr: 尽管如此，世界依旧美丽
       siteshot: https://api.yuncan.xyz/blog/260619_200059.webp
     - name: 楠笙
-      link: https://nanshengwx.cn/
+      link: https://blog.nanshengwx.cn/
       avatar: https://blog.nanshengwx.cn/upload/logo.png
       descr: 空谈误国，实干兴邦
       siteshot: https://api.yuncan.xyz/blog/260619_200655.webp
+    - name: Bleaz‘s Blog
+      link: https://blog.bleaz.net
+      avatar: https://api.bleaz.top/img/links/logo.jpg
+      descr: 不畏过往，不惧将来
+      siteshot: https://api.yuncan.xyz/blog/260620_131315.webp
+    - name: Bleaz‘s Blog
+      link: https://blog.bleaz.net
+      avatar: https://api.bleaz.top/img/links/logo.jpg
+      descr: 不畏过往，不惧将来
+      siteshot: https://api.yuncan.xyz/blog/260620_131315.webp
+    - name: 安小歪
+      link: https://blog.anxw.cn
+      avatar: https://q2.qlogo.cn/headimg_dl?dst_uin=2622979530&spec=640
+      descr: 陪你成为更好的自己！
+      siteshot: https://blog.anxw.cn/img/siteshot.webp
+    - name: 栖童の小站
+      link: https://blog.linux-qitong.top
+      avatar: https://blog.linux-qitong.top/img/avatar.webp
+      descr: 越努力,越幸运
+      siteshot: https://api.yuncan.xyz/blog/260620_132136.webp
+    - name: 灵的梦境
+      link: https://lemonadorable.github.io/
+      avatar: https://lemonadorable.github.io/favicon/favicon.gif
+      descr: 愿美梦成真
+      siteshot: https://api.yuncan.xyz/blog/260620_132757.webp
+    - name: ChenShang's Blog
+      link: https://weikecc.top/
+      avatar: https://cdn.jsdmirror.com/gh/xixi-cmd/file@main/avatar.jpg
+      descr: 山高路远，道阻且长
+      siteshot: https://api.yuncan.xyz/blog/260620_132906.webp
+
+      
