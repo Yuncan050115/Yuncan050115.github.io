@@ -6,12 +6,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+# 同一时间只跑一个部署，避免并发冲突
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,6 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Build
         run: npm run build
@@ -40,29 +48,18 @@ jobs:
           GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
           GITHUB_BRANCH: ${{ secrets.GITHUB_BRANCH }}
 
-      - name: Verify build output
-        run: |
-          echo "Checking dist directory..."
-          if [ ! -d "dist" ]; then
-            echo "ERROR: dist directory not found!"
-            exit 1
-          fi
-          echo "Checking _astro directory (CSS/JS assets)..."
-          if [ ! -d "dist/_astro" ]; then
-            echo "ERROR: dist/_astro directory not found! CSS/JS assets are missing!"
-            exit 1
-          fi
-          echo "Build output verified successfully."
-          echo "dist contents:"
-          ls -la dist/
-          echo "_astro contents (first 10):"
-          ls -la dist/_astro/ | head -10
-
-      - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          # 保留 .nojekyll，让 GitHub Pages 直接提供 _astro 等下划线开头的目录
-          keep_files: false
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
