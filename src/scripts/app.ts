@@ -101,48 +101,55 @@ let progressScrollHandler: (() => void) | null = null;
 let heroSnapCleanup: (() => void) | null = null;
 
 const initNav = () => {
-  const nav = document.querySelector<HTMLElement>('.site-nav');
   const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = document.querySelector<HTMLElement>('[data-nav-toggle]');
-  if (!nav || !header) return;
+  const scrim = document.querySelector<HTMLElement>('[data-nav-scrim]');
+  // 移动端独立导航抽屉
+  const mobileNav = document.querySelector<HTMLElement>('.site-nav--mobile');
+  if (!header) return;
 
+  // 关闭移动端抽屉导航
+  const closeNav = () => {
+    mobileNav?.classList.remove('is-open');
+    scrim?.classList.remove('is-open');
+  };
+
+  // 汉堡按钮：切换移动端抽屉
   if (toggle && toggle.dataset.ready !== 'true') {
     toggle.dataset.ready = 'true';
-    toggle.addEventListener('click', () => nav.classList.toggle('is-open'));
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (!mobileNav) return;
+      const willOpen = !mobileNav.classList.contains('is-open');
+      mobileNav.classList.toggle('is-open', willOpen);
+      scrim?.classList.toggle('is-open', willOpen);
+    });
   }
 
-  nav.querySelectorAll<HTMLElement>('.nav-item.has-children > a').forEach((link) => {
-    if (link.dataset.ready === 'true') return;
-    link.dataset.ready = 'true';
-    link.addEventListener('click', (event) => {
-      const item = link.closest<HTMLElement>('.nav-item');
-      if (!item) return;
-      if (!item.classList.contains('is-open')) {
-        event.preventDefault();
-        nav.querySelectorAll('.nav-item.is-open').forEach((node) => node.classList.remove('is-open'));
-        item.classList.add('is-open');
-      }
-    });
-  });
-
-  nav.querySelectorAll<HTMLElement>('.nav-popover a').forEach((link) => {
-    if (link.dataset.ready === 'true') return;
-    link.dataset.ready = 'true';
-    link.addEventListener('click', () => {
-      nav.classList.remove('is-open');
-      nav.querySelectorAll('.nav-item.is-open').forEach((node) => node.classList.remove('is-open'));
-    });
-  });
-
-  if (nav.dataset.outsideReady !== 'true') {
-    nav.dataset.outsideReady = 'true';
-    document.addEventListener('click', (event) => {
-      if (!(event.target as HTMLElement).closest('.site-nav')) {
-        nav.querySelectorAll('.nav-item.is-open').forEach((item) => item.classList.remove('is-open'));
-      }
-    }, { passive: true });
+  // 点击遮罩关闭
+  if (scrim && scrim.dataset.ready !== 'true') {
+    scrim.dataset.ready = 'true';
+    scrim.addEventListener('click', closeNav);
   }
 
+  // 点击移动端导航链接后关闭抽屉
+  mobileNav?.querySelectorAll<HTMLElement>('a').forEach((link) => {
+    if (link.dataset.navCloseReady === 'true') return;
+    link.dataset.navCloseReady = 'true';
+    link.addEventListener('click', closeNav);
+  });
+
+  // ESC 键关闭抽屉
+  if (mobileNav && mobileNav.dataset.escReady !== 'true') {
+    mobileNav.dataset.escReady = 'true';
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobileNav.classList.contains('is-open')) {
+        closeNav();
+      }
+    });
+  }
+
+  // 桌面端 header 滚动收缩
   if (navScrollHandler) {
     window.removeEventListener('scroll', navScrollHandler);
   }
@@ -152,6 +159,189 @@ const initNav = () => {
   update();
   window.addEventListener('scroll', update, { passive: true });
   navScrollHandler = update;
+};
+
+// 图片放大灯箱
+const initImageLightbox = () => {
+  const lightbox = document.querySelector<HTMLElement>('[data-image-lightbox]');
+  const lightboxImg = document.querySelector<HTMLImageElement>('[data-image-lightbox-img]');
+  const closeBtn = document.querySelector<HTMLElement>('[data-image-lightbox-close]');
+  if (!lightbox || !lightboxImg) return;
+
+  // 缩放状态
+  let scale = 1;
+  let translateX = 0;
+  let translateY = 0;
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let pinchStartDist = 0;
+  let pinchStartScale = 1;
+
+  const applyTransform = () => {
+    lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  };
+
+  const resetTransform = () => {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    lightboxImg.style.transform = '';
+  };
+
+  const close = () => {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    resetTransform();
+  };
+
+  const open = (src: string, alt: string) => {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt;
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    resetTransform();
+  };
+
+  // 点击文章内的图片打开灯箱
+  document.querySelectorAll<HTMLImageElement>('article img, .post-body img, .prose img').forEach((img) => {
+    if (img.dataset.lightboxReady === 'true') return;
+    img.dataset.lightboxReady = 'true';
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => {
+      open(img.src, img.alt || '');
+    });
+  });
+
+  // 关闭按钮
+  if (closeBtn && closeBtn.dataset.ready !== 'true') {
+    closeBtn.dataset.ready = 'true';
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      close();
+    });
+  }
+
+  // 灯箱事件只绑定一次
+  if (lightbox.dataset.ready === 'true') return;
+  lightbox.dataset.ready = 'true';
+
+  // 点击背景关闭（仅当未缩放或点击的是背景而非图片时）
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  // ESC 关闭
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+  });
+
+  // 滚轮缩放（桌面）
+  lightbox.addEventListener('wheel', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.15 : 0.15;
+    scale = Math.max(0.5, Math.min(5, scale + delta));
+    applyTransform();
+  }, { passive: false });
+
+  // 双击缩放
+  lightboxImg.addEventListener('dblclick', (e) => {
+    e.stopPropagation();
+    if (scale > 1) {
+      resetTransform();
+    } else {
+      scale = 2.5;
+      applyTransform();
+    }
+  });
+
+  // 鼠标拖动（桌面）
+  lightboxImg.addEventListener('mousedown', (e) => {
+    if (scale <= 1) return;
+    e.preventDefault();
+    isDragging = true;
+    dragStartX = e.clientX - translateX;
+    dragStartY = e.clientY - translateY;
+    lightboxImg.classList.add('is-dragging');
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging || !lightbox.classList.contains('is-open')) return;
+    translateX = e.clientX - dragStartX;
+    translateY = e.clientY - dragStartY;
+    applyTransform();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      lightboxImg.classList.remove('is-dragging');
+    }
+  });
+
+  // 触摸事件（移动端）
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let lastTapTime = 0;
+
+  lightboxImg.addEventListener('touchstart', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.touches.length === 1) {
+      // 单指：拖动或双击检测
+      const now = Date.now();
+      if (now - lastTapTime < 300) {
+        // 双击
+        if (scale > 1) {
+          resetTransform();
+        } else {
+          scale = 2.5;
+          applyTransform();
+        }
+        lastTapTime = 0;
+      } else {
+        lastTapTime = now;
+      }
+      if (scale > 1) {
+        isDragging = true;
+        touchStartX = e.touches[0].clientX - translateX;
+        touchStartY = e.touches[0].clientY - translateY;
+      }
+    } else if (e.touches.length === 2) {
+      // 双指：缩放
+      isDragging = false;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      pinchStartDist = Math.sqrt(dx * dx + dy * dy);
+      pinchStartScale = scale;
+    }
+  }, { passive: true });
+
+  lightboxImg.addEventListener('touchmove', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.touches.length === 1 && isDragging && scale > 1) {
+      e.preventDefault();
+      translateX = e.touches[0].clientX - touchStartX;
+      translateY = e.touches[0].clientY - touchStartY;
+      applyTransform();
+    } else if (e.touches.length === 2) {
+      e.preventDefault();
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (pinchStartDist > 0) {
+        scale = Math.max(0.5, Math.min(5, pinchStartScale * (dist / pinchStartDist)));
+        applyTransform();
+      }
+    }
+  }, { passive: false });
+
+  lightboxImg.addEventListener('touchend', () => {
+    isDragging = false;
+  });
 };
 
 const initBackTop = () => {
@@ -241,8 +431,11 @@ const initHeroSnap = () => {
     if (delta < -46 && window.scrollY > 80 && window.scrollY < heroBottom + 180) jump(0);
   };
   window.addEventListener('wheel', onWheel, { passive: true });
-  window.addEventListener('touchstart', onTouchStart, { passive: true });
-  window.addEventListener('touchend', onTouchEnd, { passive: true });
+  // 移动端不绑定触摸事件，避免干扰原生滚动
+  if (!isMobile()) {
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+  }
   heroSnapCleanup = () => {
     window.removeEventListener('wheel', onWheel);
     window.removeEventListener('touchstart', onTouchStart);
@@ -1505,6 +1698,25 @@ const boot = () => {
   }
 
   if (firstBoot) {
+    // 控制台输出 ASCII 画 + 版本信息
+    const asciiArt = [
+      '   __    __  ___  ___  ___  ___  ___',
+      '  / /_  / / / _ |/ _ |/ _ |/ _ |/ _ |',
+      ' / __/ / /_/ __ / __ / __ / __ / __ /',
+      '/_/   /___/_/ /_/ /_/ /_/ /_/ /_/ /_/',
+      ''
+    ].join('\n');
+    console.log(
+      `%c${asciiArt}`,
+      'color: #32b9a8; font-family: monospace; font-weight: bold; line-height: 1.1;'
+    );
+    console.log(
+      '%c yuncan-blog %c v1.0.8 %c Powered by Astro ',
+      'background:#32b9a8;color:#fff;padding:3px 10px;border-radius:4px 0 0 4px;font-weight:bold;font-size:13px;',
+      'background:#1a1a1a;color:#32b9a8;padding:3px 10px;font-weight:bold;font-size:13px;',
+      'color:#888;padding:3px 0;font-size:12px;'
+    );
+
     // 仅首次加载时运行的初始化（这些函数有单例守卫或绑定的 DOM 元素使用 transition:persist）
     initTheme();
     initSettings();
@@ -1521,10 +1733,14 @@ const boot = () => {
     if (!isMobile()) {
       initFps();
     }
-    // Three.js 延迟加载，不阻塞首次渲染
-    (window.requestIdleCallback || window.setTimeout)(() => initThree());
-    // 音乐延迟加载（移动端不自动播放，但仍初始化控件供手动点播）
-    (window.requestIdleCallback || window.setTimeout)(() => initMusic());
+    // Three.js 延迟加载，不阻塞首次渲染（移动端粒子数已降低）
+    if (!isMobile()) {
+      (window.requestIdleCallback || window.setTimeout)(() => initThree());
+    }
+    // 音乐延迟加载（移动端隐藏播放器，跳过初始化节省流量）
+    if (!isMobile()) {
+      (window.requestIdleCallback || window.setTimeout)(() => initMusic());
+    }
     firstBoot = false;
   }
 
@@ -1536,6 +1752,7 @@ const boot = () => {
   initPostActions();
   initCodeCopy();
   initRuntimeDays();
+  initImageLightbox();
   // 图片光标交互仅在桌面端启用
   if (!isMobile()) {
     initImageCursorEffect();

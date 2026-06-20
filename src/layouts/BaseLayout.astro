@@ -103,7 +103,7 @@ const preconnectOrigins = Array.from(new Set(
       <a class="brand-mark" href="/" aria-label="返回首页">
         <img src={site.logo} alt={site.name} decoding="async" onerror={`this.onerror=null;this.src='${site.assets.defaultPostCover}'`} />
       </a>
-      <nav class="site-nav" aria-label="主导航">
+      <nav class="site-nav site-nav--desktop" aria-label="桌面导航">
         {site.nav.map((item) => {
           const isExternal = typeof item.href === 'string' && /^https?:\/\//.test(item.href);
           return (
@@ -135,6 +135,29 @@ const preconnectOrigins = Array.from(new Set(
         </button>
       </div>
     </header>
+
+    <!-- 移动端独立导航抽屉（脱离 header 的包含块） -->
+    <nav class="site-nav site-nav--mobile" aria-label="移动导航" data-nav-mobile>
+      {site.nav
+        .filter((item) => ['文章', '在看', '在玩', '留言板', '友链', '个人'].includes(item.label))
+        .map((item) => {
+          const isExternal = typeof item.href === 'string' && /^https?:\/\//.test(item.href);
+          return (
+            <a class="mobile-nav-link" href={item.href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined}>
+              {item.label}
+            </a>
+          );
+        })}
+    </nav>
+
+    <div class="nav-scrim" data-nav-scrim aria-hidden="true"></div>
+
+    <!-- 图片放大灯箱 -->
+    <div class="image-lightbox" data-image-lightbox aria-hidden="true">
+      <button class="image-lightbox-close" data-image-lightbox-close aria-label="关闭">&times;</button>
+      <img class="image-lightbox-img" data-image-lightbox-img src="" alt="" />
+      <span class="image-lightbox-hint">滚轮/双击缩放 · 拖动移动 · ESC关闭</span>
+    </div>
 
     <main id="main">
       <slot />

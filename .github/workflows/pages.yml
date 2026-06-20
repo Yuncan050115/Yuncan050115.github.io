@@ -58,9 +58,11 @@ jobs:
           echo "_astro contents (first 10):"
           ls -la dist/_astro/ | head -10
 
-      - name: Deploy to main branch
+      - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          publish_branch: main
+          publish_branch: gh-pages
+          # 保留 .nojekyll，让 GitHub Pages 直接提供 _astro 等下划线开头的目录
+          keep_files: false

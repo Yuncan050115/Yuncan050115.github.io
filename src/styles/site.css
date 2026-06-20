@@ -662,6 +662,85 @@ main,
   flex-shrink: 0;
 }
 
+/* ===== 图片放大灯箱 ===== */
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.92);
+  padding: 24px;
+  cursor: zoom-out;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.image-lightbox.is-open {
+  display: flex;
+  animation: lightbox-fade-in 0.25s var(--ease);
+}
+
+.image-lightbox-img {
+  max-width: 92vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  transform-origin: center center;
+  transition: transform 0.15s ease-out;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}
+
+.image-lightbox-img.is-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.image-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s var(--ease);
+  z-index: 2001;
+}
+
+.image-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.image-lightbox-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 2001;
+}
+
+@keyframes lightbox-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .reward-dialog {
   position: fixed;
   inset: 0;
@@ -879,11 +958,12 @@ img {
 .site-header {
   position: fixed;
   top: 18px;
-  left: 50%;
+  left: 0;
+  right: 0;
   z-index: 50;
   width: min(1180px, calc(100% - 28px));
   height: 58px;
-  transform: translateX(-50%);
+  margin: 0 auto;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -914,6 +994,11 @@ img {
   justify-content: center;
   gap: 3px;
   overflow: hidden;
+}
+
+/* 桌面端隐藏移动端导航抽屉 */
+.site-nav--mobile {
+  display: none;
 }
 
 .site-nav a {
@@ -963,6 +1048,11 @@ img {
 }
 
 .nav-toggle {
+  display: none;
+}
+
+/* 导航遮罩：桌面端不显示，仅移动端抽屉使用 */
+.nav-scrim {
   display: none;
 }
 
@@ -1905,27 +1995,73 @@ a.post-nav-item:hover {
     justify-content: space-between;
   }
 
-  .site-nav {
+  /* ===== 移动端抽屉式导航（独立元素，脱离 header 包含块） ===== */
+  /* 桌面导航在移动端隐藏 */
+  .site-nav--desktop {
+    display: none !important;
+  }
+
+  /* 移动端导航抽屉 */
+  .site-nav--mobile {
     position: fixed;
-    top: 70px;
-    left: 14px;
-    right: 14px;
-    display: none;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    justify-content: stretch;
-    padding: 12px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(280px, 80vw);
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 72px 16px 24px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: var(--surface-strong);
-    box-shadow: var(--shadow);
+    border: none;
+    transform: translateX(110%);
+    visibility: hidden;
+    transition: transform 0.3s var(--ease), visibility 0.3s var(--ease);
+    z-index: 1100;
   }
 
-  .site-nav.is-open {
-    display: grid;
+  .site-nav--mobile.is-open {
+    transform: translateX(0);
+    visibility: visible;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.24);
   }
 
-  .site-nav a {
-    text-align: center;
+  .mobile-nav-link {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s var(--ease);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:active {
+    background: rgba(50, 185, 168, 0.12);
+  }
+
+  /* 导航遮罩 */
+  .nav-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 16, 18, 0.5);
+    z-index: 1099;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+  }
+
+  .nav-scrim.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .nav-toggle {
@@ -1945,6 +2081,7 @@ a.post-nav-item:hover {
 
 @media (max-width: 680px) {
   .hero-content {
+    padding-top: 80px;
     padding-bottom: 92px;
   }
 
@@ -2047,7 +2184,7 @@ body {
   left: auto;
   right: 18px;
   width: min(760px, calc(100% - 36px));
-  transform: translateX(0);
+  transform: none;
   background: color-mix(in srgb, var(--surface-strong), transparent 18%);
 }
 
@@ -2478,43 +2615,9 @@ body {
     width: auto;
   }
 
+  /* 移动端导航栏需要可滚动，覆盖桌面端的 overflow: visible */
   .site-nav {
-    overflow: visible;
-  }
-
-  .site-nav.is-open {
-    display: grid;
-  }
-
-  .nav-item > a {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .nav-popover {
-    position: static !important;
-    display: none;
-    min-width: 0 !important;
-    margin-top: 4px !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    transform: none !important;
-    box-shadow: none !important;
-    padding-left: 16px;
-    left: auto !important;
-    top: auto !important;
-  }
-
-  /* 移动端只用 JS 的 is-open 控制二级菜单，避免 hover/focus-within 触摸异常 */
-  .nav-item.is-open .nav-popover {
-    display: grid !important;
-    transform: none !important;
-  }
-
-  /* 移动端禁用 hover/focus-within 触发的二级菜单显示 */
-  .nav-item:hover .nav-popover,
-  .nav-item:focus-within .nav-popover {
-    display: none !important;
+    overflow-y: auto;
   }
 
   .article-layout {
@@ -2689,17 +2792,30 @@ main,
     overflow: visible !important;
     order: -1;
   }
+
+  /* 移动端去掉 backdrop-filter 提升性能 */
+  .toc-panel,
+  .reader-panel,
+  .toc-actions {
+    backdrop-filter: none !important;
+  }
+
+  /* 移动端禁用 filter-breathe 动画（动画化 backdrop-filter 严重消耗 GPU） */
+  .hero-vignette {
+    animation: none !important;
+    backdrop-filter: none !important;
+  }
 }
 
 /* final 1.0.6 interaction and data-page polish */
 .site-header {
   position: fixed !important;
   top: 18px !important;
-  left: 50% !important;
-  right: auto !important;
+  left: 0 !important;
+  right: 0 !important;
   z-index: 1000 !important;
   width: min(1180px, calc(100% - 28px)) !important;
-  transform: translateX(-50%) !important;
+  margin: 0 auto !important;
   background: var(--surface) !important;
   color: var(--text);
   box-shadow: var(--shadow) !important;
@@ -2707,7 +2823,6 @@ main,
     width .45s cubic-bezier(.16, 1, .3, 1),
     left .45s cubic-bezier(.16, 1, .3, 1),
     right .45s cubic-bezier(.16, 1, .3, 1),
-    transform .45s cubic-bezier(.16, 1, .3, 1),
     padding .45s cubic-bezier(.16, 1, .3, 1),
     background .45s cubic-bezier(.16, 1, .3, 1),
     background-color .6s cubic-bezier(.16, 1, .3, 1),
@@ -2735,7 +2850,7 @@ main,
   left: auto !important;
   right: 18px !important;
   width: min(760px, calc(100% - 36px)) !important;
-  transform: translateX(0) !important;
+  transform: none !important;
 }
 
 .nav-popover {
@@ -4744,47 +4859,13 @@ body::after {
 
 /* 680px 以下断点 */
 @media (max-width: 680px) {
-  /* 导航栏：汉堡菜单全屏抽屉 */
-  .site-header nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100vh;
-    background: var(--surface-1, rgba(255,255,255,0.98));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    flex-direction: column;
-    padding: 80px 24px 24px;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 999;
-    overflow-y: auto;
-  }
-  .site-header nav.is-open {
-    transform: translateX(0);
-  }
-  :root[data-theme="dark"] .site-header nav {
-    background: rgba(20,20,28,0.98);
-  }
-
-  /* 导航项垂直排列 */
-  .site-header nav .nav-item {
-    width: 100%;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border, rgba(0,0,0,0.06));
-  }
-  :root[data-theme="dark"] .site-header nav .nav-item {
-    border-bottom-color: rgba(255,255,255,0.06);
-  }
-
   /* header-actions 间距缩小 */
   .header-actions {
     gap: 4px;
   }
 
   /* 文章内容适配 */
-  .post-body, .article-shell {
+  .post-body {
     padding: 16px 12px;
     font-size: 0.95rem;
     line-height: 1.7;
@@ -4869,7 +4950,7 @@ body::after {
     left: 0;
     bottom: 0;
     width: 100%;
-    max-height: 100vh;
+    max-height: 100svh;
     border-radius: 0;
     border: none;
   }
@@ -4892,7 +4973,7 @@ body::after {
 
   /* 内容区域通用边距 */
   .content-shell {
-    padding: 16px 12px;
+    padding: 16px 12px 60px;
   }
 
   /* 页脚 */
@@ -4917,6 +4998,26 @@ body::after {
 
   /* 移动端隐藏 FPS 检测（不初始化也不显示） */
   #fps {
+    display: none !important;
+  }
+
+  /* 移动端隐藏音乐播放器（省空间，不自动播放也没必要显示控件） */
+  .music-dock {
+    display: none !important;
+  }
+
+  /* 移动端隐藏歌词栏（音乐播放器已隐藏，歌词栏无意义） */
+  #lyric-bar {
+    display: none !important;
+  }
+
+  /* 移动端隐藏回到顶部按钮（移动端原生滚动更顺手） */
+  .runtime-tools [data-back-top] {
+    display: none !important;
+  }
+
+  /* 移动端隐藏设置按钮（设置项在移动端意义不大，保留主题切换即可） */
+  .settings-panel {
     display: none !important;
   }
 
@@ -5329,12 +5430,12 @@ body::after {
   .post-editor-modal {
     width: 100%;
     max-width: none;
-    height: 100vh;
+    height: 100svh;
     max-height: none;
     border-radius: 0;
   }
   .pe-panel {
-    height: 100vh;
+    height: 100svh;
   }
   .pe-field-row {
     flex-direction: column;
