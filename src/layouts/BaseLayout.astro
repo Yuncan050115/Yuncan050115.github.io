@@ -139,13 +139,28 @@ const preconnectOrigins = Array.from(new Set(
     <!-- 移动端独立导航抽屉（脱离 header 的包含块） -->
     <nav class="site-nav site-nav--mobile" aria-label="移动导航" data-nav-mobile>
       {site.nav
-        .filter((item) => ['文章', '在看', '在玩', '留言板', '友链', '个人'].includes(item.label))
+        .filter((item) => ['文章', '在看', '在玩', '留言板', '友链', '个人', '诗集', '主站'].includes(item.label))
         .map((item) => {
           const isExternal = typeof item.href === 'string' && /^https?:\/\//.test(item.href);
+          const hasChildren = 'children' in item && item.children?.length;
           return (
-            <a class="mobile-nav-link" href={item.href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined}>
-              {item.label}
-            </a>
+            <div class="mobile-nav-group">
+              <a class="mobile-nav-link" href={item.href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined}>
+                {item.label}
+              </a>
+              {hasChildren ? (
+                <div class="mobile-nav-children">
+                  {item.children!.map((child) => {
+                    const childExternal = typeof child.href === 'string' && /^https?:\/\//.test(child.href);
+                    return (
+                      <a class="mobile-nav-child" href={child.href} target={childExternal ? '_blank' : undefined} rel={childExternal ? 'noopener' : undefined}>
+                        {child.label}
+                      </a>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
           );
         })}
     </nav>

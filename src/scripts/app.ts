@@ -99,53 +99,56 @@ const initTheme = () => {
 let navScrollHandler: (() => void) | null = null;
 let progressScrollHandler: (() => void) | null = null;
 let heroSnapCleanup: (() => void) | null = null;
+// nav 事件是否已绑定到 document（toggle 是 persist 元素，只绑定一次）
+let navGlobalReady = false;
 
 const initNav = () => {
   const header = document.querySelector<HTMLElement>('.site-header');
-  const toggle = document.querySelector<HTMLElement>('[data-nav-toggle]');
-  const scrim = document.querySelector<HTMLElement>('[data-nav-scrim]');
-  // 移动端独立导航抽屉
-  const mobileNav = document.querySelector<HTMLElement>('.site-nav--mobile');
   if (!header) return;
 
-  // 关闭移动端抽屉导航
-  const closeNav = () => {
-    mobileNav?.classList.remove('is-open');
-    scrim?.classList.remove('is-open');
-  };
-
-  // 汉堡按钮：切换移动端抽屉
-  if (toggle && toggle.dataset.ready !== 'true') {
-    toggle.dataset.ready = 'true';
-    toggle.addEventListener('click', (event) => {
+  // 全局事件只绑定一次（toggle 是 persist 元素，不会随页面切换重建）
+  if (!navGlobalReady) {
+    navGlobalReady = true;
+    // 汉堡按钮：用事件委托，每次点击时实时查询 mobileNav
+    document.addEventListener('click', (event) => {
+      const toggle = (event.target as HTMLElement).closest<HTMLElement>('[data-nav-toggle]');
+      if (!toggle) return;
       event.stopPropagation();
+      const mobileNav = document.querySelector<HTMLElement>('.site-nav--mobile');
+      const scrim = document.querySelector<HTMLElement>('[data-nav-scrim]');
       if (!mobileNav) return;
       const willOpen = !mobileNav.classList.contains('is-open');
       mobileNav.classList.toggle('is-open', willOpen);
       scrim?.classList.toggle('is-open', willOpen);
     });
-  }
 
-  // 点击遮罩关闭
-  if (scrim && scrim.dataset.ready !== 'true') {
-    scrim.dataset.ready = 'true';
-    scrim.addEventListener('click', closeNav);
-  }
+    // 遮罩点击关闭（事件委托）
+    document.addEventListener('click', (event) => {
+      const scrim = (event.target as HTMLElement).closest<HTMLElement>('[data-nav-scrim]');
+      if (!scrim || !scrim.classList.contains('is-open')) return;
+      const mobileNav = document.querySelector<HTMLElement>('.site-nav--mobile');
+      mobileNav?.classList.remove('is-open');
+      scrim.classList.remove('is-open');
+    });
 
-  // 点击移动端导航链接后关闭抽屉
-  mobileNav?.querySelectorAll<HTMLElement>('a').forEach((link) => {
-    if (link.dataset.navCloseReady === 'true') return;
-    link.dataset.navCloseReady = 'true';
-    link.addEventListener('click', closeNav);
-  });
+    // 移动端导航链接点击关闭（事件委托）
+    document.addEventListener('click', (event) => {
+      const link = (event.target as HTMLElement).closest<HTMLElement>('.site-nav--mobile a');
+      if (!link) return;
+      const mobileNav = document.querySelector<HTMLElement>('.site-nav--mobile');
+      const scrim = document.querySelector<HTMLElement>('[data-nav-scrim]');
+      mobileNav?.classList.remove('is-open');
+      scrim?.classList.remove('is-open');
+    });
 
-  // ESC 键关闭抽屉
-  if (mobileNav && mobileNav.dataset.escReady !== 'true') {
-    mobileNav.dataset.escReady = 'true';
+    // ESC 键关闭
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && mobileNav.classList.contains('is-open')) {
-        closeNav();
-      }
+      if (event.key !== 'Escape') return;
+      const mobileNav = document.querySelector<HTMLElement>('.site-nav--mobile');
+      if (!mobileNav?.classList.contains('is-open')) return;
+      const scrim = document.querySelector<HTMLElement>('[data-nav-scrim]');
+      mobileNav.classList.remove('is-open');
+      scrim?.classList.remove('is-open');
     });
   }
 
@@ -899,6 +902,30 @@ const initCursor = () => {
   if (!dot || dot.dataset.ready === 'true') return;
   dot.dataset.ready = 'true';
 
+  // 首屏背景光标联动：光标往左背景高光往右（反向视差），光标不动时恢复默认
+  const heroVignette = document.querySelector<HTMLElement>('.hero-vignette');
+  let heroTargetX = 52; // 目标百分比
+  let heroTargetY = 68;
+  let heroCurrentX = 52; // 当前百分比（用于平滑插值）
+  let heroCurrentY = 68;
+  let heroLastMoveTime = 0;
+  let heroRafId = 0;
+  const heroAnimate = () => {
+    // 平滑插值：当前值向目标值靠近
+    heroCurrentX += (heroTargetX - heroCurrentX) * 0.08;
+    heroCurrentY += (heroTargetY - heroCurrentY) * 0.08;
+    if (heroVignette) {
+      heroVignette.style.setProperty('--cursor-px', `${heroCurrentX.toFixed(2)}%`);
+      heroVignette.style.setProperty('--cursor-py', `${heroCurrentY.toFixed(2)}%`);
+    }
+    // 光标静止超过 1.2 秒，目标值缓慢回归默认
+    if (Date.now() - heroLastMoveTime > 1200) {
+      heroTargetX += (52 - heroTargetX) * 0.02;
+      heroTargetY += (68 - heroTargetY) * 0.02;
+    }
+    heroRafId = requestAnimationFrame(heroAnimate);
+  };
+
   // 使用 requestAnimationFrame 批量处理 transform 更新，避免同步布局
   let pendingX = 0, pendingY = 0, needsUpdate = false;
   window.addEventListener('pointermove', (event) => {
@@ -920,6 +947,15 @@ const initCursor = () => {
     if (state) {
       state.mouseX = (pendingX / window.innerWidth) * 2 - 1;
       state.mouseY = -(pendingY / window.innerHeight) * 2 + 1;
+    }
+    // 首屏背景光标联动：反向映射（光标往左→背景高光往右），幅度 ±18%
+    if (heroVignette) {
+      const nx = pendingX / window.innerWidth;  // 0~1
+      const ny = pendingY / window.innerHeight; // 0~1
+      heroTargetX = 52 + (0.5 - nx) * 36; // 反向：光标在左(nx小)→目标>52
+      heroTargetY = 68 + (0.5 - ny) * 24; // 反向：光标在上(ny小)→目标>68
+      heroLastMoveTime = Date.now();
+      if (!heroRafId) heroRafId = requestAnimationFrame(heroAnimate);
     }
   }, { passive: true });
   window.addEventListener('mousedown', () => document.body.classList.add('cursor-down'), { passive: true });
@@ -1733,10 +1769,8 @@ const boot = () => {
     if (!isMobile()) {
       initFps();
     }
-    // Three.js 延迟加载，不阻塞首次渲染（移动端粒子数已降低）
-    if (!isMobile()) {
-      (window.requestIdleCallback || window.setTimeout)(() => initThree());
-    }
+    // Three.js 延迟加载，不阻塞首次渲染（移动端粒子数已降低，夜间流星雨也保留）
+    (window.requestIdleCallback || window.setTimeout)(() => initThree());
     // 音乐延迟加载（移动端隐藏播放器，跳过初始化节省流量）
     if (!isMobile()) {
       (window.requestIdleCallback || window.setTimeout)(() => initMusic());

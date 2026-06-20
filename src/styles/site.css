@@ -1087,8 +1087,11 @@ img {
 .hero-vignette {
   position: absolute;
   inset: 0;
+  /* CSS 变量驱动光标联动：默认值让光标静止时使用默认动效 */
+  --cursor-px: 52%;
+  --cursor-py: 68%;
   background:
-    radial-gradient(circle at 52% 68%, transparent 0%, rgba(0, 0, 0, .42) 64%),
+    radial-gradient(circle at var(--cursor-px) var(--cursor-py), transparent 0%, rgba(0, 0, 0, .42) 64%),
     linear-gradient(90deg, rgba(0, 0, 0, .64), rgba(0, 0, 0, .14) 44%, rgba(0, 0, 0, .34)),
     linear-gradient(0deg, rgba(16, 17, 18, .2), transparent 48%);
 }
@@ -2043,6 +2046,36 @@ a.post-nav-item:hover {
   .mobile-nav-link:hover,
   .mobile-nav-link:active {
     background: rgba(50, 185, 168, 0.12);
+  }
+
+  .mobile-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-nav-children {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 16px;
+    margin-bottom: 4px;
+  }
+
+  .mobile-nav-child {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .mobile-nav-child:hover,
+  .mobile-nav-child:active {
+    background: rgba(50, 185, 168, 0.08);
+    color: var(--text);
   }
 
   /* 导航遮罩 */
