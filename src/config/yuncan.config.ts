@@ -72,7 +72,7 @@ export const yuncanConfig = {
     /** Twikoo 环境 ID（部署地址） */
     envId: import.meta.env.PUBLIC_TWIKOO_API || 'https://comment.yuncan.xyz',
     /** Twikoo 脚本 CDN 地址 */
-    script: 'https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js'
+    script: 'https://cdn.jsdelivr.net/npm/twikoo@1.7.13/dist/twikoo.all.min.js'
   },
 
   /** 音乐播放器配置（基于 MetingJS） */
