@@ -54,18 +54,15 @@ const parseIssueBody = (body: string): Record<string, string> | null => {
 
 /**
  * 自动截取站点截图并转为 webp
- * 1. 依次尝试 microlink.io → WordPress mShots 获取站点截图（均免费、无需 API Key）
+ * 1. 用 microlink.io 获取站点截图（免费 50/天，加 waitFor 等待 Cloudflare 验证）
  * 2. canvas 绘制后 toBlob('image/webp') 压缩为 webp，提交到仓库
- * 3. CORS 失败时回退为直接使用截图服务 URL（mShots 会异步生成，最终自愈）
+ * 3. CORS 失败时回退为 microlink 直链（浏览器直接加载，部署后显示）
  *
  * 注：原 thum.io 已需付费账号（返回 "Image not authorized"），故弃用。
+ *     mShots 因浏览器 CORS 拦截无法在 canvas 中使用，仅作直链回退参考。
  */
-const SCREENSHOT_SERVICES = [
-  // microlink.io 免费额度 50/天，同步返回真实截图 PNG
-  (url: string) => `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`,
-  // WordPress mShots 完全免费，首次返回占位图、随后异步生成
-  (url: string) => `https://s.wordpress.com/mshots/v1/${encodeURIComponent(url)}?w=1280&h=720`,
-];
+const buildMicrolinkUrl = (url: string, wait: number) =>
+  `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url&waitFor=${wait}`;
 
 /** 尝试从给定 URL 加载图片并 canvas 转 webp 提交到仓库 */
 const tryConvertToWebp = async (imageUrl: string, slug: string): Promise<string> => {
@@ -76,7 +73,7 @@ const tryConvertToWebp = async (imageUrl: string, slug: string): Promise<string>
   await new Promise<void>((resolve, reject) => {
     img.onload = () => resolve();
     img.onerror = () => reject(new Error('screenshot load failed'));
-    setTimeout(() => reject(new Error('timeout')), 25000);
+    setTimeout(() => reject(new Error('timeout')), 35000);
   });
 
   // canvas 绘制并转 webp（居中裁剪适配 16:9）
@@ -129,20 +126,21 @@ const tryConvertToWebp = async (imageUrl: string, slug: string): Promise<string>
 const captureScreenshot = async (siteUrl: string): Promise<{ path: string; isLocal: boolean }> => {
   const slug = slugify(siteUrl);
 
-  // 依次尝试各截图服务做 canvas webp 转换
-  for (const svc of SCREENSHOT_SERVICES) {
-    const imageUrl = svc(siteUrl);
+  // 依次尝试不同的 waitFor 时长（部分站点有 Cloudflare 验证，需要更长等待）
+  const waitOptions = [3000, 6000, 10000];
+  for (const wait of waitOptions) {
+    const imageUrl = buildMicrolinkUrl(siteUrl, wait);
     try {
       const localPath = await tryConvertToWebp(imageUrl, slug);
       return { path: localPath, isLocal: true };
     } catch (err) {
-      console.log(`[friendLinkAdmin] ${imageUrl.split('?')[0]} 转换失败，尝试下一服务:`, err);
+      console.log(`[friendLinkAdmin] microlink waitFor=${wait} 失败，尝试更长等待:`, err);
     }
   }
 
-  // 全部 canvas 转换失败：回退为 mShots 直链（异步生成，最终会自愈显示真实截图）
-  const fallbackUrl = SCREENSHOT_SERVICES[SCREENSHOT_SERVICES.length - 1](siteUrl);
-  console.log('[friendLinkAdmin] 所有截图服务 canvas 转换失败，使用 mShots 直链回退');
+  // canvas 转换全部失败：回退为 microlink 直链（部署后浏览器直接加载显示）
+  const fallbackUrl = buildMicrolinkUrl(siteUrl, 3000);
+  console.log('[friendLinkAdmin] 所有截图尝试失败，使用 microlink 直链回退');
   return { path: fallbackUrl, isLocal: false };
 };
 
