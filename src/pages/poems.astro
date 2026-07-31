@@ -303,55 +303,6 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
 <BaseLayout title="诗集">
   <PageHero title="诗集" description="诗与远方" />
 
-  <!-- 防复制保护脚本 -->
-  <script is:inline>
-    // 禁止右键菜单
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-      return false;
-    });
-
-    // 禁止 Ctrl+C / Ctrl+A
-    document.addEventListener('keydown', function(e) {
-      if ((e.ctrlKey && e.key === 'c') || (e.ctrlKey && e.key === 'a')) {
-        e.preventDefault();
-        return false;
-      }
-      // 禁止 F12
-      if (e.key === 'F12') {
-        e.preventDefault();
-        return false;
-      }
-      // 禁止 Ctrl+Shift+I (开发者工具)
-      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-        e.preventDefault();
-        return false;
-      }
-      // 禁止 Ctrl+Shift+J (控制台)
-      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-        e.preventDefault();
-        return false;
-      }
-      // 禁止 Ctrl+U (查看源代码)
-      if (e.ctrlKey && e.key === 'u') {
-        e.preventDefault();
-        return false;
-      }
-    });
-
-    // 禁止选择文本
-    document.addEventListener('selectstart', function(e) {
-      e.preventDefault();
-      return false;
-    });
-
-    // 禁止拖拽
-    document.addEventListener('dragstart', function(e) {
-      e.preventDefault();
-      return false;
-    });
-  </script>
-
   <!-- 序言（古生古色） -->
   {prefaceBody.length > 0 && (
     <section class="content-shell poem-preface">
@@ -369,16 +320,16 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
     </section>
   )}
 
-  <!-- 视图切换按钮 -->
+  <!-- 视图切换（class 驱动，带淡入过渡） -->
   <section class="content-shell poem-view-toggle">
-    <div class="view-switcher">
-      <button id="view-catalog" class="view-btn" aria-label="诗集视图">
+    <div class="view-switcher" role="tablist">
+      <button id="view-catalog" class="view-btn" role="tab" aria-selected="false" aria-label="诗集视图">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
           <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <span>诗集</span>
       </button>
-      <button id="view-timeline" class="view-btn active" aria-label="时间轴视图">
+      <button id="view-timeline" class="view-btn active" role="tab" aria-selected="true" aria-label="时间轴视图">
         <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
           <path d="M12 2v20M2 12h4M18 12h4M6 6l2 2M16 16l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -387,8 +338,8 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
     </div>
   </section>
 
-  <!-- 目录视图（按辑分组，古生古色风格） -->
-  <section class="content-shell poem-catalog-view" id="catalog-view" style="display: none;">
+  <!-- 目录视图（按辑分组；卡片默认摘要，「展读」展开全文） -->
+  <section class="content-shell poem-catalog-view" id="catalog-view">
     {groups.map((group, gi) => (
       <div class="poem-group classical-group" style={`--gi: ${gi}`}>
         <header class="group-header classical-header">
@@ -398,7 +349,7 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
         </header>
         <div class="poem-grid classical-grid">
           {group.poems.map((poem, pi) => (
-            <article class="poem-card classical-card breathe-card" style={`--pi: ${pi}`}>
+            <article class="poem-card classical-card breathe-card" style={`--pi: ${pi}`} id={`poem-${poem.slug}`}>
               <div class="card-inner classical-inner">
                 <span class="poem-date classical-date">{poem.date}</span>
                 <h4 class="poem-title classical-card-title">{poem.title}</h4>
@@ -406,6 +357,12 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
                 <div class="poem-preview classical-preview">
                   {poem.body.map((line) => <span>{line}</span>)}
                 </div>
+                {poem.body.length > 2 && (
+                  <button type="button" class="poem-expand" data-poem-expand>
+                    <span class="poem-expand-more">展读全文</span>
+                    <span class="poem-expand-less">收起来</span>
+                  </button>
+                )}
                 {poem.notes.length > 0 && (
                   <div class="poem-notes">
                     {poem.notes.map((note) => <small class="poem-note-line">{note}</small>)}
@@ -426,8 +383,8 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
     ))}
   </section>
 
-  <!-- 时间轴视图：按年份分组，与归档页面布局一致 -->
-  <section class="content-shell poem-timeline-view" id="timeline-view">
+  <!-- 时间轴视图（默认视图；按年份分组，标题不再指向 404 的 /posts/ 链接） -->
+  <section class="content-shell poem-timeline-view is-shown" id="timeline-view">
     <div class="section-heading small">
       <p>TIMELINE</p>
       <h2>按时间读</h2>
@@ -438,12 +395,12 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
           <div class="poem-archive-year">{year}</div>
           <div class="poem-archive-list">
             {yearPoems.map((poem) => (
-              <article class="poem-archive-item">
+              <article class="poem-archive-item" id={`poem-t-${poem.slug}`}>
                 <div class="poem-meta">
                   <time>{poem.date}</time>
                 </div>
                 <div class="poem-content">
-                  <h3><a href={`/posts/${poem.slug}/`}>{poem.title}</a></h3>
+                  <h3>{poem.title}</h3>
                   <p class="poem-author-line">{poem.author}</p>
                   <div class="poem-excerpt-multi">
                     {poem.body.map((line) => <p>{line}</p>)}
@@ -473,48 +430,63 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
     <Twikoo />
   </section>
 
-  <!-- 视图切换脚本 -->
-  <script>
-    const catalogBtn = document.getElementById('view-catalog');
-    const timelineBtn = document.getElementById('view-timeline');
-    const catalogView = document.getElementById('catalog-view');
-    const timelineView = document.getElementById('timeline-view');
+  <script is:inline>
+    // IIFE 包裹：View Transitions 下 is:inline 脚本每次导航都会重跑，
+    // 顶层 const 重复声明会整段崩掉（视图按钮失灵的根因）
+    (() => {
+      // 视图切换：class 驱动 + 淡入过渡（替代 display 硬切）
+      const catalogBtn = document.getElementById('view-catalog');
+      const timelineBtn = document.getElementById('view-timeline');
+      const catalogView = document.getElementById('catalog-view');
+      const timelineView = document.getElementById('timeline-view');
 
-    function showCatalog() {
-      catalogBtn?.classList.add('active');
-      timelineBtn?.classList.remove('active');
-      catalogView?.style.setProperty('display', 'block');
-      timelineView?.style.setProperty('display', 'none');
-    }
+      function switchView(showCatalog) {
+        catalogBtn?.classList.toggle('active', showCatalog);
+        timelineBtn?.classList.toggle('active', !showCatalog);
+        catalogBtn?.setAttribute('aria-selected', String(showCatalog));
+        timelineBtn?.setAttribute('aria-selected', String(!showCatalog));
+        catalogView?.classList.toggle('is-shown', showCatalog);
+        timelineView?.classList.toggle('is-shown', !showCatalog);
+      }
+      catalogBtn?.addEventListener('click', () => switchView(true));
+      timelineBtn?.addEventListener('click', () => switchView(false));
 
-    function showTimeline() {
-      timelineBtn?.classList.add('active');
-      catalogBtn?.classList.remove('active');
-      timelineView?.style.setProperty('display', 'block');
-      catalogView?.style.setProperty('display', 'none');
-    }
-
-    catalogBtn?.addEventListener('click', showCatalog);
-    timelineBtn?.addEventListener('click', showTimeline);
+      // 「展读全文」展开/收起（事件委托，一次绑定）
+      document.getElementById('catalog-view')?.addEventListener('click', (e) => {
+        const target = e.target;
+        const btn = target && target.closest ? target.closest('[data-poem-expand]') : null;
+        if (!btn) return;
+        btn.closest('.poem-card')?.classList.toggle('is-expanded');
+      });
+    })();
   </script>
 
   <style>
-    /* 序言区块（古生古色） */
-    .poem-preface {
-      margin-bottom: 8px;
+    /* ============ 诗集页 1.1.0 视觉整合 ============ */
+    .poem-catalog-view,
+    .poem-timeline-view {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px);
     }
-    .preface-frame {
-      padding: 36px 40px;
+    .poem-catalog-view.is-shown,
+    .poem-timeline-view.is-shown {
+      display: block;
+      animation: poem-view-in .5s cubic-bezier(.16, 1, .3, 1) forwards;
     }
+    @keyframes poem-view-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .poem-preface { margin-bottom: 8px; }
+    .preface-frame { padding: 36px 40px; }
     .preface-title {
       margin: 0 0 20px;
       font-size: clamp(28px, 4vw, 38px);
       color: var(--text);
       text-align: center;
     }
-    .preface-body {
-      color: color-mix(in srgb, var(--text), transparent 15%);
-    }
+    .preface-body { color: color-mix(in srgb, var(--text), transparent 15%); }
     .preface-body p {
       margin: 0 0 16px;
       font-size: 16px;
@@ -522,10 +494,7 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
       text-indent: 2em;
       letter-spacing: .02em;
     }
-    .preface-signature {
-      margin-top: 24px;
-      text-align: right;
-    }
+    .preface-signature { margin-top: 24px; text-align: right; }
     .preface-signature p {
       margin: 0 0 4px;
       color: var(--muted);
@@ -533,7 +502,46 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
       font-family: "LXGW WenKai", "Noto Serif SC", serif;
       letter-spacing: .04em;
     }
-    /* 目录视图卡片配图缩略图 */
+
+    /* 目录卡片：默认只露两行余，渐隐收尾 */
+    .poem-card .poem-preview {
+      position: relative;
+      display: grid;
+      gap: 2px;
+      max-height: 4.6em;
+      overflow: hidden;
+      transition: max-height .6s cubic-bezier(.16, 1, .3, 1);
+    }
+    .poem-card .poem-preview::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0;
+      height: 2.2em;
+      background: linear-gradient(transparent, var(--bg));
+      transition: opacity .4s;
+    }
+    .poem-card.is-expanded .poem-preview { max-height: 2000px; }
+    .poem-card.is-expanded .poem-preview::after { opacity: 0; }
+    .poem-expand {
+      margin-top: 10px;
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--accent);
+      font-size: 13px;
+      letter-spacing: .08em;
+      cursor: pointer;
+    }
+    .poem-expand .poem-expand-less { display: none; }
+    .poem-card.is-expanded .poem-expand-more { display: none; }
+    .poem-card.is-expanded .poem-expand-less { display: inline; }
+
+    .poem-archive-item .poem-content h3 {
+      margin: 0;
+      font-size: 19px;
+      color: var(--text);
+    }
+
     .poem-card-gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
@@ -550,7 +558,6 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
     :root[data-theme="dark"] .poem-card-gallery img {
       box-shadow: 0 8px 24px rgba(0, 0, 0, .24);
     }
-    /* 注释区块（背景/说明/注） */
     .poem-notes {
       display: grid;
       gap: 4px;
@@ -558,36 +565,11 @@ const timelineGroups = Object.keys(yearMap).sort((a, b) => parseInt(b) - parseIn
       padding-top: 12px;
       border-top: 1px dashed color-mix(in srgb, var(--line), transparent 30%);
     }
-    .poem-note-line {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    /* 时间轴视图中的配图网格 */
-    .poem-timeline-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .poem-timeline-gallery img {
-      width: 100%;
-      min-height: 100px;
-      border-radius: 10px;
-      object-fit: cover;
-      box-shadow: 0 8px 24px rgba(24, 31, 42, .12);
-    }
-    :root[data-theme="dark"] .poem-timeline-gallery img {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, .24);
-    }
-    /* 移动端序言适配 */
+    .poem-note-line { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
     @media (max-width: 640px) {
-      .preface-frame {
-        padding: 24px 20px;
-      }
-      .preface-body p {
-        font-size: 15px;
-      }
+      .preface-frame { padding: 24px 20px; }
+      .preface-body p { font-size: 15px; }
     }
   </style>
 </BaseLayout>

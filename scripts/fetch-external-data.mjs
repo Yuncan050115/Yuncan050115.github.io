@@ -10,6 +10,7 @@ const DATA_DIR = join(root, 'content', 'data');
 const STEAM_FILE = join(DATA_DIR, 'steam-games.json');
 const CIRCLE_FILE = join(DATA_DIR, 'circle-feed.json');
 const BANGUMI_FILE = join(DATA_DIR, 'bangumi-data.json');
+const PROJECTS_FILE = join(DATA_DIR, 'projects.json');
 
 // 读取 .env 文件（本地开发用），CI 环境变量已直接注入 process.env
 function loadEnv() {
@@ -90,6 +91,19 @@ async function fetchSteamGames() {
 }
 
 async function fetchCircleFeed() {
+  // 主路径：fcircle 的 GitHub Actions 每日聚合 data.db 并提交回仓库，
+  // 构建时直接下载 SQLite 读取（Vercel API 层挂掉也不受影响）。
+  // 兜底：PUBLIC_CIRCLE_API（旧 Vercel 服务，已 404）。
+  const dbUrl = getEnv('PUBLIC_CIRCLE_DB_URL')
+    || 'https://raw.githubusercontent.com/Yuncan050115/yuncan-blog-circle-of-friends/main/data.db';
+  try {
+    const articles = await fetchCircleFromDb(dbUrl);
+    if (articles.length) return articles;
+    console.log('[fetch-external-data] Circle: data.db 无数据，尝试 API 兜底');
+  } catch (e) {
+    console.log(`[fetch-external-data] Circle data.db 失败: ${e.message}，尝试 API 兜底`);
+  }
+
   const circleApi = getEnv('PUBLIC_CIRCLE_API');
   if (!circleApi) {
     console.log('[fetch-external-data] Circle: API 未配置，跳过');
@@ -97,6 +111,46 @@ async function fetchCircleFeed() {
   }
   const data = await fetchWithTimeout(circleApi);
   return Array.isArray(data?.article_data) ? data.article_data : [];
+}
+
+// 从 fcircle 仓库的 data.db（SQLite）读取聚合文章
+async function fetchCircleFromDb(dbUrl) {
+  const { DatabaseSync } = await import('node:sqlite');
+  const { writeFileSync: writeTmp, readFileSync: readTmp, unlinkSync } = await import('fs');
+  const { join } = await import('path');
+  const { tmpdir } = await import('os');
+
+  const res = await fetch(dbUrl, { signal: AbortSignal.timeout(15000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  if (!buf.subarray(0, 16).toString('latin1').startsWith('SQLite format 3')) {
+    throw new Error('下载内容不是 SQLite 数据库');
+  }
+  const tmpFile = join(tmpdir(), `yuncan-circle-${Date.now()}.db`);
+  writeTmp(tmpFile, buf);
+  try {
+    const db = new DatabaseSync(tmpFile, { readOnly: true });
+    const rows = db.prepare(`
+      SELECT p.title, p.created, p.updated, p.link, p.author, p.avatar,
+             (SELECT s.summary FROM article_summaries s WHERE s.link = p.link) AS summary
+      FROM posts p
+      ORDER BY p.created DESC, p.updated DESC
+      LIMIT 40
+    `).all();
+    db.close();
+    return rows.map((row, i) => ({
+      floor: i + 1,
+      title: String(row.title || '无标题'),
+      created: String(row.created || ''),
+      updated: String(row.updated || row.created || ''),
+      link: String(row.link || '#'),
+      author: String(row.author || '未知站点'),
+      avatar: String(row.avatar || ''),
+      summary: row.summary ? String(row.summary) : ''
+    }));
+  } finally {
+    try { unlinkSync(tmpFile); } catch { /* 忽略清理失败 */ }
+  }
 }
 
 async function fetchBilibiliBangumi() {
@@ -151,6 +205,31 @@ async function fetchBilibiliBangumi() {
   return results;
 }
 
+// GitHub 项目：按最近更新排序拉取非 fork 仓库，项目页"实时"数据源
+async function fetchGithubProjects() {
+  const user = getEnv('PUBLIC_GITHUB_USER') || 'Yuncan050115';
+  const url = `https://api.github.com/users/${user}/repos?per_page=100&sort=updated&type=owner`;
+  const res = await fetch(url, {
+    headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'yuncan-blog-build' },
+    signal: AbortSignal.timeout(10000)
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const repos = await res.json();
+  if (!Array.isArray(repos)) return [];
+  return repos
+    .filter((repo) => !repo.fork && !repo.archived && repo.description)
+    .sort((a, b) => (b.stargazers_count - a.stargazers_count) || (+new Date(b.pushed_at) - +new Date(a.pushed_at)))
+    .slice(0, 8)
+    .map((repo) => ({
+      name: repo.name,
+      href: repo.html_url,
+      description: String(repo.description || ''),
+      language: repo.language || '',
+      stars: repo.stargazers_count || 0,
+      updated: String(repo.pushed_at || '').slice(0, 10)
+    }));
+}
+
 function ensureDataDir() {
   if (!existsSync(DATA_DIR)) {
     mkdirSync(DATA_DIR, { recursive: true });
@@ -189,6 +268,15 @@ async function main() {
   } catch (e) {
     console.log(`[fetch-external-data] Circle 错误: ${e.message}，保留旧数据`);
     if (!existsSync(CIRCLE_FILE)) writeFileSync(CIRCLE_FILE, '[]');
+  }
+
+  // GitHub 项目
+  try {
+    const projects = await fetchGithubProjects();
+    writeIfValid(PROJECTS_FILE, projects, 'GitHub Projects');
+  } catch (e) {
+    console.log(`[fetch-external-data] GitHub Projects 错误: ${e.message}，保留旧数据`);
+    if (!existsSync(PROJECTS_FILE)) writeFileSync(PROJECTS_FILE, '[]');
   }
 
   // Bangumi

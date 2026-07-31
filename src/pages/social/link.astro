@@ -5,6 +5,10 @@ import Icon from '../../components/Icon.astro';
 import Twikoo from '../../components/Twikoo.astro';
 import { getLinks } from '../../lib/content';
 const groups = getLinks();
+const githubToken = import.meta.env.GITHUB_TOKEN || '';
+const githubRepo = import.meta.env.GITHUB_REPO || '';
+// 复用已有 GITHUB_TOKEN（PostEditor 已注入 window.__peToken），无需单独 token
+const hasApplyConfig = !!(githubToken && githubRepo);
 ---
 
 <BaseLayout title="友人帐">
@@ -34,20 +38,60 @@ const groups = getLinks();
     ))}
   </section>
   <section class="content-shell">
-    <div class="friend-apply">
+    <div class="friend-apply" id="friend-apply-section" data-repo={githubRepo}>
       <div class="section-heading small">
         <p>APPLY</p>
         <h2>申请友链</h2>
-        <span>欢迎按以下格式留言申请，申请前请先添加本站友链。</span>
+        <span>填写下方表单一键申请，申请前请先添加本站友链。</span>
       </div>
-      <div class="friend-apply-template">
-        <p>站点名称：云灿</p>
-        <p>站点链接：https://你的网址</p>
-        <p>站点头像：https://yuncan.xyz/images/icon/favicon.ico</p>
-        <p>站点描述：浮云一别后，流水十年间</p>
-        <p>站点截图：https://api.yuncan.xyz/blog/260619_193332.webp</p>
-        <p>RSS（可选）：https://blog.yuncan.xyz/atom.xml</p>
-      </div>
+      {hasApplyConfig ? (
+        <form class="friend-apply-form" id="friend-apply-form">
+          <div class="fa-field-row">
+            <div class="fa-field">
+              <label>站点名称 *</label>
+              <input type="text" name="name" required placeholder="云灿の随笔小站" />
+            </div>
+            <div class="fa-field">
+              <label>站点链接 *</label>
+              <input type="url" name="link" required placeholder="https://你的网址" />
+            </div>
+          </div>
+          <div class="fa-field-row">
+            <div class="fa-field">
+              <label>站点头像 *</label>
+              <input type="url" name="avatar" required placeholder="https://你的favicon或头像" />
+            </div>
+            <div class="fa-field">
+              <label>站点描述 *</label>
+              <input type="text" name="descr" required placeholder="一句话描述你的站点" />
+            </div>
+          </div>
+          <div class="fa-field-row">
+            <div class="fa-field">
+              <label>RSS（可选）</label>
+              <input type="url" name="rss" placeholder="https://你的RSS地址" />
+            </div>
+            <div class="fa-field">
+              <label>站点截图（可选）</label>
+              <input type="url" name="siteshot" placeholder="留空将自动截取站点首图" />
+            </div>
+          </div>
+          <button type="submit" class="fa-submit-btn">
+            <Icon name="link" />
+            <span>一键申请</span>
+          </button>
+          <p class="fa-hint" id="fa-hint"></p>
+        </form>
+      ) : (
+        <div class="friend-apply-template">
+          <p>站点名称：云灿</p>
+          <p>站点链接：https://你的网址</p>
+          <p>站点头像：https://yuncan.xyz/images/icon/favicon.ico</p>
+          <p>站点描述：浮云一别后，流水十年间</p>
+          <p>站点截图：https://api.yuncan.xyz/blog/260619_193332.webp</p>
+          <p>RSS（可选）：https://blog.yuncan.xyz/atom.xml</p>
+        </div>
+      )}
     </div>
   </section>
   <section class="content-shell">

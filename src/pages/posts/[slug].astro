@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Twikoo from '../../components/Twikoo.astro';
 import { site } from '../../data/site';
-import { getPosts } from '../../lib/content';
+import { getPosts, slugify } from '../../lib/content';
 
 export function getStaticPaths() {
   const posts = getPosts();
@@ -34,8 +34,8 @@ const { post, prev, next } = Astro.props;
       </p>
       <h1>{post.title}</h1>
       <div class="chips">
-        {post.categories.map((item) => <a href={`/categories/${encodeURIComponent(item)}/`}>{item}</a>)}
-        {post.tags.map((item) => <a href={`/tags/${encodeURIComponent(item)}/`}>{item}</a>)}
+        {post.categories.map((item) => <a href={`/categories/${slugify(item)}/`}>{item}</a>)}
+        {post.tags.map((item) => <a href={`/tags/${slugify(item)}/`}>{item}</a>)}
       </div>
     </header>
 

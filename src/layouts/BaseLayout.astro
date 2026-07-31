@@ -5,6 +5,8 @@ import Icon from '../components/Icon.astro';
 import SettingsPanel from '../components/SettingsPanel.astro';
 import PostEditor from '../components/PostEditor.astro';
 import '../styles/site.css';
+// UnoCSS 新轨：@unocss/astro 的 page-ssr 注入对静态构建不生效，需显式引入虚拟样式模块
+import 'uno.css';
 
 const { title = site.title, description = site.description } = Astro.props;
 const pageTitle = title === site.title ? site.title : `${title} | ${site.title}`;
@@ -31,7 +33,7 @@ const preconnectOrigins = Array.from(new Set(
 <html lang="zh-CN" data-theme-default="auto">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content="云灿, 随笔, 博客, 诗词, 编程" />
@@ -85,8 +87,10 @@ const preconnectOrigins = Array.from(new Set(
         if (saved === 'light' || saved === 'dark') {
           root.dataset.theme = saved;
         } else {
+          // 系统偏好优先，时段兜底
+          const mq = window.matchMedia('(prefers-color-scheme: dark)');
           const hour = new Date().getHours();
-          root.dataset.theme = (hour >= 6 && hour < 19) ? 'light' : 'dark';
+          root.dataset.theme = mq.matches ? 'dark' : (hour >= 6 && hour < 19 ? 'light' : 'dark');
         }
       })();
     </script>
@@ -136,10 +140,9 @@ const preconnectOrigins = Array.from(new Set(
       </div>
     </header>
 
-    <!-- 移动端独立导航抽屉（脱离 header 的包含块） -->
+    <!-- 移动端独立导航抽屉（脱离 header 的包含块）。与桌面导航同源渲染，新增条目不再静默丢失 -->
     <nav class="site-nav site-nav--mobile" aria-label="移动导航" data-nav-mobile>
       {site.nav
-        .filter((item) => ['文章', '在看', '在玩', '留言板', '友链', '个人', '诗集', '主站'].includes(item.label))
         .map((item) => {
           const isExternal = typeof item.href === 'string' && /^https?:\/\//.test(item.href);
           const hasChildren = 'children' in item && item.children?.length;
@@ -178,13 +181,15 @@ const preconnectOrigins = Array.from(new Set(
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <div>
+    {/* 页脚：UnoCSS 新轨实现（设计令牌桥接 CSS 变量，深浅色自动适配）。
+        legacy .site-footer 规则已冻结，待后续清理。 */}
+    <footer class="site-container relative z-[2] pt-[42px] pb-[120px] text-muted max-sm:px-3 max-sm:py-4 max-sm:text-[0.75rem]">
+      <div class="flex flex-wrap gap-3 text-ink">
         <strong>{site.title}</strong>
         <span>{site.subtitle}</span>
       </div>
-      <p>
-        <a href={site.mainSite} target="_blank" rel="noopener">前往主站</a>
+      <p class="max-sm:break-all">
+        <a class="soft-accent" href={site.mainSite} target="_blank" rel="noopener">前往主站</a>
         {' · '}{site.icp} · Powered by Astro · {site.githubUser} · v{site.version}
       </p>
     </footer>
@@ -193,11 +198,19 @@ const preconnectOrigins = Array.from(new Set(
       <aside class="music-dock" data-music={JSON.stringify(musicPayload)} transition:name="music-dock" transition:persist>
         <button class="music-cover" data-music-play aria-label="播放或暂停音乐" title="播放或暂停音乐">
           <img src={site.music.fallbackCover || site.logo} alt="" decoding="async" />
+          <span class="music-cover-ring" aria-hidden="true"></span>
         </button>
         <div class="music-info">
           <strong data-music-title>Yuncan Music</strong>
           <span data-music-artist>{site.name}</span>
           <p data-music-lyric>正在连接歌单</p>
+          <div class="music-progress" data-music-progress>
+            <span class="music-time" data-music-current>0:00</span>
+            <div class="music-progress-track" data-music-seek role="slider" aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+              <i data-music-bar></i>
+            </div>
+            <span class="music-time" data-music-duration>0:00</span>
+          </div>
         </div>
         <div class="music-controls">
           <button type="button" class="music-btn" data-music-prev aria-label="上一首" title="上一首">
@@ -210,8 +223,11 @@ const preconnectOrigins = Array.from(new Set(
           <button type="button" class="music-btn" data-music-next aria-label="下一首" title="下一首">
             <Icon name="next" />
           </button>
+          <button type="button" class="music-btn music-btn-queue" data-music-queue aria-label="歌单列表" title="歌单列表">
+            <Icon name="menu" />
+          </button>
         </div>
-        {/* 歌单列表 */}
+        {/* 歌单列表（列表按钮或悬停展开） */}
         <div class="music-list" data-music-list></div>
         <audio data-music-audio preload="metadata"></audio>
       </aside>
@@ -265,10 +281,6 @@ const preconnectOrigins = Array.from(new Set(
         </div>
       </div>
     </div>
-
-    <style is:global>
-      .reward-dialog { z-index: 1002 !important; }
-    </style>
 
     <script src="../scripts/app.ts"></script>
     <PostEditor />

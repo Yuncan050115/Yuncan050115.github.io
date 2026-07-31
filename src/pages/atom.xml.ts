@@ -15,6 +15,6 @@ export async function GET(context: APIContext) {
       description: post.excerpt || '',
       link: `/posts/${post.slug}/`,
     })),
-    customData: `<language>zh-cn</language>`,
+    customData: `<language>zh-CN</language>`,
   });
 }

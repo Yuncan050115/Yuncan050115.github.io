@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeStage from '../components/HomeStage.astro';
 import Icon from '../components/Icon.astro';
-import { getPosts, getTaxonomy } from '../lib/content';
+import { getPosts, getTaxonomy, slugify } from '../lib/content';
 
 const posts = getPosts();
 const latest = [...posts]
@@ -34,7 +34,7 @@ const entrances = [
     </div>
     <div class="hydro-category-slices-lite">
       {categories.map((category, index) => (
-        <a class="hydro-category-slice-lite" href={`/categories/${encodeURIComponent(category.name)}/`}>
+        <a class="hydro-category-slice-lite" href={`/categories/${slugify(category.name)}/`}>
           <div class="hydro-category-slice-top">
             <span>{String(index + 1).padStart(2, '0')}</span>
             <small>{category.posts.length} 篇</small>
@@ -76,7 +76,7 @@ const entrances = [
       <a href="/tags/">全部标签</a>
     </div>
     <div class="tag-river">
-      {tags.map((tag) => <a class="breathe-card" href={`/tags/${encodeURIComponent(tag.name)}/`}>{tag.name}<span>{tag.posts.length}</span></a>)}
+      {tags.map((tag) => <a class="breathe-card" href={`/tags/${slugify(tag.name)}/`}>{tag.name}<span>{tag.posts.length}</span></a>)}
     </div>
   </section>
 

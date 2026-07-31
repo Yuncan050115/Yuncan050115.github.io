@@ -6,39 +6,82 @@ import circleFeed from '../../../content/data/circle-feed.json';
 const articles = Array.isArray(circleFeed) ? circleFeed : [];
 const circleApi = import.meta.env.PUBLIC_CIRCLE_API || '';
 const configured = Boolean(circleApi);
+// 快照时间标记：取动态中最晚的更新时间，便于读者判断数据新鲜度
+const latestStamp = articles.reduce((max, item) => {
+  const stamp = String(item.updated || item.created || '');
+  return stamp > max ? stamp : max;
+}, '');
+
+// 按作者+日期分组：同一天同一人的多条动态折叠，避免刷屏看不到其他人
+interface FeedItem { floor?: number; title?: string; created?: string; updated?: string; link?: string; author?: string; avatar?: string; summary?: string; }
+interface FeedGroup { key: string; author: string; avatar: string; date: string; items: FeedItem[]; }
+
+const groups: FeedGroup[] = [];
+for (const item of articles) {
+  const author = item.author || '未知站点';
+  const date = String(item.updated || item.created || '');
+  const key = `${author}||${date}`;
+  const last = groups[groups.length - 1];
+  if (last && last.key === key) {
+    last.items.push(item);
+  } else {
+    groups.push({ key, author, avatar: item.avatar || '', date, items: [item] });
+  }
+}
 ---
 <BaseLayout title="朋友圈 - 云灿">
   <PageHero title="朋友圈" subtitle="友链站点动态聚合" />
   <section class="content-shell">
     {configured ? (
-      articles.length ? (
-        <div class="circle-container">
-          {articles.map((item) => (
-            <article class="circle-card">
-              <div class="circle-card-header">
-                <a href={item.link || '#'} target="_blank" rel="noopener" class="circle-author">
-                  {item.author || '未知站点'}
-                </a>
-                <time class="circle-date">{item.updated || item.created || ''}</time>
-              </div>
-              <h3 class="circle-title">
-                <a href={item.link || '#'} target="_blank" rel="noopener">
-                  {item.title || '无标题'}
-                </a>
-              </h3>
-              {item.summary && <p class="circle-desc">{item.summary}</p>}
-            </article>
-          ))}
+      <>
+        <p class="circle-status is-live" data-circle-status>
+          {latestStamp ? `GitHub Actions 每日聚合 · 最近动态 ${latestStamp}` : '友链动态聚合'}
+        </p>
+        <div class="circle-container" data-circle-container>
+          {groups.length ? (
+            groups.map((group) => (
+              <article class="circle-card" data-circle-group={group.items.length > 1 ? 'collapsible' : 'single'}>
+                <div class="circle-card-header">
+                  {group.avatar ? (
+                    <img class="circle-avatar" src={group.avatar} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'" />
+                  ) : null}
+                  <a href={group.items[0].link || '#'} target="_blank" rel="noopener" class="circle-author">
+                    {group.author}
+                  </a>
+                  <time class="circle-date">{group.date}</time>
+                </div>
+                <h3 class="circle-title">
+                  <a href={group.items[0].link || '#'} target="_blank" rel="noopener">
+                    {group.items[0].title || '无标题'}
+                  </a>
+                </h3>
+                {group.items[0].summary && <p class="circle-desc">{group.items[0].summary}</p>}
+
+                {group.items.length > 1 && (
+                  <div class="circle-more" data-circle-more>
+                    <button type="button" class="circle-more-toggle" data-circle-toggle>
+                      展开同日另外 {group.items.length - 1} 篇
+                    </button>
+                    <div class="circle-more-list" data-circle-more-list hidden>
+                      {group.items.slice(1).map((item) => (
+                        <a class="circle-more-item" href={item.link || '#'} target="_blank" rel="noopener">
+                          <span class="circle-more-title">{item.title || '无标题'}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </article>
+            ))
+          ) : (
+            <p class="circle-empty">暂无动态</p>
+          )}
         </div>
-      ) : (
-        <div class="circle-container">
-          <p class="circle-empty">暂无动态</p>
-        </div>
-      )
+      </>
     ) : (
       <div class="circle-empty">
         <h3>朋友圈功能未配置</h3>
-        <p>友链朋友圈（fircle）是一个独立部署的服务，用于聚合友链站点的最新文章。</p>
+        <p>友链朋友圈（fcircle）是一个独立部署的服务，用于聚合友链站点的最新文章。</p>
         <h4>部署步骤：</h4>
         <ol>
           <li>将 <code>hexo-circle-of-friends-main</code> 目录部署到 Vercel（推荐）或自有服务器</li>
@@ -51,4 +94,21 @@ const configured = Boolean(circleApi);
       </div>
     )}
   </section>
+
+  <script>
+    // 同日同作者多条动态折叠/展开
+    document.querySelectorAll('[data-circle-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wrap = btn.closest('[data-circle-more]');
+        const list = wrap?.querySelector<HTMLElement>('[data-circle-more-list]');
+        if (!list) return;
+        const expanded = !list.hidden;
+        list.hidden = expanded;
+        btn.textContent = expanded
+          ? btn.textContent.replace('收起', '展开')
+          : btn.textContent.replace('展开', '收起');
+      });
+    });
+  </script>
+
 </BaseLayout>

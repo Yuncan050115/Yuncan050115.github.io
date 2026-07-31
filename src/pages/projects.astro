@@ -4,12 +4,28 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import Twikoo from '../components/Twikoo.astro';
 import { site } from '../data/site';
+import projectsData from '../../content/data/projects.json';
+
+type Project = {
+  name: string;
+  href: string;
+  description: string;
+  language: string;
+  stars: number;
+  updated?: string;
+};
+
+// 数据源：构建时 GitHub API 拉取（content/data/projects.json），
+// 拉取失败或无数据时回退到 yuncan.config.ts 的手动列表。
+const live = (Array.isArray(projectsData) ? projectsData : []) as Project[];
+const projects: Project[] = live.length ? live : site.projects.map((p) => ({ ...p }));
+const isLive = live.length > 0;
 ---
 
 <BaseLayout title="项目">
-  <PageHero title="项目" description="GitHub 主页置顶的几个项目。" />
+  <PageHero title="项目" description={isLive ? 'GitHub 仓库实时数据，构建时自动同步。' : 'GitHub 主页置顶的几个项目。'} />
   <section class="content-shell project-grid">
-    {site.projects.map((project) => (
+    {projects.map((project) => (
       <a class="project-card breathe-card" href={project.href} target="_blank" rel="noreferrer">
         <Icon name="github" size={24} />
         <strong>{project.name}</strong>
@@ -17,6 +33,7 @@ import { site } from '../data/site';
         <span>
           {project.language}
           {typeof project.stars === 'number' ? ` · ${project.stars} stars` : ''}
+          {project.updated ? ` · 更新于 ${project.updated}` : ''}
         </span>
       </a>
     ))}

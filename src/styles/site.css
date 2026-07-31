@@ -23,7 +23,6 @@
 /* 1.0.5 UI repair: lighter background, Hydro-like sections, stable music dock, post actions */
 main,
 .site-header,
-.site-footer,
 .runtime-tools,
 .music-dock,
 .cursor-dot {
@@ -1854,21 +1853,6 @@ a.post-nav-item:hover {
   box-shadow: var(--shadow);
 }
 
-.site-footer {
-  width: min(1180px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 42px 0 120px;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-}
-
-.site-footer div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  color: var(--text);
-}
-
 .music-dock {
   position: fixed;
   left: 18px;
@@ -2709,7 +2693,6 @@ body {
 
 main,
 .site-header,
-.site-footer,
 .runtime-tools,
 .music-dock {
   position: relative;
@@ -2969,10 +2952,6 @@ main,
 /* 主题切换过渡 */
 html {
   transition: background-color .6s cubic-bezier(.16,1,.3,1), color .6s cubic-bezier(.16,1,.3,1);
-}
-
-:root {
-  transition: color-scheme .6s ease;
 }
 
 .global-bg,
@@ -3713,10 +3692,6 @@ body {
 }
 
 /* 1.0.8 detail fixes */
-.site-footer {
-  border-top: 0 !important;
-}
-
 body::before,
 body::after {
   content: none !important;
@@ -4947,48 +4922,6 @@ body::after {
     text-align: left;
   }
 
-  /* 音乐播放器迷你模式 */
-  .music-dock {
-    left: 8px !important;
-    right: 8px !important;
-    bottom: 8px !important;
-    padding: 6px 10px !important;
-    gap: 8px !important;
-  }
-  .music-dock .music-info {
-    min-width: 0;
-    flex: 1;
-  }
-  .music-dock .music-info strong {
-    font-size: 0.75rem;
-  }
-  .music-dock .music-info span {
-    font-size: 0.7rem;
-  }
-  .music-dock .music-info p {
-    display: none;
-  }
-  .music-dock .music-controls {
-    gap: 4px;
-  }
-  .music-dock .music-btn {
-    width: 28px;
-    height: 28px;
-  }
-
-  /* 设置面板全屏 */
-  .settings-popup {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    max-height: 100svh;
-    border-radius: 0;
-    border: none;
-  }
-
   /* 首页 hero 区域：移动端也要占满第一屏 */
   .first-screen {
     min-height: 100svh;
@@ -5008,15 +4941,6 @@ body::after {
   /* 内容区域通用边距 */
   .content-shell {
     padding: 16px 12px 60px;
-  }
-
-  /* 页脚 */
-  .site-footer {
-    padding: 16px 12px;
-    font-size: 0.75rem;
-  }
-  .site-footer p {
-    word-break: break-all;
   }
 
   /* 歌词栏 */
@@ -5055,11 +4979,6 @@ body::after {
     display: none !important;
   }
 
-  /* 赞赏弹窗等全屏弹窗 */
-  .reward-modal, .modal-overlay {
-    width: calc(100% - 24px);
-    max-width: none;
-  }
 }
 
 /* 480px 以下进一步优化 */
@@ -5275,6 +5194,7 @@ body::after {
   align-items: center;
   padding: 16px 20px;
   border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
+  position: relative;
 }
 
 .pe-header h3 {
@@ -5550,6 +5470,57 @@ body::after {
   transition: color .25s var(--ease);
 }
 
+/* 同日同作者折叠区 */
+.circle-more {
+  margin-top: 10px;
+}
+
+.circle-more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border: 1px dashed var(--border, rgba(0,0,0,0.12));
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent, #32b9a8);
+  font-size: .76rem;
+  cursor: pointer;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+
+.circle-more-toggle:hover {
+  background: rgba(50, 185, 168, .1);
+  border-color: var(--accent, #32b9a8);
+}
+
+.circle-more-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border, rgba(0,0,0,0.08));
+}
+
+.circle-more-item {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background .2s var(--ease);
+}
+
+.circle-more-item:hover {
+  background: rgba(50, 185, 168, .08);
+}
+
+.circle-more-title {
+  font-size: .82rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
 .circle-loading, .circle-empty {
   text-align: center;
   padding: 40px;
@@ -5605,6 +5576,372 @@ body::after {
 
 .friend-apply-template p:last-child {
   margin-bottom: 0;
+}
+
+/* ========== 友链申请表单 ========== */
+.friend-apply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.fa-field-row {
+  display: flex;
+  gap: 14px;
+}
+
+.fa-field-row .fa-field {
+  flex: 1;
+}
+
+.fa-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fa-field label {
+  font-size: .82rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.fa-field input {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: .88rem;
+  background: var(--surface-strong);
+  color: var(--text);
+  font-family: inherit;
+  transition: border-color .2s var(--ease);
+}
+
+.fa-field input:focus {
+  outline: none;
+  border-color: var(--accent, #32b9a8);
+}
+
+.fa-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent, #32b9a8);
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+  align-self: flex-start;
+}
+
+.fa-submit-btn:hover {
+  opacity: .88;
+  transform: translateY(-1px);
+}
+
+.fa-submit-btn:disabled,
+.fa-submit-btn.is-loading {
+  opacity: .6;
+  cursor: wait;
+  transform: none;
+}
+
+.fa-submit-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fa-hint {
+  font-size: .82rem;
+  min-height: 1.2em;
+  margin: 0;
+}
+
+/* ========== 管理面板 Tab 导航 ========== */
+.pe-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
+}
+
+.pe-tab {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  color: var(--text-3, #888);
+  font-size: .85rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+
+.pe-tab:hover {
+  color: var(--text-2, #555);
+}
+
+.pe-tab.is-active {
+  color: var(--accent, #32b9a8);
+  border-bottom-color: var(--accent, #32b9a8);
+  font-weight: 600;
+}
+
+.pe-tab-pane {
+  display: none;
+  flex: 1;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.pe-tab-pane.is-active {
+  display: flex;
+}
+
+/* ========== 友链管理面板 ========== */
+.pe-friend-view {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pe-friend-section + .pe-friend-section {
+  border-top: 2px solid var(--border, rgba(0,0,0,0.08));
+}
+
+.pe-friend-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.06));
+}
+
+.pe-friend-status {
+  font-size: .82rem;
+  color: var(--text-3, #888);
+}
+
+.pe-friend-list {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pe-friend-group-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pe-friend-group-title {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-2, #555);
+  padding: 4px 0 2px;
+  border-bottom: 1px dashed var(--border, rgba(0,0,0,0.08));
+}
+
+.pe-friend-existing-actions {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pe-friend-existing-actions .pe-btn {
+  min-width: 44px;
+  padding: 4px 8px;
+  font-size: .76rem;
+  text-align: center;
+}
+
+.pe-friend-existing-actions .pe-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+/* 现有友链编辑表单 */
+.pe-friend-edit-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.pe-friend-edit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pe-friend-edit-row label {
+  font-size: .72rem;
+  color: var(--text-3, #888);
+  font-weight: 500;
+}
+
+.pe-friend-edit-row input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--border, rgba(0,0,0,0.12));
+  border-radius: 6px;
+  font-size: .82rem;
+  background: var(--surface-strong, rgba(0,0,0,0.02));
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .pe-friend-edit-row input {
+  background: rgba(255,255,255,0.04);
+}
+
+.pe-friend-edit-row input:focus {
+  outline: none;
+  border-color: var(--accent, #32b9a8);
+}
+
+.pe-friend-edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pe-friend-edit-actions .pe-btn {
+  flex: 1;
+  justify-content: center;
+}
+
+.pe-friend-card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border, rgba(0,0,0,0.08));
+  border-radius: 10px;
+  background: var(--surface-3, rgba(0,0,0,0.02));
+  transition: border-color .2s;
+}
+
+.pe-friend-card:hover {
+  border-color: var(--accent, #32b9a8);
+}
+
+:root[data-theme="dark"] .pe-friend-card {
+  background: rgba(255,255,255,0.03);
+}
+
+.pe-friend-card-preview {
+  flex-shrink: 0;
+  width: 128px;
+  height: 72px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface-strong, rgba(0,0,0,0.04));
+}
+
+.pe-friend-card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pe-friend-card-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pe-friend-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pe-friend-card-header strong {
+  font-size: .92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pe-friend-card-num {
+  font-size: .72rem;
+  color: var(--text-3, #999);
+  flex-shrink: 0;
+}
+
+.pe-friend-card-link {
+  font-size: .78rem;
+  color: var(--accent, #32b9a8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.pe-friend-card-link:hover {
+  text-decoration: underline;
+}
+
+.pe-friend-card-info p {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.pe-friend-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: .72rem;
+  color: var(--text-3, #999);
+  margin-top: 2px;
+}
+
+.pe-friend-card-actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+
+.pe-friend-card-actions .pe-btn {
+  white-space: nowrap;
+  font-size: .78rem;
+  padding: 6px 12px;
+}
+
+/* 移动端友链管理适配 */
+@media (max-width: 680px) {
+  .fa-field-row {
+    flex-direction: column;
+  }
+
+  .pe-friend-card {
+    flex-direction: column;
+  }
+
+  .pe-friend-card-preview {
+    width: 100%;
+    height: 120px;
+  }
+
+  .pe-friend-card-actions {
+    flex-direction: row;
+  }
 }
 
 /* ========== 追番/追剧（astro-bangumi 适配全站风格） ========== */
@@ -5734,4 +6071,395 @@ body::after {
   font-style: normal;
   color: var(--accent);
   font-weight: 600;
+}
+/* ============================================================
+   1.0.9 修复层：收敛四层补丁互殴、复活死亡功能、统一小窗口行为
+   本层位于文件末尾，同选择器冲突以本层为最终裁决。
+   层级秩序约定：光标 10001 > 文章编辑器 10000 > 灯箱 2000
+   > 赞赏弹窗 1600 > 右键菜单 1500 > 导航弹层 1002 > 音乐坞/
+   运行工具 1001 > 导航栏 1000 > 移动抽屉 998 > 歌词栏 997
+   ============================================================ */
+
+/* ---------- 1. 全局背景滤镜：分主题裁决（废除 1.0.5 !important 压死深色） ---------- */
+:root[data-theme="light"] .global-bg { filter: saturate(1.08) brightness(1.08) !important; }
+:root[data-theme="dark"] .global-bg { filter: brightness(.88) !important; }
+
+/* ---------- 2. body 渐变光晕复活（曾被纯色 background 覆盖成死代码） ---------- */
+body {
+  background:
+    radial-gradient(circle at 20% 8%, rgba(50, 185, 168, .16), transparent 28rem),
+    radial-gradient(circle at 84% 16%, rgba(85, 119, 255, .12), transparent 26rem),
+    var(--bg) !important;
+}
+
+/* ---------- 3. music-dock：playing 宽度三方战争统一 + 歌单列表复活 ---------- */
+/* 原 max-height: 74px/100px 将 .music-list 永久裁剪，歌单为死 UI */
+.music-dock .music-list { grid-column: 1 / -1; }
+.music-dock:hover,
+.music-dock:focus-within,
+.music-dock.playing:hover,
+.music-dock.playing:focus-within {
+  width: min(342px, calc(100vw - 28px)) !important;
+  max-height: min(60vh, 380px) !important;
+  overflow-y: auto !important;
+}
+
+/* ---------- 4. nav-popover 变换战争：统一为水平居中方案 ---------- */
+.nav-popover { top: calc(100% + 8px) !important; }
+.nav-item:hover .nav-popover,
+.nav-item:focus-within .nav-popover,
+.nav-item.is-open .nav-popover {
+  transform: translate(-50%, 0) scale(1) !important;
+}
+
+/* ---------- 5. 移动抽屉层级：高于 scrim(1099) 和 header(1000)，否则 scrim 盖住抽屉导致链接不可点 ---------- */
+.site-nav--mobile { z-index: 1100 !important; padding-top: 84px !important; }
+
+/* ---------- 6. 歌词栏：透明度达标 + 两侧让位 + 全面屏安全区 ---------- */
+.lyric-bar {
+  z-index: 997;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+.lyric-bar.is-active { opacity: .92; }
+.lyric-bar-inner {
+  max-width: calc(100% - 232px);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/* ---------- 7. hero-vignette 光标联动复活（曾被 !important 覆盖层杀死的死功能） ---------- */
+.hero-vignette {
+  background:
+    radial-gradient(circle at var(--cursor-px, 52%) var(--cursor-py, 68%), transparent 0%, rgba(0, 0, 0, .38) 62%),
+    linear-gradient(180deg, rgba(0, 0, 0, .12), rgba(0, 0, 0, .08) 45%, rgba(0, 0, 0, .32)) !important;
+}
+:root[data-theme="light"] .hero-vignette {
+  background:
+    radial-gradient(circle at var(--cursor-px, 52%) var(--cursor-py, 68%), rgba(255, 255, 255, .34), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .1) 46%, rgba(245, 244, 239, .38)) !important;
+}
+:root[data-theme="dark"] .hero-vignette {
+  background:
+    radial-gradient(circle at var(--cursor-px, 52%) var(--cursor-py, 68%), transparent 0%, rgba(0, 0, 0, .5) 62%),
+    linear-gradient(180deg, rgba(10, 12, 14, .42), rgba(10, 12, 14, .22) 46%, rgba(10, 12, 14, .5)) !important;
+}
+
+/* ---------- 8. 白天模式 hero 文字：白字叠白底不可读修复 ---------- */
+:root[data-theme="light"] .hero-subtitle { color: rgba(23, 26, 31, .86); }
+:root[data-theme="light"] .hero-kicker { color: rgba(23, 26, 31, .62); }
+:root[data-theme="light"] .hero-kicker span { color: inherit; }
+:root[data-theme="light"] .scroll-hint,
+:root[data-theme="light"] .scroll-hint span { color: rgba(23, 26, 31, .56); }
+:root[data-theme="light"] .scroll-hint span::after { background: rgba(23, 26, 31, .4); }
+
+/* ---------- 9. 诗集归档页未定义变量（背景透明/边框退化为文字色） ---------- */
+.poem-archive-item { background: var(--surface-strong); border-color: var(--line); }
+.poem-meta { color: var(--muted); }
+.poem-archive-item .tag,
+.poem-archive .tag { background: rgba(50, 185, 168, .12); color: var(--accent); }
+
+/* ---------- 10. 右键菜单层级：高于导航栏（原 120 在页首被 header 遮上沿） ---------- */
+.context-menu { z-index: 1500 !important; }
+
+/* ---------- 11. 文章双栏断点统一为 980px（原 900/980 双断点错位） ---------- */
+@media (max-width: 980px) {
+  .article-layout { grid-template-columns: 1fr !important; }
+  .article-toc { position: static !important; }
+}
+
+/* ---------- 12. runtime-tools：子元素断点统一 + 移动端归位（原为已隐藏的坞让位 92px） ---------- */
+@media (max-width: 760px) {
+  #fps { display: none !important; }
+}
+@media (max-width: 680px) {
+  .runtime-tools { bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important; right: 14px !important; }
+}
+
+/* ---------- 13. 自定义光标：消灭双光标 + 层级合理化 ---------- */
+@media (pointer: fine) {
+  body, body * { cursor: none !important; }
+}
+/* 光标必须高于一切（含 10000 的文章编辑器），否则出现无光标区域 */
+.cursor-dot { z-index: 10001 !important; }
+
+/* ---------- 14. 容器 gutter 统一（原 40px/32px 双轨，同页区块左右对不齐） ---------- */
+.home-panel,
+.content-shell,
+.article-shell { width: min(1180px, calc(100% - 32px)) !important; }
+
+/* ---------- 15. 内部滚动区域恢复滚动条（全局隐藏后无滚动提示） ---------- */
+.toc-panel,
+.site-nav--mobile,
+.music-dock .music-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+.toc-panel::-webkit-scrollbar,
+.site-nav--mobile::-webkit-scrollbar,
+.music-dock .music-list::-webkit-scrollbar { display: block; width: 4px; }
+.toc-panel::-webkit-scrollbar-thumb,
+.site-nav--mobile::-webkit-scrollbar-thumb,
+.music-dock .music-list::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+/* ---------- 16. 导航栏背景可过渡（原 background 简写 + !important 导致主题切换瞬变） ---------- */
+.site-header { transition: background-color .6s var(--ease), border-color .6s var(--ease), box-shadow .6s var(--ease) !important; }
+:root[data-theme="light"] .site-header { background-color: rgba(255, 255, 255, .85) !important; }
+:root[data-theme="dark"] .site-header { background-color: rgba(15, 15, 20, .85) !important; }
+
+/* ---------- 17. 赞赏弹窗层级与宽度单点定义（收回 BaseLayout 内联补丁） ---------- */
+.reward-dialog { z-index: 1600 !important; }
+.reward-panel { width: min(560px, calc(100% - 32px)) !important; }
+
+/* ---------- 18. 全面屏安全区：固定底栏避开 Home 指示条 ---------- */
+.runtime-tools,
+.music-dock { bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important; }
+
+/* ---------- 19. 无效的 color-scheme 过渡已在死代码清理中移除 ---------- */
+
+/* ============================================================
+   1.1.0 音乐播放器重设计层
+   问题背景：v1 列表 JS 生成 .music-track 而 CSS 只定义
+   .music-list-item —— 类名错配导致整个歌单列表无样式（死 UI）；
+   坞样式散落六个补丁层互相 !important；移动端坞被整体隐藏。
+   本层单点整合：折叠唱片 / 展开面板 / 进度条 / 列表 / 移动端。
+   状态机：默认折叠圆盘；:hover/:focus-within/.queue-open 展开。
+   ============================================================ */
+
+/* ---------- 展开时信息区与控件可见（queue-open 与 hover 等价） ---------- */
+.music-dock.queue-open .music-info,
+.music-dock.queue-open .music-controls {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+/* ---------- 展开几何（在 1.0.9 基础上补 queue-open 入口） ---------- */
+.music-dock.queue-open {
+  width: min(342px, calc(100vw - 28px)) !important;
+  max-height: min(60vh, 420px) !important;
+  overflow-y: auto !important;
+  grid-template-columns: 56px 1fr auto !important;
+  grid-template-rows: auto auto !important;
+  padding: 10px !important;
+  border-radius: 22px !important;
+}
+
+/* ---------- 封面：播放中旋转唱片 + 呼吸环 ---------- */
+.music-cover { position: relative; border-radius: 50%; }
+.music-cover img { border-radius: 50%; }
+.music-cover-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  transition: border-color .3s;
+  pointer-events: none;
+}
+.music-dock.playing .music-cover-ring {
+  border-top-color: var(--accent);
+  border-right-color: var(--accent);
+  animation: music-ring-spin 2.4s linear infinite;
+}
+.music-dock.playing .music-cover img { animation: music-vinyl-spin 9s linear infinite; }
+@keyframes music-ring-spin { to { transform: rotate(360deg); } }
+@keyframes music-vinyl-spin { to { transform: rotate(360deg); } }
+
+/* ---------- 进度条 ---------- */
+.music-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.music-time {
+  font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  font-size: 10px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+}
+.music-time:last-child { text-align: right; }
+.music-progress-track {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--muted), transparent 72%);
+  cursor: pointer;
+  position: relative;
+}
+.music-progress-track i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .2s linear;
+  position: relative;
+}
+.music-progress-track i::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(50%, -50%) scale(0);
+  transition: transform .2s;
+}
+.music-progress-track:hover i::after,
+.music-progress-track:active i::after { transform: translate(50%, -50%) scale(1); }
+/* 折叠态不显示进度条 */
+.music-dock:not(:hover):not(:focus-within):not(.queue-open) .music-progress { display: none; }
+
+/* ---------- 歌单列表：默认隐藏，hover/queue-open 展开 ---------- */
+.music-dock .music-list { display: none; }
+/* 列表仅在点击「歌单列表」按钮后展开（.queue-open），hover 不再默认带出列表；
+   光标离开播放器（JS 移除 queue-open）即整体缩回封面圆盘 */
+.music-dock.queue-open .music-list { display: block; }
+.music-empty {
+  margin: 8px 4px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ---------- 列表项（JS 与样式的类名契约） ---------- */
+.music-dock .music-list-item {
+  display: grid;
+  grid-template-columns: 24px 1fr auto 16px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background .2s;
+}
+.music-dock .music-list-item:hover { background: color-mix(in srgb, var(--accent), transparent 88%); }
+.music-list-index {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 10px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.music-list-title {
+  font-size: 12.5px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.music-list-artist {
+  font-size: 11px;
+  color: var(--muted);
+  max-width: 88px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.music-dock .music-list-item.is-active { background: color-mix(in srgb, var(--accent), transparent 82%); }
+.music-dock .music-list-item.is-active .music-list-index,
+.music-dock .music-list-item.is-active .music-list-title { color: var(--accent); font-weight: 600; }
+
+/* 激活项均衡器动画（暂停时冻结） */
+.music-list-bars { display: none; align-items: flex-end; gap: 2px; height: 12px; }
+.music-dock .music-list-item.is-active .music-list-bars { display: flex; }
+.music-list-bars i {
+  width: 2px;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--accent);
+  transform-origin: bottom;
+  animation: music-eq .9s ease-in-out infinite;
+}
+.music-list-bars i:nth-child(2) { animation-delay: .3s; }
+.music-list-bars i:nth-child(3) { animation-delay: .6s; }
+.music-dock:not(.playing) .music-list-bars i { animation-play-state: paused; transform: scaleY(.35); }
+@keyframes music-eq {
+  0%, 100% { transform: scaleY(.35); }
+  50% { transform: scaleY(1); }
+}
+
+/* ---------- 触屏：hover 展开不可靠，改为按钮驱动 ---------- */
+@media (hover: none) {
+  .music-dock:hover,
+  .music-dock.playing:hover {
+    width: 74px !important;
+    max-height: 74px !important;
+    grid-template-columns: 74px !important;
+    padding: 0 !important;
+  }
+  .music-dock:hover .music-list { display: none; }
+}
+
+/* ---------- 移动端：坞回归（原整体 display:none） ---------- */
+@media (max-width: 680px) {
+  .music-dock {
+    display: grid !important;
+    left: 12px !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .music-dock.queue-open {
+    width: min(342px, calc(100vw - 24px)) !important;
+    max-height: 56vh !important;
+  }
+}
+
+/* ============================================================
+   1.1.0 细节与移动端层：设置面板动效 / 朋友圈新元素 / 触屏细节
+   ============================================================ */
+
+/* ---------- 设置面板开合动效（原 display 硬切无生硬感） ---------- */
+.settings-popup {
+  transform-origin: top right;
+  animation: settings-pop-in .32s cubic-bezier(.16, 1, .3, 1);
+}
+@keyframes settings-pop-in {
+  from { opacity: 0; transform: translateY(-8px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- 朋友圈：状态行 / 头像 / 实时标记 ---------- */
+.circle-status {
+  margin: 0 0 16px;
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.circle-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+}
+.circle-status.is-live { color: var(--accent); }
+.circle-status.is-live::before {
+  background: var(--accent);
+  animation: circle-live-pulse 1.8s ease-out infinite;
+}
+@keyframes circle-live-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent), transparent 55%); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.circle-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ---------- 移动端：输入框字号 ≥16px 防 iOS 聚焦自动放大 ---------- */
+@media (max-width: 680px) {
+  input, textarea, select { font-size: 16px; }
 }

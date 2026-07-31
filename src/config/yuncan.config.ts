@@ -5,7 +5,7 @@
 
 export const yuncanConfig = {
   /** 配置版本号，与 package.json 版本保持一致 */
-  version: '1.0.8',
+  version: '1.1.1',
 
   /** 站点基本信息 */
   site: {
@@ -23,8 +23,8 @@ export const yuncanConfig = {
     email: 'yuncan3543@gmail.com',
     /** 主站地址 */
     mainSite: import.meta.env.PUBLIC_SITE_URL || 'https://yuncan.xyz',
-    /** 站点起始日期（用于计算建站时长） */
-    siteStart: import.meta.env.PUBLIC_SITE_START || '2023-01-01',
+    /** 站点起始日期（用于计算建站时长；以首篇文章 2022-06-08 为准） */
+    siteStart: import.meta.env.PUBLIC_SITE_START || '2022-06-08',
     /** ICP 备案号 */
     icp: import.meta.env.PUBLIC_SITE_ICP || '晋ICP备2024030642号-1',
     /** GitHub 用户名 */

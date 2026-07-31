@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { site } from '../data/site';
+import { slugify } from '../lib/content';
 import type { Post } from '../lib/content';
 const { post, compact = false } = Astro.props;
 const typedPost = post as Post;
@@ -25,8 +26,8 @@ const typedPost = post as Post;
     <h2><a href={`/posts/${typedPost.slug}/`}>{typedPost.title}</a></h2>
     <p>{typedPost.description || typedPost.excerpt}</p>
     <div class="chips">
-      {typedPost.categories.map((item) => <a href={`/categories/${encodeURIComponent(item)}/`}>{item}</a>)}
-      {typedPost.tags.slice(0, 3).map((item) => <a href={`/tags/${encodeURIComponent(item)}/`}>{item}</a>)}
+      {typedPost.categories.map((item) => <a href={`/categories/${slugify(item)}/`}>{item}</a>)}
+      {typedPost.tags.slice(0, 3).map((item) => <a href={`/tags/${slugify(item)}/`}>{item}</a>)}
     </div>
     <a class="text-link" href={`/posts/${typedPost.slug}/`}>
       阅读
