@@ -127,8 +127,6 @@ const hasToken = !!githubToken && !!githubRepo;
 </div>
 )}
 
-<script is:inline define:vars={{ hasToken, githubToken, githubRepo, githubBranch, postPassword }}>
+<script is:inline define:vars={{ hasToken, githubRepo, githubBranch }}>
   window.__peConfig = { hasToken, githubRepo, githubBranch };
-  window.__peToken = githubToken;
-  window.__pePassword = postPassword;
 </script>

@@ -4,6 +4,7 @@
 // 获取失败时保留旧文件不变，确保站点始终有数据可展示。
 import { writeFileSync, existsSync, readFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import YAML from 'yaml';
 
 const root = process.cwd();
 const DATA_DIR = join(root, 'content', 'data');
@@ -90,10 +91,138 @@ async function fetchSteamGames() {
   return games;
 }
 
+// ===== 朋友圈 RSS 独立抓取（绕过 fcircle，避免 Cloudflare 拦截 GitHub Actions IP）=====
+// 友链列表直接读本地 link.yml，RSS 在博客构建环境（Vercel/本地）抓取，IP 不受限。
+const RSS_SUFFIXES = ['atom.xml', 'rss.xml', 'index.xml', 'feed.xml', 'feed', 'rss2.xml'];
+
+/** 提取 XML 标签内容（处理 CDATA） */
+function extractXml(block, tag) {
+  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'i');
+  const m = block.match(re);
+  if (!m) return '';
+  let v = m[1];
+  const cdata = v.match(/^<!\[CDATA\[([\s\S]*?)\]\]>$/);
+  if (cdata) v = cdata[1];
+  return v.trim();
+}
+
+/** 提取标签属性（如 Atom 的 <link href="...">） */
+function extractAttr(block, tag, attr) {
+  const re = new RegExp(`<${tag}[^>]*?\\s${attr}=["']([^"']*)["']`, 'i');
+  const m = block.match(re);
+  return m ? m[1].trim() : '';
+}
+
+/** 解码常见 HTML 实体 */
+function decodeEntities(s) {
+  return s
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'").replace(/&apos;/g, "'").replace(/&nbsp;/g, ' ')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/&amp;/g, '&');
+}
+
+/** 标准化日期为 YYYY-MM-DD */
+function normalizeDate(s) {
+  if (!s) return '';
+  s = s.trim();
+  const iso = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+  const d = new Date(s);
+  if (!isNaN(d)) return d.toISOString().slice(0, 10);
+  return '';
+}
+
+/** 解析 RSS 2.0 / Atom feed，提取文章列表 */
+function parseRssFeed(xml, friend, base) {
+  const blockRe = /<(?:item|entry)\b[\s\S]*?<\/(?:item|entry)>/gi;
+  const blocks = xml.match(blockRe) || [];
+  const items = [];
+  for (const block of blocks.slice(0, 5)) { // 每站最多 5 篇（与 fcircle MAX_POSTS_NUM 一致）
+    const title = decodeEntities(extractXml(block, 'title')) || '无标题';
+    let link = extractAttr(block, 'link', 'href') || extractXml(block, 'link');
+    if (link && !/^https?:/i.test(link)) {
+      try { link = new URL(link, base + '/').href; } catch { link = base + link; }
+    }
+    const dateStr = extractXml(block, 'pubDate') || extractXml(block, 'published')
+      || extractXml(block, 'updated') || extractXml(block, 'date') || extractXml(block, 'dc:date');
+    const date = normalizeDate(dateStr);
+    items.push({
+      title: title.trim(), created: date, updated: date,
+      link: link || friend.link, author: friend.name, avatar: friend.avatar || '', summary: '',
+    });
+  }
+  return items;
+}
+
+/** 抓取单个友链站点的 RSS（依次尝试常见后缀） */
+async function fetchRssForSite(friend) {
+  const base = friend.link.replace(/\/$/, '');
+  for (const suffix of RSS_SUFFIXES) {
+    const url = `${base}/${suffix}`;
+    try {
+      const res = await fetch(url, {
+        signal: AbortSignal.timeout(8000),
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; yuncan-blog-fetcher/1.0)' },
+        redirect: 'follow',
+      });
+      if (!res.ok) continue;
+      const ct = (res.headers.get('content-type') || '').toLowerCase();
+      const text = await res.text();
+      if (!ct.includes('xml') && !ct.includes('rss')
+        && !text.includes('<?xml') && !text.includes('<rss') && !text.includes('<feed')) continue;
+      const articles = parseRssFeed(text, friend, base);
+      if (articles.length) return articles;
+    } catch (e) { /* 超时或网络错误，尝试下一个后缀 */ }
+  }
+  return [];
+}
+
+/** 从友链 link.yml 独立抓取 RSS（主路径） */
+async function fetchCircleFromRss() {
+  const linkPath = join(root, 'content', 'data', 'link.yml');
+  if (!existsSync(linkPath)) {
+    console.log('[fetch-external-data] Circle RSS: link.yml 不存在，跳过');
+    return [];
+  }
+  const linkData = YAML.parse(readFileSync(linkPath, 'utf8'));
+  const friends = [];
+  for (const group of (Array.isArray(linkData) ? linkData : [linkData])) {
+    for (const item of (group.link_list || [])) {
+      if (item && item.link) {
+        friends.push({ name: item.name || '未知站点', link: item.link, avatar: item.avatar || '' });
+      }
+    }
+  }
+  console.log(`[fetch-external-data] Circle RSS: 开始抓取 ${friends.length} 个友链站点`);
+  const results = await Promise.allSettled(friends.map((f) => fetchRssForSite(f)));
+  const allArticles = [];
+  let okCount = 0;
+  for (let i = 0; i < results.length; i++) {
+    const r = results[i];
+    if (r.status === 'fulfilled' && r.value.length) {
+      allArticles.push(...r.value);
+      okCount++;
+    }
+  }
+  allArticles.sort((a, b) => (b.created || '').localeCompare(a.created || ''));
+  console.log(`[fetch-external-data] Circle RSS: ${okCount}/${friends.length} 站点成功，共 ${allArticles.length} 篇文章`);
+  return allArticles.slice(0, 40);
+}
+
 async function fetchCircleFeed() {
-  // 主路径：fcircle 的 GitHub Actions 每日聚合 data.db 并提交回仓库，
-  // 构建时直接下载 SQLite 读取（Vercel API 层挂掉也不受影响）。
-  // 兜底：PUBLIC_CIRCLE_API（旧 Vercel 服务，已 404）。
+  // 主路径：直接抓取友链站点 RSS（绕过 fcircle）。
+  // fcircle 的 GitHub Actions 因 blog.yuncan.xyz 走 Cloudflare，IP 被拦截导致友链页解析失败，
+  // friends 表为空、爬不到新文章。博客构建环境（Vercel/本地）IP 不受限，可直连友链 RSS。
+  try {
+    const articles = await fetchCircleFromRss();
+    if (articles.length) return articles;
+    console.log('[fetch-external-data] Circle: RSS 抓取无数据，尝试 data.db 兜底');
+  } catch (e) {
+    console.log(`[fetch-external-data] Circle RSS 抓取失败: ${e.message}，尝试 data.db 兜底`);
+  }
+
+  // 兜底1：fcircle 的 data.db（含历史数据，最新 2026-06-27）
   const dbUrl = getEnv('PUBLIC_CIRCLE_DB_URL')
     || 'https://raw.githubusercontent.com/Yuncan050115/yuncan-blog-circle-of-friends/main/data.db';
   try {
@@ -104,6 +233,7 @@ async function fetchCircleFeed() {
     console.log(`[fetch-external-data] Circle data.db 失败: ${e.message}，尝试 API 兜底`);
   }
 
+  // 兜底2：旧 Vercel API（已 404）
   const circleApi = getEnv('PUBLIC_CIRCLE_API');
   if (!circleApi) {
     console.log('[fetch-external-data] Circle: API 未配置，跳过');

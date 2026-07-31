@@ -4,8 +4,8 @@ import PageHero from '../../components/PageHero.astro';
 import circleFeed from '../../../content/data/circle-feed.json';
 
 const articles = Array.isArray(circleFeed) ? circleFeed : [];
-const circleApi = import.meta.env.PUBLIC_CIRCLE_API || '';
-const configured = Boolean(circleApi);
+// 有数据即渲染：构建时直接抓取友链 RSS，不再依赖外部 fcircle API
+const hasData = articles.length > 0;
 // 快照时间标记：取动态中最晚的更新时间，便于读者判断数据新鲜度
 const latestStamp = articles.reduce((max, item) => {
   const stamp = String(item.updated || item.created || '');
@@ -32,10 +32,10 @@ for (const item of articles) {
 <BaseLayout title="朋友圈 - 云灿">
   <PageHero title="朋友圈" subtitle="友链站点动态聚合" />
   <section class="content-shell">
-    {configured ? (
+    {hasData ? (
       <>
         <p class="circle-status is-live" data-circle-status>
-          {latestStamp ? `GitHub Actions 每日聚合 · 最近动态 ${latestStamp}` : '友链动态聚合'}
+          {latestStamp ? `构建时直接抓取友链 RSS · 最近动态 ${latestStamp}` : '友链动态聚合'}
         </p>
         <div class="circle-container" data-circle-container>
           {groups.length ? (
@@ -80,17 +80,14 @@ for (const item of articles) {
       </>
     ) : (
       <div class="circle-empty">
-        <h3>朋友圈功能未配置</h3>
-        <p>友链朋友圈（fcircle）是一个独立部署的服务，用于聚合友链站点的最新文章。</p>
-        <h4>部署步骤：</h4>
+        <h3>暂无友链动态</h3>
+        <p>构建时会自动从 <code>content/data/link.yml</code> 读取友链列表并抓取各站点 RSS。</p>
+        <p>当前没有获取到动态，可能原因：</p>
         <ol>
-          <li>将 <code>hexo-circle-of-friends-main</code> 目录部署到 Vercel（推荐）或自有服务器</li>
-          <li>修改 <code>fc_settings.yaml</code> 中的 <code>LINK</code> 为你的友链页地址</li>
-          <li>部署完成后获取 API 地址（如 <code>https://your-fcircle.vercel.app/api</code>）</li>
-          <li>将 API 地址填入博客 <code>.env</code> 的 <code>PUBLIC_CIRCLE_API</code></li>
-          <li>重新构建博客即可看到朋友圈动态</li>
+          <li>友链站点暂时不可达或 RSS 地址未适配</li>
+          <li>构建时网络异常，请重新触发构建</li>
+          <li><code>link.yml</code> 中尚未配置友链</li>
         </ol>
-        <p class="circle-empty-tip">详细文档：<a href="https://fcircle-doc.yyyzyyyz.cn/" target="_blank" rel="noopener">fcircle-doc.yyyzyyyz.cn</a></p>
       </div>
     )}
   </section>

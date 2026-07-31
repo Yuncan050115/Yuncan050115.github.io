@@ -130,17 +130,36 @@ export const initPostEditor = () => {
     });
   };
 
-  // 密码验证
+  // 密码验证（服务端校验，token 经认证后返回，不进入静态 HTML）
   if (authBtn) {
-    authBtn.addEventListener('click', () => {
+    authBtn.addEventListener('click', async () => {
       const pwd = pwdInput?.value || '';
-      const expectedPwd = (window as any).__pePassword || '';
-      if (pwd === expectedPwd) {
-        if (auth) auth.style.display = 'none';
-        if (panel) panel.style.display = 'flex';
-        loadPostList();
-      } else {
-        if (errEl) errEl.textContent = '密码错误';
+      if (!pwd) {
+        if (errEl) errEl.textContent = '请输入密码';
+        return;
+      }
+      authBtn.disabled = true;
+      authBtn.textContent = '验证中...';
+      try {
+        const resp = await fetch('/.netlify/functions/admin-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwd }),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (resp.ok && data.token) {
+          (window as any).__peToken = data.token;
+          if (auth) auth.style.display = 'none';
+          if (panel) panel.style.display = 'flex';
+          loadPostList();
+        } else {
+          if (errEl) errEl.textContent = data.error || '密码错误';
+        }
+      } catch {
+        if (errEl) errEl.textContent = '网络错误，验证失败';
+      } finally {
+        authBtn.disabled = false;
+        authBtn.textContent = '验证';
       }
     });
   }

@@ -1,7 +1,7 @@
 /**
- * 友链申请表单：访客填写后一键创建 GitHub Issue
- * 使用独立的 PUBLIC_FRIEND_LINK_TOKEN（仅 issues:write 权限，安全暴露给前端）
- * 站长在管理面板（FPS 区域双击 → 密码验证 → 友链管理 Tab）中审批
+ * 友链申请表单：访客填写后由 Netlify Function 服务端创建 GitHub Issue
+ * 浏览器不接触任何 GitHub 凭证，token 始终留在服务端
+ * 站长在管理面板（FPS 区域连续点击 → 密码验证 → 友链管理 Tab）中审批
  */
 
 export const initFriendLinkApply = () => {
@@ -9,13 +9,7 @@ export const initFriendLinkApply = () => {
   if (!form || form.dataset.ready === 'true') return;
   form.dataset.ready = 'true';
 
-  const section = document.getElementById('friend-apply-section');
-  const repo = section?.dataset.repo || (window as any).__peConfig?.githubRepo || '';
-  // 复用 PostEditor 注入的 token（已在前端暴露，无需单独配置）
-  const token = (window as any).__peToken || '';
   const hint = document.getElementById('fa-hint');
-
-  if (!token || !repo) return;
 
   const showHint = (msg: string, isError = false) => {
     if (!hint) return;
@@ -46,67 +40,20 @@ export const initFriendLinkApply = () => {
       btn.classList.add('is-loading');
     }
 
-    // 构建 Issue body：人类可读表格 + 机器解析 YAML 代码块
-    const body = [
-      '## 友链申请',
-      '',
-      '| 字段 | 值 |',
-      '| --- | --- |',
-      `| 站点名称 | ${data.name} |`,
-      `| 站点链接 | ${data.link} |`,
-      `| 站点头像 | ${data.avatar} |`,
-      `| 站点描述 | ${data.descr} |`,
-      `| RSS | ${data.rss || '未提供'} |`,
-      `| 站点截图 | ${data.siteshot || '未提供（审批时自动截取）'} |`,
-      '',
-      '```yaml',
-      `name: ${data.name}`,
-      `link: ${data.link}`,
-      `avatar: ${data.avatar}`,
-      `descr: ${data.descr}`,
-      `rss: ${data.rss}`,
-      `siteshot: ${data.siteshot}`,
-      '```',
-    ].join('\n');
-
     try {
-      // 尝试带 label 创建，label 不存在时回退到无 label
-      let resp = await fetch(`https://api.github.com/repos/${repo}/issues`, {
+      // 服务端持 token 创建 Issue，浏览器不接触凭证
+      const resp = await fetch('/.netlify/functions/friend-apply', {
         method: 'POST',
-        headers: {
-          Authorization: `token ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: `友链申请: ${data.name}`,
-          body,
-          labels: ['friend-link-apply'],
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
-
-      // label 不存在导致 422，去掉 label 重试
-      if (resp.status === 422) {
-        resp = await fetch(`https://api.github.com/repos/${repo}/issues`, {
-          method: 'POST',
-          headers: {
-            Authorization: `token ${token}`,
-            Accept: 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            title: `友链申请: ${data.name}`,
-            body,
-          }),
-        });
-      }
 
       if (resp.ok) {
         showHint('申请已提交！站长审核后将在友链页展示，请耐心等待。');
         form.reset();
       } else {
         const err = await resp.json().catch(() => ({}));
-        showHint(`提交失败: ${err.message || resp.statusText || '未知错误'}`, true);
+        showHint(`提交失败: ${err.error || resp.statusText || '未知错误'}`, true);
       }
     } catch {
       showHint('网络错误，提交失败，请稍后重试', true);

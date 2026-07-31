@@ -12,7 +12,7 @@
 
 const REPO = (window as any).__peConfig?.githubRepo || '';
 const BRANCH = (window as any).__peConfig?.githubBranch || 'master';
-const TOKEN = (window as any).__peToken || '';
+const getToken = () => (window as any).__peToken || '';
 
 // ===== 工具函数 =====
 
@@ -108,7 +108,7 @@ const tryConvertToWebp = async (imageUrl: string, slug: string): Promise<string>
   const resp = await fetch(`https://api.github.com/repos/${REPO}/contents/${filePath}`, {
     method: 'PUT',
     headers: {
-      Authorization: `token ${TOKEN}`,
+      Authorization: `token ${getToken()}`,
       Accept: 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
     },
@@ -149,7 +149,7 @@ const captureScreenshot = async (siteUrl: string): Promise<{ path: string; isLoc
 const updateLinkYml = async (entry: Record<string, string>): Promise<boolean> => {
   // 1. 读取当前 link.yml
   const resp = await fetch(`https://api.github.com/repos/${REPO}/contents/content/data/link.yml?ref=${BRANCH}`, {
-    headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' },
+    headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' },
   });
   if (!resp.ok) throw new Error('读取 link.yml 失败');
   const data = await resp.json();
@@ -175,7 +175,7 @@ const updateLinkYml = async (entry: Record<string, string>): Promise<boolean> =>
   const updateResp = await fetch(`https://api.github.com/repos/${REPO}/contents/content/data/link.yml`, {
     method: 'PUT',
     headers: {
-      Authorization: `token ${TOKEN}`,
+      Authorization: `token ${getToken()}`,
       Accept: 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
     },
@@ -197,7 +197,7 @@ const closeIssue = async (issueNumber: number, comment: string) => {
   await fetch(`https://api.github.com/repos/${REPO}/issues/${issueNumber}/comments`, {
     method: 'POST',
     headers: {
-      Authorization: `token ${TOKEN}`,
+      Authorization: `token ${getToken()}`,
       Accept: 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
     },
@@ -208,7 +208,7 @@ const closeIssue = async (issueNumber: number, comment: string) => {
   await fetch(`https://api.github.com/repos/${REPO}/issues/${issueNumber}`, {
     method: 'PATCH',
     headers: {
-      Authorization: `token ${TOKEN}`,
+      Authorization: `token ${getToken()}`,
       Accept: 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
     },
@@ -256,7 +256,7 @@ export const loadFriendLinkApplications = async () => {
   const statusEl = document.getElementById('pe-friend-status');
   if (!listEl || !statusEl) return;
 
-  if (!TOKEN || !REPO) {
+  if (!getToken() || !REPO) {
     statusEl.textContent = '未配置 GitHub Token，无法加载';
     listEl.innerHTML = '';
     return;
@@ -268,7 +268,7 @@ export const loadFriendLinkApplications = async () => {
   try {
     // 先尝试带 label 查询，失败则搜标题
     let resp = await fetch(`https://api.github.com/repos/${REPO}/issues?labels=friend-link-apply&state=open&per_page=50`, {
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' },
+      headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' },
     });
 
     let issues: any[] = [];
@@ -279,7 +279,7 @@ export const loadFriendLinkApplications = async () => {
     // label 查询无结果时，用标题搜索兜底
     if (issues.length === 0) {
       resp = await fetch(`https://api.github.com/search/issues?q=repo:${REPO}+is:issue+is:open+友链申请+in:title&per_page=50`, {
-        headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' },
+        headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' },
       });
       if (resp.ok) {
         const searchResult = await resp.json();
@@ -325,7 +325,7 @@ const handleApprove = async (issueNum: number) => {
   try {
     // 1. 获取 Issue 数据
     const resp = await fetch(`https://api.github.com/repos/${REPO}/issues/${issueNum}`, {
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' },
+      headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' },
     });
     if (!resp.ok) throw new Error('获取申请详情失败');
     const issue = await resp.json();
@@ -498,7 +498,7 @@ const commitLinkYml = async (newContent: string, sha: string, message: string): 
   const resp = await fetch(`https://api.github.com/repos/${REPO}/contents/content/data/link.yml`, {
     method: 'PUT',
     headers: {
-      Authorization: `token ${TOKEN}`,
+      Authorization: `token ${getToken()}`,
       Accept: 'application/vnd.github.v3+json',
       'Content-Type': 'application/json',
     },
@@ -574,7 +574,7 @@ const loadExistingLinks = async () => {
   const statusEl = document.getElementById('pe-friend-existing-status');
   if (!listEl || !statusEl) return;
 
-  if (!TOKEN || !REPO) {
+  if (!getToken() || !REPO) {
     statusEl.textContent = '未配置 GitHub Token';
     return;
   }
@@ -584,7 +584,7 @@ const loadExistingLinks = async () => {
 
   try {
     const resp = await fetch(`https://api.github.com/repos/${REPO}/contents/content/data/link.yml?ref=${BRANCH}`, {
-      headers: { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json' },
+      headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' },
     });
     if (!resp.ok) throw new Error('读取 link.yml 失败');
     const data = await resp.json();
